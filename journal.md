@@ -1,5 +1,205 @@
 # journal.md
 
+## 2025-11-20 16:00
+
+### follow-up round 2: latest models + prototyping + detailed explanations
+
+created four comprehensive new documents addressing follow-up questions.
+
+**documents created:**
+
+1. **latest-models-nov2025.md** - current state-of-the-art models
+2. **weekend-prototype-guide.md** - hands-on build guide
+3. **detailed-explanations.md** - deep conceptual clarity
+4. **realtime-workflow-continuous-learning.md** - production workflows
+
+**q1: latest models (nov 2025 accurate)**
+
+researched and documented current model landscape:
+
+**speech recognition (ears):**
+- whisper v3 turbo: still sota for child speech after fine-tuning (9.2% wer)
+- google cloud speech-to-text v2 (chirp): has child speech model variant, why still relevant despite gemini 2.0
+- wav2vec 2.0 / seamless m4t: alternative, sometimes outperforms whisper
+- apple on-device: privacy-first but can't fine-tune
+- clarified: chirp is specialized asr api, gemini 2.0 is multimodal reasoning (different purposes)
+
+**language models (brain):**
+- gemini 2.0 flash: recommended starting point ($0.0005/request, multimodal)
+- claude 3.7 sonnet: best reasoning but 10x more expensive
+- llama 3.3 70b: latest (not llama 4, doesn't exist yet as of nov 2025)
+- qwen 2.5 72b: strong multilingual, especially chinese
+- deepseek v3: cost-effective moe architecture
+- mistral large 2: european focus
+- phi-4: microsoft's small but capable model (14b)
+
+**edge models:**
+- llama 3.3 3b/8b: can run on phone
+- gemini flash lite (coming): on-device capable
+
+**why whisper over gemini 2.0 for asr:**
+- proven: 38% improvement on child speech vs no fine-tuning
+- specialization: optimized for atypical speech patterns
+- cost: $2k-5k one-time vs $0.0375/min forever
+- offline: runs on device
+- fine-tuning depth: can customize every parameter
+
+**why gemini initially, llama eventually:**
+- gemini: fast validation, $0 upfront, excellent quality
+- llama: privacy, no ongoing costs, full control after fine-tuning
+
+**confidence score explained:**
+- probability model assigns to chosen transcription
+- 0.87 = 87% sure, reliable data
+- used to filter quality, guide parent feedback
+
+**q2: fine-tuning "your own" vs using apis**
+
+clarified the two meanings:
+
+**meaning 1: using apis (not really "yours")**
+```
+your app → gemini api → google's servers
+- don't own model
+- just calling service
+- good for starting
+```
+
+**meaning 2: fine-tuning open source (actually "yours")**
+```
+llama 3.3 → your therapy data → fine-tuned weights
+- you own the model
+- run on your servers
+- good for production
+```
+
+**is using gemini as-is fruitful? yes!**
+- already excellent at medical reasoning
+- prompt engineering very powerful
+- rag adds your clinic's data without fine-tuning
+- 90% quality for 10% cost (vs fine-tuning)
+- fine-tune only after validation phase
+
+**why separate models = more accuracy:**
+- specialization: whisper trained on 680k hours of audio, gemini on reasoning
+- proven: whisper fine-tuned achieves 50% fewer errors than gemini alone
+- cost: cheaper at scale
+- control: can fine-tune parts independently
+
+**q3: weekend prototype guide**
+
+created two complete build approaches:
+
+**approach 1: real-time (recommended)**
+- tech stack: react + flask + gemini 2.0
+- hour-by-hour breakdown (48 hours total)
+- complete code examples
+- saturday: setup + basic ui (12 hours)
+- sunday: real-time streaming + polish (12 hours)
+
+**approach 2: voice notes (simpler)**
+- single html file version
+- uses browser's built-in speech recognition
+- calls gemini api for analysis
+- can build in 24 hours
+
+**existing repos to leverage:**
+- openai/whisper - integration code
+- react-mic - audio recording
+- google/generative-ai-python - gemini examples
+- 6+ github repos identified with reusable components
+
+**testing without child data:**
+- myst dataset samples (free)
+- synthesize with google tts
+- record yourself
+- ask family with kids
+
+**what you'll have by sunday:**
+- ✅ working web app
+- ✅ records audio
+- ✅ transcribes speech
+- ✅ analyzes for therapy
+- ✅ suggests exercises
+- ✅ demo-ready ui
+
+**q4 & q5: real-time workflow + continuous fine-tuning**
+
+**real-time at-home workflow (ai-led):**
+- complete step-by-step interaction flow
+- session initialization loads child's progress
+- ai prompts → child speaks → instant analysis → adaptive feedback
+- latency: 500-1300ms total (feels instant)
+- parent sees summary after session
+- therapist reviews periodically (5-10 min/day for all clients)
+
+**vs session-based:**
+| aspect | session (therapist) | real-time (ai-led) |
+|--------|---------------------|-------------------|
+| frequency | 1-2x/week | daily |
+| cost | $100-200/session | $0-5/session |
+| role | professional intervention | practice between sessions |
+
+**continuous fine-tuning cycle:**
+
+```
+month 1-3: collect data (40k samples/month)
+    ↓
+auto-filter high quality (50% pass)
+    ↓
+therapist reviews 5% sample (qa)
+    ↓
+monthly: fine-tune whisper ($500-1k)
+    ↓
+a/b test new vs old model
+    ↓
+rollout if better
+    ↓
+repeat
+```
+
+**periodic vs continuous:**
+- periodic (quarterly): simpler, $6k-12k/year
+- continuous (weekly): faster improvement, $10k-25k/year
+- hybrid: quarterly whisper, monthly llm
+
+**data quality scoring:**
+- audio quality (snr > 20db)
+- transcription confidence (> 0.8)
+- consistency with child's pattern
+- therapist verification
+- parent feedback
+- only include samples scoring > 70/100
+
+**triggers for retraining:**
+- scheduled (monthly/quarterly)
+- performance drops > 1%
+- 50k+ new samples
+- user satisfaction < 4.0
+- strategic (new language, age range)
+
+**infrastructure:**
+- minimal (< 100 users): $50-200/month, manual process
+- production (1000+ users): $2k-10k/month, automated pipeline
+
+**key insights:**
+
+- gemini 2.0 and chirp serve different purposes (reasoning vs specialized asr)
+- llama 3.3 is latest (llama 4 doesn't exist yet)
+- using gemini api as-is is very fruitful for validation
+- weekend prototype is achievable with existing tools
+- real-time workflow enables daily practice vs weekly therapy
+- continuous learning makes model better over time
+- data quality matters more than quantity for fine-tuning
+
+**technical clarifications:**
+
+- confidence score: probability of transcription being correct
+- fine-tuning "yours": you own weights, run on your servers
+- separate models: specialization beats generalization
+- real-time: 500-1300ms latency feels conversational
+- continuous learning: improve model monthly/quarterly
+
 ## 2025-11-20 14:30
 
 ### follow-up research: deep-dive into 10 critical questions
