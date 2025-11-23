@@ -1,5 +1,111 @@
 # journal.md
 
+## 2025-11-23 17:30
+
+### comprehensive research: ot and aba therapy ai for children
+
+created two comprehensive research documents expanding the therapy ai scope beyond speech.
+
+**documents created:**
+
+1. **occupational-therapy-ai-children.md** (~35kb)
+2. **aba-behavioral-therapy-ai-children.md** (~75kb)
+
+**occupational therapy research highlights:**
+
+- key insight: ot requires vision (camera/video) - ai must observe motor performance
+- leading company: korro ai (computer vision + games, rct validated, cohen's d=1.1)
+- technical stack: pose estimation (vitpose/mediapipe) → skeleton extraction → action recognition (st-gcn) → quality assessment
+- key dataset: multiview child motor development dataset (gigascience 2023) - 399 children, ages 20-71 months
+- challenge: child pose estimation models trained on adults, need fine-tuning
+- indian players: beable health (armable), nema ai, vifr tech
+- budget: mvp $135-275k globally, ~35-71 lakh inr in india
+
+**aba/behavioral therapy research highlights:**
+
+- key insight: multimodal opportunity (audio + vision) for behavior tracking
+- ethical considerations addressed: aba controversies, neurodiversity-affirming approach
+- leading companies: forta ($55m funding), spectrumai ($9m), floreo (fda breakthrough)
+- technical stack: behavior detection + emotion recognition + abc tracking + reinforcement analysis
+- key datasets: ssbd (stimming behaviors), mmasd+ (100+ hours), uc davis mind institute
+- indian players: cogniable, purple butterfly, arula for autism
+- budget: $787k-1.7m us, $200-350k india
+
+**unified vision-enabled architecture (next step):**
+
+both ot and aba benefit from vision. speech therapy can also be enhanced with vision (lip reading, engagement). planning unified architecture that:
+- shares pose estimation + action recognition infrastructure
+- modular therapy-specific layers
+- single child profile across therapy types
+- cross-therapy insights for co-occurring conditions
+
+---
+
+## 2025-11-22 10:30
+
+### evaluation framework for child speech therapy ai
+
+created comprehensive eval framework document covering three layers of evaluation.
+
+**document created:** `eval-framework-child-speech-therapy.md`
+
+**layer 1: speech recognition (asr)**
+- primary metric: word error rate (wer)
+- secondary: phoneme error rate (per), phoneme-specific accuracy
+- special handling for disfluencies (stuttering, prolongations)
+- targets by context: quiet room < 8%, disordered speech < 18%
+- test set stratification: age, disorder type, severity, acoustic conditions, language
+
+**layer 2: therapy recommendation quality**
+- 5 evaluation dimensions:
+  1. clinical appropriateness (1-5)
+  2. age appropriateness (1-5)
+  3. parent clarity (1-5)
+  4. safety (pass/fail with red flags)
+  5. evidence basis (categorical)
+- three evaluation methods:
+  - expert slp review (gold standard)
+  - key element checklist (automated)
+  - llm-as-judge (fast, needs calibration)
+
+**layer 3: clinical outcomes**
+- speech accuracy improvement tracking
+- generalization testing (trained → untrained → conversational)
+- engagement metrics (completion, consistency, voluntary use)
+- family satisfaction surveys
+- comparison study design (rct ideal, pre-post pragmatic)
+- statistical analysis: effect size, responder rate
+
+**evaluation infrastructure:**
+- golden test set (500+ samples, versioned, stable)
+- dynamic test set (production failures, edge cases)
+- alerting thresholds (critical/warning/info)
+- reporting templates for model releases and monthly dashboards
+
+**alignment with clinical standards:**
+- mapped ai metrics to standardized tests (gfta-3, caap-2, ssi-4)
+- therapist-friendly reporting format
+- pcc (percent consonants correct) equivalent tracking
+
+**key targets identified:**
+| metric | target |
+|--------|--------|
+| wer (disordered speech) | < 18% |
+| clinical appropriateness | > 4.0/5 |
+| safety pass rate | 100% |
+| mean outcome improvement | > 20% |
+| responder rate | > 75% |
+| family satisfaction | > 4.0/5 |
+
+**next steps:**
+1. build test set (500+ labeled samples)
+2. implement automated evals (layers 1 + 2)
+3. recruit expert reviewers (3-5 slps)
+4. establish baselines on current system
+5. design clinical outcome study protocol
+
+---
+
 ## 2025-11-20 16:00
 
 ### follow-up round 2: latest models + prototyping + detailed explanations
