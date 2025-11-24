@@ -1,4 +1,4 @@
-# sunshine ai speech assessment: critique & investor questions
+# sunshine ai speech assessment: critique, investor questions, and follow-ups
 
 based on review of the technical plan against our research on speech therapy ai for children.
 
@@ -114,18 +114,25 @@ addressing indian phonetic distinctions is a real gap:
 - any plans for clinical validation study?
 - what metrics will you report to investors?
 
-### 5. no mention of existing competition
+### 5. competitive landscape not addressed
 
-**missing:**
-- speech blubs (5m+ users, video modeling + ai)
-- mita (fda breakthrough, 120% improvement in trials)
-- articulation station, constant therapy
-- none mentioned or differentiated against
+**context:** the indian child speech therapy market is essentially greenfield - no dominant player exists.
+
+**global players (not established in india):**
+- speech blubs - 5m+ downloads globally, but not india-focused
+- mita - fda breakthrough designation, narrow autism focus
+- articulation station, constant therapy - slp tools, not consumer apps
+
+**the real questions aren't "how do you beat incumbents" but:**
+- why will you win the race to establish in india?
+- what's the defensible moat once you're there?
+- what stops speech blubs from adding hindi/indian english support?
+- how do you build network effects or data moats?
 
 **questions to ask:**
-- how is sunshine different from speech blubs?
-- what's the moat beyond "indian english"?
-- why would a parent choose this over established apps?
+- what's the go-to-market strategy for india?
+- how do you acquire users cost-effectively?
+- what's the defensibility if a well-funded competitor enters?
 
 ### 6. team composition concerns
 
@@ -306,3 +313,628 @@ addressing indian phonetic distinctions is a real gap:
 7. **go-to-market** - b2b vs b2c, pricing, distribution
 8. **engagement strategy** - how kids will actually use it
 9. **expansion vision** - ot, aba, multimodal future?
+
+---
+
+## appendix: glossary of terms
+
+| term | meaning |
+|------|---------|
+| **wer (word error rate)** | % of words transcribed incorrectly. formula: (substitutions + deletions + insertions) / total words. lower = better. target: < 15% |
+| **per (phoneme error rate)** | same as wer but at individual sound level. more granular - useful for therapy |
+| **lora (low-rank adaptation)** | efficient fine-tuning technique. freezes base model, adds small trainable adapters. 90% results at 10% cost |
+| **vad (voice activity detection)** | detects when someone is speaking vs silence. used to only send relevant audio |
+| **dsp (digital signal processing)** | audio cleanup - noise reduction, normalization, echo cancellation |
+| **forced alignment** | matching audio to text at phoneme level with timestamps |
+| **levenshtein distance** | algorithm measuring edit distance between two strings |
+| **rag (retrieval augmented generation)** | llm technique that retrieves relevant context from database before generating |
+| **slp** | speech-language pathologist (the clinical professional) |
+
+---
+
+## appendix: additional technical gaps identified
+
+### levenshtein distance is too simplistic
+
+the plan uses standard levenshtein which treats all errors equally, but:
+- /r/ → /w/ is common and developmentally expected at age 3
+- /p/ → /g/ is unusual and clinically significant
+
+**better approach:** phonologically weighted distance where:
+```python
+error_weights = {
+    ('r', 'w'): 0.3,  # common, low severity
+    ('s', 'th'): 0.4,  # lisp, moderate
+    ('p', 'g'): 1.0,  # unusual, high severity
+}
+```
+
+or even better: phonological feature distance based on voicing, place, manner.
+
+### real-time vs audio-notes not clarified
+
+the plan mentions "real-time" but doesn't explain:
+- what's the latency target?
+- how is conversation state maintained?
+- what happens with connection issues?
+
+**this matters:** real-time interaction is technically harder but more engaging. audio-notes is simpler but less interactive.
+
+**current state of tech:** real-time voice ai for extended sessions is possible (openai realtime api, hume ai, character.ai voice) but requires careful architecture.
+
+### swallowing/feeding mentioned but not addressed
+
+the plan mentions this in disorder types but:
+- swallowing/feeding assessment requires **vision**, not just audio
+- need to observe swallowing mechanics, feeding posture
+- this is more ot territory than speech
+
+**gap:** audio-only architecture can't address this
+
+### data strategy for different disorder types
+
+labeling needs differ significantly:
+
+| disorder | annotation needs |
+|----------|-----------------|
+| articulation | phoneme-level transcription |
+| fluency | temporal patterns, disfluency markers |
+| language delay | vocabulary, sentence structure |
+
+the plan treats all as same labeling task - this won't work.
+
+### recommended team additions
+
+| role | why needed |
+|------|-----------|
+| slp / clinical advisor | validates therapeutic approach, creates clinical rulebook |
+| child ux designer | gamification, engagement - kids won't use boring apps |
+| data/annotation lead | labeling is critical and complex |
+| regulatory/compliance | hipaa, coppa, potentially fda |
+| product manager | owns user experience end-to-end |
+
+---
+
+## follow-up questions & detailed explanations
+
+### 1. the ears (acoustic layer / sam)
+
+#### 1.1 kid-whisper vs regular whisper?
+
+**regular whisper** struggles with children:
+- higher pitch, different formant frequencies
+- less consistent articulation
+- more disfluencies
+- underrepresented in training data
+
+**kid-whisper** (fine-tuned on child speech) shows major improvement:
+- whisper-small: 13.93% → 9.11% wer (35% improvement)
+- whisper-medium: 13.23% → 8.61% wer
+
+**verdict:** for child speech therapy, fine-tuning on child speech is necessary, not optional.
+
+#### 1.1.1 what is "local vad on edge + server-side dsp"?
+
+- **vad (voice activity detection)** - detects when someone is speaking vs silence
+  - running "on edge" (phone/tablet) means device only sends audio when speech detected
+  - saves bandwidth, reduces latency, lowers costs
+
+- **dsp (digital signal processing)** - audio cleanup on server
+  - noise reduction, normalization, echo cancellation
+
+#### 1.1.2 do standard ai models "autocorrect"?
+
+**partially true, nuanced:**
+- whisper is trained on audio → correct text pairs
+- learns to map messy audio → clean text
+- tends to output "rabbit" even when someone says "wabbit"
+- not explicitly "autocorrecting grammar" but the effect is similar
+- normalizes toward expected output
+
+**the fix:** fine-tune on data where "wabbit" audio → "wabbit" text (preserving errors)
+
+#### 1.1.3 what does "using lora" mean?
+
+**lora (low-rank adaptation)** - efficient fine-tuning technique:
+
+```
+full model: 1 billion parameters
+full fine-tuning: update all 1 billion (expensive, $5k-20k)
+lora: freeze original, add small "adapter" layers (~1-10m params)
+      train only adapters (cheap, $500-2k)
+```
+
+**what bits to fine-tune:**
+- lora targets attention layers (where model "decides what to focus on")
+- don't manually pick - lora inserts trainable matrices alongside existing layers
+- rank parameter (r) controls size: r=8 common, r=16-32 for more capacity
+
+**how to decide:**
+- start with r=8, evaluate
+- if underfitting (not learning), increase rank
+- if overfitting (memorizing), decrease rank or add data
+
+#### 1.1.4 beyond articulation - what about fluency, delays, feeding?
+
+different disorders need different signals:
+
+| disorder | what to capture | technical approach |
+|----------|-----------------|-------------------|
+| **articulation** (rabbit→wabbit) | phoneme substitutions | phoneme-level transcription, error classification |
+| **fluency/stuttering** | repetitions, prolongations, blocks | temporal patterns, disfluency detection, speaking rate |
+| **speech delay** | limited vocabulary, simpler structures | vocabulary diversity, mlu (mean length of utterance) |
+| **unclear speech** | intelligibility | confidence scores, listener comprehension rate |
+| **swallowing/feeding** | not speech - physical act | vision-based (observe swallowing), acoustic (swallow sounds) |
+
+**key insight:** swallowing/feeding is ot territory, needs vision, not just audio. sunshine plan doesn't address this.
+
+#### 1.1.5 evals for the "ears" layer
+
+```python
+ears_eval = {
+    # primary
+    'wer': target < 15%,  # word error rate
+    'per': target < 10%,  # phoneme error rate
+
+    # disorder-specific
+    'error_preservation': 'wabbit stays wabbit',
+    'disfluency_detection': 'b-b-ball recognized as stuttering',
+    'confidence_calibration': 'low confidence when uncertain',
+
+    # practical
+    'latency': target < 500ms,
+    'noise_robustness': 'wer < 25% with background noise'
+}
+```
+
+### 2. the judge (clinical assessment layer)
+
+#### 2.1 separate model or part of reasoning?
+
+**in sunshine plan: separate deterministic layer, not neural model:**
+- takes phoneme output from sam
+- applies algorithmic comparison (forced alignment, levenshtein)
+- outputs structured error classification
+
+**this is good design** - keeps clinical logic auditable and deterministic
+
+#### 2.2 where does the curriculum come from?
+
+the "curriculum" is:
+- **phoneme inventory** - what sounds exist (from linguistics)
+- **developmental norms** - what sounds kids should have at each age (slp research)
+- **error classification rules** - how to categorize substitutions, omissions, distortions
+
+**source:** speech-language pathology literature, standardized tests (gfta-3, caap-2), clinical guidelines
+
+**who maintains:** needs slp advisor - this is why plan needs clinical expertise on team
+
+#### 2.3 should we use weighted levenshtein distance?
+
+**yes, you're absolutely right.** standard levenshtein treats all errors equally, but:
+- /r/ → /w/ is very common, less severe
+- /p/ → /g/ is unusual, more concerning
+- some errors are developmental (expected at age 3), others are disordered
+
+**better approach: weighted distance**
+```python
+error_weights = {
+    ('r', 'w'): 0.3,  # common substitution, low weight
+    ('s', 'th'): 0.4,  # lisp, moderate
+    ('p', 'g'): 1.0,  # unusual, high weight
+}
+```
+
+**even better: phonological feature distance**
+- /p/ and /b/ differ only in voicing → small distance
+- /p/ and /s/ differ in place, manner, voicing → large distance
+
+**this is a gap in the plan** - they mention levenshtein but not weighting.
+
+#### 2.4 where does reasoning/knowledge come from?
+
+**in the judge layer:** it's not "reasoning" - it's rule-based comparison. knowledge is:
+1. expected phonemes (from text/target)
+2. actual phonemes (from sam)
+3. classification rules (from clinical literature)
+
+**no deep understanding here** - that comes in srm layer where llm reasons about what to do.
+
+### 3. the scorekeeper/policy engine
+
+#### 3.1 where does clinical rulebook come from?
+
+**manually authored by:**
+- slps with clinical expertise
+- translated into decision rules
+
+**example rules:**
+```python
+if error_rate > 0.5 and frustration_detected:
+    action = "simplify_task"
+
+if same_error_3_times_in_row:
+    action = "try_different_approach"
+
+if target_sound_accuracy > 0.8:
+    action = "progress_to_next_level"
+```
+
+**who maintains:** clinical team, needs regular updates based on outcomes
+
+**gap in plan:** doesn't specify who creates/maintains this
+
+#### 3.2 what does "stop_testing_use_metaphor" mean?
+
+directive to srm (response generator) saying:
+- stop drilling child on tests
+- switch to metaphor-based teaching (e.g., "make snake sound - sssss" instead of "say /s/")
+
+policy engine decides *strategy*, then tells llm to execute in natural language.
+
+### 4. deep-dive: sam
+
+#### 4.1 what does "train specific adapters" mean?
+
+**adapters = lora modules** for specific capabilities:
+
+```
+base whisper
+    ├── indian english adapter (accent/phonetics)
+    ├── stuttering adapter (disfluency patterns)
+    ├── child voice adapter (pitch/formants)
+    └── noise robustness adapter
+```
+
+**yes, need baselines before training:**
+1. measure base whisper on test set
+2. train adapter
+3. measure again
+4. compare improvement
+
+without baselines, can't prove adapter helped.
+
+#### 4.2 is "phonemes with confidence scores" best output?
+
+**for speech therapy, yes:**
+- phonemes tell exactly what sounds were produced
+- confidence tells how sure model is
+- low confidence = flag for human review
+
+**potential additions:**
+- timestamps (when each phoneme occurred)
+- alternatives (top-3 phonemes if uncertain)
+- disfluency markers (repetition, prolongation flags)
+
+#### 4.3 evals for sam
+
+```python
+sam_evals = {
+    # accuracy
+    'phoneme_accuracy': per_score,
+    'by_phoneme': {'/r/': 0.85, '/s/': 0.90, ...},
+
+    # error preservation
+    'autocorrect_rate': should_be_near_zero,
+
+    # calibration
+    'confidence_vs_accuracy': correlation_score,
+
+    # robustness
+    'noisy_audio_per': target < 20%,
+    'accented_speech_per': target < 15%,
+
+    # latency
+    'inference_time_ms': target < 300,
+
+    # regression
+    'vs_previous_version': no_degradation
+}
+```
+
+### 5. deep-dive: srm
+
+#### 5.1 what does "not neural, deterministic logic" mean?
+
+**neural network:** learns patterns from data, outputs can vary
+**deterministic logic:** if-then rules, always same output for same input
+
+```python
+# deterministic (policy engine)
+if frustration_score > 0.7:
+    return "take_break"  # always
+
+# neural (llm)
+generate_response(context)  # might vary
+```
+
+**why separate:**
+- safety-critical decisions should be deterministic (auditable, explainable)
+- creative responses can be neural (flexible, natural)
+
+#### 5.2 policy engine = judge + scorekeeper?
+
+**based on plan:**
+- **judge** (layer 2) = error classification (what's wrong)
+- **scorekeeper** (layer 2.5) = state tracking + intervention triggers (what to do)
+- together they form "policy engine" that wraps neural srm
+
+#### 5.3 what is "longitudinal memory"? is there latitudinal?
+
+**longitudinal = over time:**
+- tracks child's progress across sessions
+- remembers what worked before
+- knows their history, preferences, struggles
+
+**no "latitudinal"** - not a term used here. but could imagine:
+- **cross-domain memory** = remembering insights from speech therapy that help in ot
+- this is "unified architecture" opportunity
+
+#### 5.4 "decision trees of human therapists" - detailed in data pipeline?
+
+**you're right, it's not detailed.** plan mentions it but doesn't explain:
+- how to capture therapist decision patterns
+- what data format
+- how many examples needed
+
+**this is a gap.** would require:
+- recording therapist sessions (with consent)
+- annotating decision points ("why switch activities here?")
+- extracting patterns into training data
+
+#### 5.5 does lora work for srm too?
+
+**yes, lora works for llms too** (that's where it originated):
+- original lora paper was for llm fine-tuning
+- proven effective for domain adaptation
+- research-backed: thousands of papers, industry standard
+
+**can apply to any transformer model** - whisper, llama, gpt, etc.
+
+#### 5.6 what are we fine-tuning in reasoning layer?
+
+**plan is unclear, but likely:**
+
+| component | fine-tuning approach |
+|-----------|---------------------|
+| clinical response style | fine-tune llm on therapist transcripts |
+| therapy recommendations | fine-tune on (context → recommendation) pairs |
+| child-friendly language | fine-tune on age-appropriate examples |
+| safety guardrails | rlhf or constitutional ai |
+
+**differentiation layer** seems disorder-specific logic, likely rule-based not fine-tuned.
+
+#### 5.7 evals for srm
+
+```python
+srm_evals = {
+    # clinical quality (expert review)
+    'clinical_appropriateness': rating_1_5,
+    'age_appropriateness': rating_1_5,
+    'safety': pass_fail,
+
+    # practical
+    'parent_clarity': rating_1_5,
+    'response_latency': target < 1s,
+
+    # automated checks
+    'jargon_free': no_clinical_terms_without_explanation,
+    'length_appropriate': not_too_long,
+
+    # llm-as-judge (calibrated against experts)
+    'gpt4_clinical_score': correlation > 0.7 with expert,
+
+    # outcome-based (long-term)
+    'child_improvement_rate': compare_vs_control
+}
+```
+
+### 6. building it
+
+#### 6.1 why "top 2-3 issues" not all?
+
+**practical reasons:**
+- limited labeling resources
+- each disorder needs different annotation approach
+- better to do 2-3 well than 10 poorly
+- can expand later
+
+**good strategy:** articulation + fluency + language delay covers ~80% of cases
+
+#### 6.2 labeling strategy concerns
+
+**you're right to question.** plan is vague on:
+- annotation format (phoneme-level? word-level? error-type?)
+- who labels (slps? outsourced? automated?)
+- quality control (inter-rater reliability?)
+- cost (biggest expense, not mentioned)
+
+**this is critical gap.**
+
+#### 6.3 data strategy by therapy type
+
+**speech therapy data:**
+```
+collect:
+- audio clips (child speaking)
+- target text (what they should say)
+- actual transcription (preserving errors)
+- error annotations (type, severity, phoneme)
+- session context (age, diagnosis, session #)
+- therapist actions (what they did next)
+
+labeling:
+- phoneme-level transcription (trained annotator)
+- error classification (slp)
+- quality score (confidence, noise)
+```
+
+**occupational therapy data (different!):**
+```
+collect:
+- video of child performing task
+- task description (stack blocks, button shirt)
+- skeleton/pose data (vitpose/mediapipe)
+- quality assessment (therapist rating)
+- specific metrics (time, accuracy)
+
+labeling:
+- action segmentation (start/end movements)
+- quality rating (1-5)
+- error identification
+```
+
+**aba/behavioral data (multimodal):**
+```
+collect:
+- video + audio of session
+- behavior annotations (stimming, engagement)
+- abc data (antecedent-behavior-consequence)
+- reinforcement tracking
+- emotional state
+
+labeling:
+- behavior coding (time-stamped)
+- emotional state
+- therapist decisions
+```
+
+**key difference:** speech is audio-first, ot is vision-first, aba is multimodal
+
+#### 6.4 what to add to building sam/srm?
+
+**for sam:**
+- specific lora rank and training hyperparameters
+- data augmentation (noise injection, speed perturbation)
+- evaluation checkpoints
+- failure mode analysis
+
+**for srm:**
+- rag architecture details (what in vector db?)
+- prompt engineering approach
+- guardrail implementation
+- a/b testing framework
+
+#### 6.5 real-time vs audio-notes?
+
+**critical question they don't answer clearly.**
+
+**audio-notes approach:**
+- parent records child, uploads
+- async processing, feedback later
+- simpler, cheaper, works offline
+
+**real-time approach:**
+- live interaction, ai responds immediately
+- harder: latency requirements (< 500ms), conversation state
+- more engaging but technically complex
+
+**can we do real-time for an hour?**
+
+**yes, possible now:**
+- openai realtime api, google gemini live
+- maintains context for extended conversations
+- latency acceptable (200-500ms)
+
+**examples of hour+ voice ai:**
+- character.ai voice (long conversations)
+- inflection pi (extended dialogue)
+- hume ai (emotional voice interactions)
+
+**but for therapy:**
+- children may not sustain hour-long sessions
+- 10-15 minute sessions more realistic
+- real-time valuable for immediate feedback loop
+
+### 7. system architecture flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                      client (phone/tablet)                   │
+│  ┌─────────────┐                                            │
+│  │ microphone  │ → vad (is talking?) → if yes, send audio  │
+│  └─────────────┘                                            │
+└────────────────────────────┬────────────────────────────────┘
+                             │ audio stream
+                             ▼
+┌─────────────────────────────────────────────────────────────┐
+│                         server                               │
+│                                                              │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │ layer 1: sam (ears)                                   │   │
+│  │ whisper + lora adapters                               │   │
+│  │ input: audio                                          │   │
+│  │ output: phonemes + confidence                         │   │
+│  └──────────────────────┬───────────────────────────────┘   │
+│                         │ phonemes                           │
+│                         ▼                                    │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │ layer 2: judge (clinical assessment)                  │   │
+│  │ forced alignment + levenshtein                        │   │
+│  │ input: phonemes + expected target                     │   │
+│  │ output: error classification                          │   │
+│  └──────────────────────┬───────────────────────────────┘   │
+│                         │ errors                             │
+│                         ▼                                    │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │ layer 2.5: policy engine (scorekeeper)                │   │
+│  │ deterministic rules                                   │   │
+│  │ input: errors + child state + history                 │   │
+│  │ output: strategy directive                            │   │
+│  └──────────────────────┬───────────────────────────────┘   │
+│                         │ directive                          │
+│                         ▼                                    │
+│  ┌──────────────────────────────────────────────────────┐   │
+│  │ layer 3: srm (brain)                                  │   │
+│  │ llama + rag + fine-tuning                             │   │
+│  │ input: directive + context + child history            │   │
+│  │ output: natural language response                     │   │
+│  └──────────────────────┬───────────────────────────────┘   │
+│                         │ response                           │
+└─────────────────────────┼───────────────────────────────────┘
+                          │
+                          ▼
+┌─────────────────────────────────────────────────────────────┐
+│                      client (phone/tablet)                   │
+│  ┌─────────────┐                                            │
+│  │   speaker   │ ← text-to-speech ← response                │
+│  └─────────────┘                                            │
+│                                                              │
+│  ┌─────────────┐                                            │
+│  │   display   │ ← visual feedback, games, progress         │
+│  └─────────────┘                                            │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**flow in simple terms:**
+1. child speaks into phone
+2. phone detects speech, sends to server
+3. sam converts audio → phonemes
+4. judge compares phonemes to expected, finds errors
+5. policy engine decides strategy (encourage? simplify? metaphor?)
+6. srm generates friendly response following strategy
+7. response sent to phone
+8. phone speaks response + shows visual feedback
+
+### 8. team composition
+
+**plan says:** 4-5 engineers (asr, nlp, ml ops, backend)
+
+**what's missing:**
+
+| role | why needed |
+|------|-----------|
+| **slp / clinical advisor** | validates therapeutic approach, creates rulebook, ensures clinical appropriateness |
+| **child ux designer** | kids won't use boring apps, need gamification expertise |
+| **data/annotation lead** | labeling critical, needs dedicated owner |
+| **regulatory/compliance** | hipaa, coppa, potentially fda - can't be afterthought |
+| **product manager** | owns user experience end-to-end |
+
+**what i'd edit:**
+- asr engineer ✓
+- nlp engineer ✓
+- ml ops ✓
+- backend ✓
+- **add:** slp advisor (part-time/advisory ok)
+- **add:** product/ux person
+- **add:** data annotation lead
