@@ -7,6 +7,7 @@
     <style>
         /* ============================================
            DESIGN SYSTEM v2
+           - satoshi font throughout
            - bolder sunshine palette (not pastel)
            - large dramatic typography
            - animated text reveals
@@ -15,7 +16,7 @@
            - all lowercase
         ============================================ */
 
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+        @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap');
 
         :root {
             /* sunshine palette - confident, not pastel */
@@ -55,7 +56,7 @@
             --text-2xl: clamp(1.75rem, 3vw, 2.5rem);
             --text-3xl: clamp(2.25rem, 4.5vw, 3.5rem);
             --text-4xl: clamp(3rem, 6vw, 5rem);
-            --text-hero: clamp(3.5rem, 8vw, 6rem);
+            --text-hero: clamp(4rem, 10vw, 8rem);
 
             /* spacing */
             --space-1: 0.25rem;
@@ -90,7 +91,7 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--cream);
             color: var(--gray-900);
             overflow: hidden;
@@ -141,9 +142,9 @@
 
         .text-hero {
             font-size: var(--text-hero);
-            font-weight: 800;
+            font-weight: 900;
             line-height: 1;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.04em;
         }
 
         .text-4xl {
@@ -162,7 +163,7 @@
 
         .text-2xl {
             font-size: var(--text-2xl);
-            font-weight: 600;
+            font-weight: 500;
             line-height: 1.2;
             letter-spacing: -0.01em;
         }
@@ -211,7 +212,7 @@
         }
 
         .font-semibold {
-            font-weight: 600;
+            font-weight: 500;
         }
 
         /* ============================================
@@ -238,16 +239,37 @@
         .fade-up.delay-5 { transition-delay: 0.75s; }
 
         /* ============================================
-           SLIDE 1: TITLE
+           SLIDE 0: HELLO PEAK XV
         ============================================ */
 
-        .slide-title {
+        .slide-hello {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--sun-500);
+        }
+
+        .slide-hello .content {
+            text-align: center;
+            padding: var(--space-8);
+        }
+
+        .slide-hello .hello-text {
+            color: var(--white);
+        }
+
+        /* ============================================
+           SLIDE 1: TITLE (Map Right)
+        ============================================ */
+
+        .slide-title-split {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
             min-height: 100vh;
         }
 
-        .slide-title .content {
+        .slide-title-split .content {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -256,47 +278,87 @@
             z-index: 2;
         }
 
-        .slide-title .map-bg {
+        .slide-title-split .map-bg {
             position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--sun-50);
+        }
+
+        .slide-title-split .map-bg img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        .slide-title-split .brand-name {
+            color: var(--sun-500);
+            margin-bottom: var(--space-2);
+        }
+
+        .slide-title-split .brand-by {
+            color: var(--gray-400);
+            margin-bottom: var(--space-8);
+        }
+
+        .slide-title-split .tagline {
+            color: var(--gray-500);
+        }
+
+        /* ============================================
+           SLIDE 3: VISION (Full Bleed Child Image)
+        ============================================ */
+
+        .slide-vision {
+            position: relative;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             overflow: hidden;
         }
 
-        .slide-title .map-bg img {
+        .slide-vision .bg-image {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .slide-vision .bg-image img {
             width: 100%;
             height: 100%;
-            object-fit: contain;
-            opacity: 0.9;
+            object-fit: cover;
         }
 
-        .slide-title .headline {
-            margin-bottom: var(--space-10);
+        .slide-vision .bg-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(255,140,26,0.85) 0%,
+                rgba(255,140,26,0.6) 50%,
+                rgba(255,140,26,0.3) 100%
+            );
         }
 
-        .slide-title .brand-line {
-            display: flex;
-            align-items: baseline;
-            gap: var(--space-2);
-            margin-bottom: var(--space-3);
+        .slide-vision .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: var(--space-8);
+            max-width: 900px;
         }
 
-        .slide-title .brand-name {
-            color: var(--sun-500);
-            font-weight: 700;
-        }
-
-        .slide-title .brand-by {
-            color: var(--gray-400);
-        }
-
-        .slide-title .sub-line {
-            color: var(--gray-400);
+        .slide-vision .vision-text {
+            color: var(--white);
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
         }
 
         /* ============================================
-           SLIDE 2: TEAM
+           SLIDE 4: TEAM
         ============================================ */
 
         .slide-team {
@@ -357,7 +419,7 @@
         .team-member .title {
             font-size: var(--text-lg);
             color: var(--sun-500);
-            font-weight: 600;
+            font-weight: 500;
             margin-bottom: var(--space-4);
         }
 
@@ -370,45 +432,6 @@
         .team-member .bio span {
             display: block;
             margin-bottom: var(--space-1);
-        }
-
-        /* photo collage overlay - for working/collaborating photos */
-        .photo-collage {
-            position: absolute;
-            display: flex;
-            gap: var(--space-3);
-        }
-
-        .photo-collage.top-right {
-            top: var(--space-8);
-            right: var(--space-8);
-        }
-
-        .photo-collage.bottom-left {
-            bottom: var(--space-8);
-            left: var(--space-8);
-        }
-
-        .photo-collage img {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
-
-        .photo-placeholder {
-            width: 100px;
-            height: 100px;
-            background: var(--sun-100);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: var(--text-xs);
-            color: var(--sun-600);
-            text-align: center;
-            padding: var(--space-2);
         }
 
         /* ============================================
@@ -435,6 +458,7 @@
             color: var(--gray-600);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             transition: all var(--duration-fast) var(--ease-out-expo);
+            font-family: 'Satoshi', sans-serif;
         }
 
         .nav button:hover {
@@ -480,6 +504,7 @@
             font-size: var(--text-sm);
             color: var(--gray-400);
             z-index: 100;
+            font-family: 'Satoshi', sans-serif;
         }
 
         /* ============================================
@@ -487,17 +512,17 @@
         ============================================ */
 
         @media (max-width: 1024px) {
-            .slide-title {
+            .slide-title-split {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto 1fr;
             }
 
-            .slide-title .content {
+            .slide-title-split .content {
                 padding: var(--space-8);
                 order: 1;
             }
 
-            .slide-title .map-bg {
+            .slide-title-split .map-bg {
                 order: 2;
                 max-height: 40vh;
             }
@@ -516,33 +541,41 @@
 <body>
     <div class="deck">
 
-        <!-- SLIDE 1: TITLE -->
-        <div class="slide slide-title active" data-slide="0">
+        <!-- SLIDE 0: HELLO PEAK XV -->
+        <div class="slide slide-hello active" data-slide="0">
             <div class="content">
-                <div class="headline">
-                    <h1 class="text-4xl fade-up" style="color: var(--gray-900); margin-bottom: var(--space-6);">
-                        every child must realize their potential
-                    </h1>
-                </div>
-                <div class="brand-line fade-up delay-1">
-                    <span class="text-2xl brand-name">sunshine</span>
-                    <span class="text-2xl brand-by">(by lissun)</span>
-                </div>
-                <p class="text-lg sub-line fade-up delay-2">
-                    ai-powered child development platform
-                </p>
-            </div>
-            <div class="map-bg fade-up delay-3">
-                <img src="deck-images/map2.png" alt="sunshine centers across india">
+                <h1 class="text-hero hello-text fade-up">hello, peak xv :)</h1>
             </div>
         </div>
 
-        <!-- SLIDE 2: TEAM -->
-        <div class="slide slide-team" data-slide="1">
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide slide-title-split" data-slide="1">
+            <div class="content">
+                <h1 class="text-hero brand-name fade-up">sunshine</h1>
+                <p class="text-2xl brand-by fade-up delay-1">(by lissun)</p>
+                <p class="text-xl tagline fade-up delay-2">ai-powered child development platform</p>
+            </div>
+            <div class="map-bg fade-up delay-3">
+                <img src="deck-images/india-map-sunshine.png" alt="sunshine centers across india">
+            </div>
+        </div>
+
+        <!-- SLIDE 2: VISION -->
+        <div class="slide slide-vision" data-slide="2">
+            <div class="bg-image fade-up">
+                <img src="deck-images/child-running-joy.png" alt="indian child running joyfully">
+            </div>
+            <div class="content">
+                <h2 class="text-hero vision-text fade-up delay-1">every child must realize their potential</h2>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: TEAM -->
+        <div class="slide slide-team" data-slide="3">
             <!-- Varun -->
             <div class="team-member">
                 <div class="photo-main fade-up">
-                    <img src="deck-images/varun.png" alt="varun gandhi">
+                    <img src="deck-images/varun-headshot.png" alt="varun gandhi">
                 </div>
                 <div class="info fade-up delay-1">
                     <h2 class="name">varun gandhi</h2>
@@ -552,17 +585,12 @@
                         <span>icai</span>
                     </div>
                 </div>
-                <!-- collaboration photos -->
-                <div class="photo-collage top-right fade-up delay-3">
-                    <img src="deck-images/varun-whiteboard.png" alt="varun whiteboarding">
-                    <img src="deck-images/team-collaborating.png" alt="team collaborating">
-                </div>
             </div>
 
             <!-- Abhishek -->
             <div class="team-member">
                 <div class="photo-main fade-up delay-1">
-                    <img src="deck-images/abhishek.jpeg" alt="abhishek sharma">
+                    <img src="deck-images/abhishek-headshot.png" alt="abhishek sharma">
                 </div>
                 <div class="info fade-up delay-2">
                     <h2 class="name">abhishek sharma</h2>
@@ -573,11 +601,6 @@
                         <span>3+ patents</span>
                         <span>ms from rit, us</span>
                     </div>
-                </div>
-                <!-- collaboration photos -->
-                <div class="photo-collage bottom-left fade-up delay-4">
-                    <img src="deck-images/abhishek-working.png" alt="abhishek working">
-                    <img src="deck-images/team-meeting.png" alt="team meeting">
                 </div>
             </div>
         </div>
@@ -594,7 +617,7 @@
     <div class="progress-dots" id="dots"></div>
 
     <!-- Slide counter -->
-    <div class="slide-counter" id="counter">1 / 2</div>
+    <div class="slide-counter" id="counter">1 / 4</div>
 
     <script>
         const slides = document.querySelectorAll('.slide');
