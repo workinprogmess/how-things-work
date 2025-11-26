@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunshine | Peak XV Series A</title>
+    <style>
+        /* ============================================
+           DESIGN SYSTEM
+           Font: Commit Mono
+           Primary: Orange pastel (#FF9B50, #FFBB70)
+           Secondary: Playful sunshine palette
+           Style: Clean, technical, isometric-inspired
+        ============================================ */
+
+        @import url('https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700&display=swap');
+
+        :root {
+            /* Primary - Orange Pastel */
+            --primary-100: #FFF4E6;
+            --primary-200: #FFE4C4;
+            --primary-300: #FFCC99;
+            --primary-400: #FFBB70;
+            --primary-500: #FF9B50;
+            --primary-600: #E87D32;
+
+            /* Secondary - Playful Sunshine */
+            --sunshine-yellow: #FFD93D;
+            --sunshine-coral: #FF6B6B;
+            --sunshine-mint: #6BCB77;
+            --sunshine-sky: #4D96FF;
+            --sunshine-lavender: #9B72CF;
+
+            /* Neutrals */
+            --cream: #FFFBF5;
+            --warm-white: #FDF8F3;
+            --text-primary: #2D2A26;
+            --text-secondary: #5C5750;
+            --text-muted: #8C8579;
+
+            /* Grid */
+            --grid-color: rgba(255, 155, 80, 0.08);
+
+            /* Spacing */
+            --space-xs: 0.5rem;
+            --space-sm: 1rem;
+            --space-md: 1.5rem;
+            --space-lg: 2rem;
+            --space-xl: 3rem;
+            --space-2xl: 4rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter Tight', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: var(--text-primary);
+            overflow: hidden;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                linear-gradient(var(--grid-color) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Slide Container */
+        .slides-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            padding: var(--space-2xl);
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+            z-index: 1;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            margin-bottom: var(--space-md);
+            line-height: 1.1;
+        }
+
+        h2 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--space-md);
+        }
+
+        h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-600);
+            margin-bottom: var(--space-sm);
+        }
+
+        p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: var(--space-sm);
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: var(--space-lg);
+        }
+
+        .quote {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: var(--primary-600);
+            padding: var(--space-md);
+            border-left: 4px solid var(--primary-400);
+            background: var(--primary-100);
+            margin: var(--space-md) 0;
+        }
+
+        /* Layout Components */
+        .slide-header {
+            margin-bottom: var(--space-lg);
+        }
+
+        .slide-content {
+            flex: 1;
+            display: flex;
+            gap: var(--space-xl);
+            overflow: hidden;
+        }
+
+        .col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .col-2 { flex: 2; }
+        .col-3 { flex: 3; }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: var(--space-md);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            border: 1px solid var(--primary-200);
+            margin-bottom: var(--space-md);
+        }
+
+        .card.highlight {
+            border-color: var(--primary-500);
+            background: var(--primary-100);
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.95rem;
+            margin: var(--space-sm) 0;
+        }
+
+        th, td {
+            padding: var(--space-xs) var(--space-sm);
+            text-align: left;
+            border-bottom: 1px solid var(--primary-200);
+        }
+
+        th {
+            background: var(--primary-100);
+            color: var(--primary-600);
+            font-weight: 700;
+        }
+
+        /* Metric Cards */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: var(--space-md);
+        }
+
+        .metric {
+            text-align: center;
+            padding: var(--space-md);
+            background: white;
+            border-radius: 12px;
+            border: 2px solid var(--primary-300);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-600);
+        }
+
+        .metric-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        /* Placeholder Images */
+        .placeholder {
+            background: linear-gradient(135deg, var(--primary-200), var(--primary-300));
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-600);
+            font-size: 0.9rem;
+            text-align: center;
+            padding: var(--space-md);
+            min-height: 200px;
+            border: 2px dashed var(--primary-400);
+        }
+
+        .placeholder.small {
+            min-height: 120px;
+        }
+
+        .placeholder.photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            min-height: unset;
+        }
+
+        /* Architecture Diagram */
+        .architecture-stack {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .arch-layer {
+            background: white;
+            border: 2px solid var(--primary-300);
+            border-radius: 8px;
+            padding: var(--space-md);
+            display: flex;
+            align-items: center;
+            gap: var(--space-md);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .arch-layer:hover {
+            transform: translateX(8px);
+            box-shadow: -4px 4px 0 var(--primary-400);
+        }
+
+        .arch-layer .layer-num {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-500);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .arch-layer .layer-name {
+            font-weight: 700;
+            color: var(--primary-600);
+        }
+
+        .arch-layer .layer-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Timeline */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: var(--space-sm);
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: var(--space-md);
+            align-items: flex-start;
+        }
+
+        .timeline-marker {
+            width: 12px;
+            height: 12px;
+            background: var(--primary-500);
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding-bottom: var(--space-sm);
+            border-left: 2px solid var(--primary-200);
+            padding-left: var(--space-md);
+            margin-left: -7px;
+        }
+
+        .timeline-item:last-child .timeline-content {
+            border-left-color: transparent;
+        }
+
+        /* Lists */
+        ul, ol {
+            padding-left: var(--space-md);
+            margin: var(--space-sm) 0;
+        }
+
+        li {
+            margin-bottom: var(--space-xs);
+            color: var(--text-secondary);
+        }
+
+        li strong {
+            color: var(--text-primary);
+        }
+
+        /* Code/Technical blocks */
+        .code-block {
+            background: var(--text-primary);
+            color: var(--cream);
+            padding: var(--space-md);
+            border-radius: 8px;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+            display: flex;
+            gap: var(--space-sm);
+            z-index: 100;
+        }
+
+        .nav button {
+            width: 48px;
+            height: 48px;
+            border: 2px solid var(--primary-400);
+            background: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: var(--primary-600);
+            transition: all 0.2s;
+        }
+
+        .nav button:hover {
+            background: var(--primary-500);
+            color: white;
+            border-color: var(--primary-500);
+        }
+
+        /* Progress */
+        .progress {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background: var(--primary-500);
+            transition: width 0.3s ease;
+            z-index: 100;
+        }
+
+        /* Slide Number */
+        .slide-number {
+            position: fixed;
+            bottom: var(--space-lg);
+            left: var(--space-lg);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            z-index: 100;
+        }
+
+        /* Title Slide Special */
+        .slide.title-slide {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide.title-slide h1 {
+            font-size: 4.5rem;
+            margin-bottom: var(--space-sm);
+        }
+
+        .logo-placeholder {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto var(--space-lg);
+            background: linear-gradient(135deg, var(--sunshine-yellow), var(--primary-500));
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        /* Team Photos Layout */
+        .team-grid {
+            display: flex;
+            gap: var(--space-2xl);
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-member h3 {
+            margin-top: var(--space-md);
+        }
+
+        /* Flowchart */
+        .flowchart {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .flow-box {
+            background: white;
+            border: 2px solid var(--primary-300);
+            border-radius: 8px;
+            padding: var(--space-sm) var(--space-md);
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .flow-arrow {
+            color: var(--primary-400);
+            font-size: 1.5rem;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            background: var(--primary-200);
+            color: var(--primary-600);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-right: 4px;
+        }
+
+        .tag.green { background: #D4EDDA; color: #155724; }
+        .tag.blue { background: #D1ECF1; color: #0C5460; }
+        .tag.yellow { background: #FFF3CD; color: #856404; }
+
+        /* Scrollable content */
+        .scrollable {
+            overflow-y: auto;
+            max-height: calc(100vh - 200px);
+            padding-right: var(--space-sm);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .slide-content {
+                flex-direction: column;
+            }
+            h1 { font-size: 2.5rem; }
+            .slide.title-slide h1 { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <div class="slides-container">
+
+        <!-- SLIDE 1: Title (Style 1 - Line Art) -->
+        <div class="slide title-slide active" data-slide="1" style="background: url('deck-images/slide1-v1-lineart.png') center/cover no-repeat;">
+            <div style="background: rgba(255,255,255,0.85); padding: var(--space-xl) var(--space-2xl); border-radius: 16px; text-align: center;">
+                <h1>sunshine</h1>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: var(--space-sm);">by lissun</p>
+                <p class="tagline">"every child must realize their potential"</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 1b: Title (Style 2 - Watercolor) -->
+        <div class="slide title-slide" data-slide="1b" style="background: url('deck-images/slide1-v2-watercolor.png') center/cover no-repeat;">
+            <div style="background: rgba(255,255,255,0.85); padding: var(--space-xl) var(--space-2xl); border-radius: 16px; text-align: center;">
+                <h1>sunshine</h1>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: var(--space-sm);">by lissun</p>
+                <p class="tagline">"every child must realize their potential"</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 1c: Title (Style 3 - Isometric) -->
+        <div class="slide title-slide" data-slide="1c" style="background: url('deck-images/slide1-v3-isometric.png') center/cover no-repeat;">
+            <div style="background: rgba(255,255,255,0.85); padding: var(--space-xl) var(--space-2xl); border-radius: 16px; text-align: center;">
+                <h1>sunshine</h1>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: var(--space-sm);">by lissun</p>
+                <p class="tagline">"every child must realize their potential"</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 1d: Title (Style 4 - Minimal) -->
+        <div class="slide title-slide" data-slide="1d" style="background: url('deck-images/slide1-v4-minimal.png') center/cover no-repeat;">
+            <div style="background: rgba(255,255,255,0.85); padding: var(--space-xl) var(--space-2xl); border-radius: 16px; text-align: center;">
+                <h1>sunshine</h1>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: var(--space-sm);">by lissun</p>
+                <p class="tagline">"every child must realize their potential"</p>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Team -->
+        <div class="slide" data-slide="2">
+            <div class="slide-header">
+                <h2>product leadership</h2>
+            </div>
+            <div class="slide-content" style="justify-content: center; align-items: center;">
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="placeholder photo">[PHOTO: Varun]<br>CPO</div>
+                        <h3>Varun</h3>
+                        <p>Chief Product Officer</p>
+                        <p style="font-size: 0.9rem;">product vision, therapy domain</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="placeholder photo">[PHOTO: Abhishek]<br>CTO</div>
+                        <h3>Abhishek</h3>
+                        <p>Chief Technology Officer</p>
+                        <p style="font-size: 0.9rem;">ml architecture, implementation</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Why -->
+        <div class="slide" data-slide="3">
+            <div class="slide-header">
+                <h2>why the child development space excites us</h2>
+            </div>
+            <div class="slide-content">
+                <div class="col scrollable">
+                    <div class="card">
+                        <h3>1. clear problem statement</h3>
+                        <ul>
+                            <li><strong>30 million children</strong> in india need developmental support</li>
+                            <li>fewer than <strong>1%</strong> receive it</li>
+                            <li>not because parents don't care—because quality therapy doesn't scale</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>2. parents' willingness to pay</h3>
+                        <ul>
+                            <li>families who can afford ₹15,000-25,000/month get care</li>
+                            <li>everyone else is left behind</li>
+                            <li>the emotional intensity = sustained engagement</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col scrollable">
+                    <div class="card highlight">
+                        <h3>3. greenfield opportunity in india</h3>
+                        <ul>
+                            <li><strong>no dominant player exists</strong></li>
+                            <li><strong>no indian child speech disorder dataset exists</strong></li>
+                            <li>first mover with data = permanent moat</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>4. it's fulfilling</h3>
+                        <p style="color: var(--text-muted);">(being parents ourselves)</p>
+                        <ul>
+                            <li>we've seen children transform</li>
+                            <li>every milestone matters</li>
+                            <li>this is generational impact work</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Traction -->
+        <div class="slide" data-slide="4">
+            <div class="slide-header">
+                <h2>we've been growing</h2>
+                <p class="quote">"we're not an ai startup with an idea—we're a proven therapy business adding ai intelligence"</p>
+            </div>
+            <div class="slide-content">
+                <div class="metrics-grid" style="width: 100%;">
+                    <div class="metric">
+                        <div class="metric-value">10k+</div>
+                        <div class="metric-label">children served</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">$2M+</div>
+                        <div class="metric-label">ARR</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">25+</div>
+                        <div class="metric-label">centers</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">100+</div>
+                        <div class="metric-label">therapists</div>
+                    </div>
+                    <div class="metric">
+                        <div class="metric-value">600+</div>
+                        <div class="metric-label">therapy hours/day</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: Vision -->
+        <div class="slide" data-slide="5">
+            <div class="slide-header">
+                <h1 style="font-size: 2.5rem;">sunshine in every household</h1>
+            </div>
+            <div class="slide-content">
+                <div class="col">
+                    <h3>the market</h3>
+                    <div class="card">
+                        <p><strong>~30 million children</strong> in india need developmental support</p>
+                        <p><strong>8-9% of children globally</strong> have speech disorders</p>
+                        <p><strong>&lt;1 SLP per 100,000</strong> in india vs 60+ in US</p>
+                    </div>
+                    <div class="placeholder" style="flex: 1;">
+                        [IMAGE: Market size visualization]<br>
+                        India map with population density overlay
+                    </div>
+                </div>
+                <div class="col">
+                    <h3>the hybrid model</h3>
+                    <table>
+                        <tr>
+                            <th>tier</th>
+                            <th>offering</th>
+                            <th>price</th>
+                        </tr>
+                        <tr>
+                            <td><span class="tag">premium</span></td>
+                            <td>in-center therapy</td>
+                            <td>₹15-25k/mo</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag green">accessible</span></td>
+                            <td>at-home ai-led</td>
+                            <td>₹500-1k/mo</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag blue">blended</span></td>
+                            <td>center + home</td>
+                            <td>customized</td>
+                        </tr>
+                    </table>
+                    <div class="quote" style="margin-top: auto;">
+                        "quality therapy will never again be the reason a child is left behind"
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Demo -->
+        <div class="slide" data-slide="6">
+            <div class="slide-header">
+                <h2>product demo: ray ai</h2>
+            </div>
+            <div class="slide-content">
+                <div class="col-2">
+                    <div class="placeholder" style="height: 100%;">
+                        [VIDEO PLACEHOLDER]<br><br>
+                        Real-time demo of Ray AI:<br>
+                        parent + child + ai interaction
+                    </div>
+                </div>
+                <div class="col">
+                    <h3>the flow</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>1. parent opens ray ai</strong>
+                                <p>on their phone</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>2. ai assesses</strong>
+                                <p>through natural interaction</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>3. personalized plan</strong>
+                                <p>8-week ai-generated program</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>4. weekly sessions</strong>
+                                <p>ai + parent + child</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>5. milestone achieved</strong>
+                                <p>~10 weeks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card highlight" style="margin-top: var(--space-md);">
+                        <strong>the promise:</strong>
+                        <ul>
+                            <li>fraction of the cost</li>
+                            <li>at home</li>
+                            <li>almost as effective</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Groundwork -->
+        <div class="slide" data-slide="7">
+            <div class="slide-header">
+                <h2>groundwork: the trifecta</h2>
+                <p>three products powering sunshine intelligence</p>
+            </div>
+            <div class="slide-content">
+                <div class="col">
+                    <div class="card" style="border-left: 4px solid var(--sunshine-yellow);">
+                        <h3 style="color: var(--sunshine-yellow);">spark</h3>
+                        <p><strong>operations engine</strong></p>
+                        <ul>
+                            <li>admin, booking, billing, scheduling</li>
+                            <li>50% reduction in admin work</li>
+                            <li>95%+ retention via auto renewals</li>
+                        </ul>
+                        <p class="quote" style="font-size: 0.9rem;">"you can't build intelligent ai without intelligent data infrastructure"</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="border-left: 4px solid var(--sunshine-coral);">
+                        <h3 style="color: var(--sunshine-coral);">soul</h3>
+                        <p><strong>therapist copilot</strong></p>
+                        <ul>
+                            <li>ai records sessions, generates notes</li>
+                            <li>therapists focus 100% on child</li>
+                            <li>patterns identified across sessions</li>
+                        </ul>
+                        <p><span class="tag">key</span> source of all proprietary therapy data</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card" style="border-left: 4px solid var(--sunshine-sky);">
+                        <h3 style="color: var(--sunshine-sky);">ray</h3>
+                        <p><strong>parent ai bot</strong></p>
+                        <ul>
+                            <li>whatsapp-first, multilingual, 24/7</li>
+                            <li>parents understand progress</li>
+                            <li>at-home exercises personalized</li>
+                        </ul>
+                        <p class="quote" style="font-size: 0.9rem;">"therapy was a black box. ray changes that."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Architecture -->
+        <div class="slide" data-slide="8">
+            <div class="slide-header">
+                <h2>product architecture: 4-layer system</h2>
+            </div>
+            <div class="slide-content">
+                <div class="col">
+                    <div class="architecture-stack">
+                        <div class="arch-layer">
+                            <div class="layer-num">1</div>
+                            <div>
+                                <div class="layer-name">SAM — "the ears"</div>
+                                <div class="layer-desc">whisper + lora → raw audio to phonemes</div>
+                            </div>
+                        </div>
+                        <div class="arch-layer">
+                            <div class="layer-num">2</div>
+                            <div>
+                                <div class="layer-name">SCM — "the judge"</div>
+                                <div class="layer-desc">forced alignment → error classification</div>
+                            </div>
+                        </div>
+                        <div class="arch-layer">
+                            <div class="layer-num">3</div>
+                            <div>
+                                <div class="layer-name">SRM — "the brain"</div>
+                                <div class="layer-desc">llama 3.3 70b + rag → therapeutic strategy</div>
+                            </div>
+                        </div>
+                        <div class="arch-layer">
+                            <div class="layer-num">4</div>
+                            <div>
+                                <div class="layer-name">SSM — "the voice"</div>
+                                <div class="layer-desc">neural tts → child-friendly speech</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="placeholder" style="height: 250px;">
+                        [IMAGE: Isometric architecture diagram]<br><br>
+                        4 stacked layers with data flowing between them,<br>
+                        makingsoftware.com style
+                    </div>
+                    <div class="card highlight">
+                        <h3>why 4 layers, not 1 unified model?</h3>
+                        <ul>
+                            <li>specialization > generalization for clinical</li>
+                            <li>each layer fine-tuned independently</li>
+                            <li>deterministic logic = auditable, safe</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 9: SAM (Ears) -->
+        <div class="slide" data-slide="9">
+            <div class="slide-header">
+                <h2>the ears: SAM</h2>
+                <p class="tagline">"be the world's best 'ear' for indian children with speech disorders"</p>
+            </div>
+            <div class="slide-content">
+                <div class="col scrollable">
+                    <div class="card">
+                        <h3>the problem with generic ASR</h3>
+                        <p>child says "wabbit" → generic ai outputs "rabbit"</p>
+                        <p style="color: var(--sunshine-coral);"><strong>useless for therapy!</strong></p>
+                        <p>we need brutal honesty: /w/ /a/ /b/ /i/ /t/</p>
+                    </div>
+                    <div class="card">
+                        <h3>our approach: specialist lora adapters</h3>
+                        <table>
+                            <tr><th>adapter</th><th>purpose</th></tr>
+                            <tr><td>indian english</td><td>t/d sounds, indian phonetics</td></tr>
+                            <tr><td>fluency</td><td>rhythm breaks, stuttering</td></tr>
+                            <tr><td>articulation</td><td>lisps, substitutions</td></tr>
+                            <tr><td>toddler</td><td>hinglish, code-switching</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col scrollable">
+                    <div class="card highlight">
+                        <h3>research backing</h3>
+                        <p><strong>Kid-Whisper (AAAI 2024)</strong><br>WER: 13.93% → 9.11% (35% improvement)</p>
+                        <p><strong>Child ASR (ICASSP 2024)</strong><br>38% relative WER reduction</p>
+                    </div>
+                    <div class="card">
+                        <h3>evals framework</h3>
+                        <table>
+                            <tr><th>metric</th><th>target</th></tr>
+                            <tr><td>WER</td><td>&lt;15% typical</td></tr>
+                            <tr><td>PER</td><td>&lt;10%</td></tr>
+                            <tr><td>error preservation</td><td>&gt;95%</td></tr>
+                            <tr><td>latency</td><td>&lt;500ms</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 10: SRM (Brain) -->
+        <div class="slide" data-slide="10">
+            <div class="slide-header">
+                <h2>the brain: SRM</h2>
+                <p class="tagline">"clinical brain with senior therapist reasoning"</p>
+            </div>
+            <div class="slide-content">
+                <div class="col scrollable">
+                    <div class="card">
+                        <h3>layer-by-layer</h3>
+                        <table>
+                            <tr><th>component</th><th>function</th></tr>
+                            <tr><td>llama 3.3 70b</td><td>complex reasoning</td></tr>
+                            <tr><td>policy engine</td><td>clinical rules, safety</td></tr>
+                            <tr><td>RAG + vector db</td><td>child history</td></tr>
+                            <tr><td>lora fine-tuning</td><td>clinical intuition</td></tr>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <h3>example: policy engine</h3>
+                        <div class="code-block">if consecutive_fail >= 3:
+    directive = "simplify_task"
+
+if frustration_score > 0.7:
+    directive = "take_break"</div>
+                    </div>
+                </div>
+                <div class="col scrollable">
+                    <div class="card highlight">
+                        <h3>behavioral cloning pipeline</h3>
+                        <div class="flowchart" style="flex-direction: column; align-items: stretch;">
+                            <div class="flow-box">raw session (1hr)</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-box">outcome filter (did child improve?)</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-box">speaker separation</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-box">teacher model tags strategy</div>
+                            <div class="flow-arrow">↓</div>
+                            <div class="flow-box" style="background: var(--primary-200);">SRM learns to mimic</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 11: SCM (Judge) -->
+        <div class="slide" data-slide="11">
+            <div class="slide-header">
+                <h2>the judge: SCM</h2>
+                <p class="tagline">"deterministic clinical assessments—auditable and safe"</p>
+            </div>
+            <div class="slide-content">
+                <div class="col scrollable">
+                    <div class="card">
+                        <h3>why deterministic, not neural?</h3>
+                        <ul>
+                            <li>clinical assessments must be <strong>auditable</strong></li>
+                            <li>same input → same output</li>
+                            <li>safety-critical = not probabilistic</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>components</h3>
+                        <ol>
+                            <li><strong>forced alignment</strong> (Montreal FA)</li>
+                            <li><strong>weighted phonological distance</strong></li>
+                            <li><strong>error classification</strong></li>
+                            <li><strong>disorder classification</strong></li>
+                            <li><strong>developmental norms DB</strong></li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="col scrollable">
+                    <div class="card highlight">
+                        <h3>error types</h3>
+                        <table>
+                            <tr><th>type</th><th>example</th></tr>
+                            <tr><td>substitution</td><td>/r/ → /w/ ("wabbit")</td></tr>
+                            <tr><td>omission</td><td>"spoon" → "poon"</td></tr>
+                            <tr><td>addition</td><td>"blue" → "buh-lue"</td></tr>
+                            <tr><td>distortion</td><td>slushy /s/</td></tr>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <h3>developmental norms</h3>
+                        <table>
+                            <tr><th>age</th><th>expected sounds</th></tr>
+                            <tr><td>3</td><td>/p/, /b/, /m/, /n/, /w/, /h/</td></tr>
+                            <tr><td>4</td><td>+ /k/, /g/, /d/, /t/, /f/</td></tr>
+                            <tr><td>5</td><td>+ /s/, /z/, /l/</td></tr>
+                            <tr><td>6+</td><td>+ /r/, /sh/, /ch/, /th/</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 12: SSM (Voice) -->
+        <div class="slide" data-slide="12">
+            <div class="slide-header">
+                <h2>the voice: SSM</h2>
+                <p class="tagline">"warm, clear, engaging voice for parent and child"</p>
+            </div>
+            <div class="slide-content">
+                <div class="col">
+                    <div class="card">
+                        <h3>why voice matters</h3>
+                        <ul>
+                            <li>children engage better with voice</li>
+                            <li>parents need clear pronunciation models</li>
+                            <li>real-time requires natural speech</li>
+                        </ul>
+                    </div>
+                    <div class="card">
+                        <h3>our approach</h3>
+                        <ol>
+                            <li><strong>start:</strong> azure/google neural tts</li>
+                            <li><strong>fine-tune:</strong> warm, child-friendly persona</li>
+                            <li><strong>future:</strong> custom voice from therapist recordings</li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card highlight">
+                        <h3>requirements</h3>
+                        <table>
+                            <tr><th>metric</th><th>target</th></tr>
+                            <tr><td>latency</td><td>&lt;300ms</td></tr>
+                            <tr><td>naturalness (MOS)</td><td>&gt;4.0/5.0</td></tr>
+                            <tr><td>child engagement</td><td>&gt;80% attention</td></tr>
+                            <tr><td>hindi/english</td><td>seamless switching</td></tr>
+                        </table>
+                    </div>
+                    <div class="placeholder small">
+                        [IMAGE: Voice waveform visualization]<br>
+                        warm, friendly aesthetic
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 13: Real-time Workflow -->
+        <div class="slide" data-slide="13">
+            <div class="slide-header">
+                <h2>real-time workflow: the articulation loop</h2>
+                <p>child says "wabbit" → system responds in ~1.5 seconds</p>
+            </div>
+            <div class="slide-content">
+                <div class="col-3 scrollable">
+                    <div class="flowchart" style="flex-direction: column; align-items: stretch; gap: var(--space-md);">
+                        <div class="flow-box" style="background: var(--sunshine-sky); color: white;">
+                            <strong>1. handoff</strong> — ray app sends audio + target
+                        </div>
+                        <div class="flow-arrow">↓ 300ms</div>
+                        <div class="flow-box">
+                            <strong>2. SAM (ears)</strong> — /w/ /a/ /b/ /i/ /t/ (99% conf)
+                        </div>
+                        <div class="flow-arrow">↓ 100ms</div>
+                        <div class="flow-box">
+                            <strong>3. SCM (judge)</strong> — substitution /r/→/w/, severity 0.3
+                        </div>
+                        <div class="flow-arrow">↓ 50ms</div>
+                        <div class="flow-box">
+                            <strong>4. policy</strong> — fail=3, "scaffold, use metaphor"
+                        </div>
+                        <div class="flow-arrow">↓ 800ms</div>
+                        <div class="flow-box">
+                            <strong>5. SRM (brain)</strong> — "let's play! growl like a tiger! GRRRR!"
+                        </div>
+                        <div class="flow-arrow">↓ 300ms</div>
+                        <div class="flow-box" style="background: var(--sunshine-mint); color: white;">
+                            <strong>6. SSM (voice)</strong> — audio + tiger animation delivered
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card highlight">
+                        <h3>total latency: ~1.5s</h3>
+                        <p>conversational, not robotic</p>
+                    </div>
+                    <div class="placeholder" style="flex: 1;">
+                        [IMAGE: Isometric diagram of data flow]<br>
+                        4 layers with timing annotations
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 14: Data Flywheel -->
+        <div class="slide" data-slide="14">
+            <div class="slide-header">
+                <h2>the data flywheel</h2>
+                <p>proprietary advantage that compounds daily</p>
+            </div>
+            <div class="slide-content" style="flex-direction: column; align-items: center;">
+                <div class="flowchart" style="margin-bottom: var(--space-xl);">
+                    <div class="flow-box">25+ centers<br>100+ therapists</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">600+ hours<br>daily</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">therapist<br>corrections</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box" style="background: var(--primary-500); color: white;">labeled<br>dataset</div>
+                </div>
+                <div class="flowchart">
+                    <div class="flow-box" style="background: var(--primary-500); color: white;">better AI<br>(SAM/SRM/SCM)</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">better<br>outcomes</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">better<br>reputation</div>
+                    <div class="flow-arrow">→</div>
+                    <div class="flow-box">more centers<br>↺ repeat</div>
+                </div>
+                <div class="card highlight" style="margin-top: var(--space-xl); max-width: 600px;">
+                    <h3>daily data generation</h3>
+                    <p>25+ centers × 20+ children × 1 hour = <strong>500+ hours/day</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 15: Labeling Strategy -->
+        <div class="slide" data-slide="15">
+            <div class="slide-header">
+                <h2>labeling strategy: seamless annotation</h2>
+                <p>therapist workflow = natural annotation (zero extra effort)</p>
+            </div>
+            <div class="slide-content">
+                <div class="col scrollable">
+                    <h3>SAM labeling (ears)</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>session:</strong> child says "wabbit"
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>ai transcript:</strong> "rabbit" (autocorrected—wrong!)
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>therapist clicks:</strong> "substitution /w/ for /r/"
+                                <p style="color: var(--text-muted);">time: 2 seconds</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>saved:</strong> audio clip + micro-label
+                                <p><span class="tag green">golden pair</span></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col scrollable">
+                    <h3>SRM labeling (brain)</h3>
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>raw session:</strong> 1 hour recording
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>outcome filter:</strong> did child improve? → keep
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>speaker separation:</strong> child vs therapist
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>teacher model:</strong> tags strategy used
+                                <p style="color: var(--text-muted);">"de-escalation / co-regulation"</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <strong>result:</strong> training example for SRM
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 16: Moat -->
+        <div class="slide" data-slide="16">
+            <div class="slide-header">
+                <h2>why this moat is real</h2>
+            </div>
+            <div class="slide-content">
+                <div class="col scrollable">
+                    <div class="card highlight">
+                        <h3>the data moat</h3>
+                        <table>
+                            <tr><th>fact</th><th>implication</th></tr>
+                            <tr><td>no indian child speech dataset exists</td><td>first = permanent advantage</td></tr>
+                            <tr><td>ai4bharat has adult speech</td><td>not children, not disorders</td></tr>
+                            <tr><td>we generate 500+ hrs/day</td><td>competitors start at zero</td></tr>
+                            <tr><td>therapist corrections = labels</td><td>annotation cost = $0</td></tr>
+                        </table>
+                    </div>
+                    <div class="card">
+                        <h3>additional moats</h3>
+                        <ul>
+                            <li><strong>multi-disciplinary:</strong> speech + OT + behavioral</li>
+                            <li><strong>longitudinal:</strong> same child over months/years</li>
+                            <li><strong>outcome correlation:</strong> what actually worked</li>
+                            <li><strong>clinical relationships:</strong> years of trust</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col scrollable">
+                    <div class="card">
+                        <h3>what stops speech blubs from india?</h3>
+                        <table>
+                            <tr><th>barrier</th><th>our advantage</th></tr>
+                            <tr><td>language</td><td>hindi, hinglish, indian english</td></tr>
+                            <tr><td>data</td><td>no indian data for them</td></tr>
+                            <tr><td>distribution</td><td>25+ physical centers</td></tr>
+                            <tr><td>trust</td><td>10k+ families, years</td></tr>
+                        </table>
+                    </div>
+                    <div class="placeholder" style="flex: 1;">
+                        [IMAGE: Competitive moat visualization]<br>
+                        castle/fortress metaphor with data layers
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 17: Roadmap -->
+        <div class="slide" data-slide="17">
+            <div class="slide-header">
+                <h2>6-9 month roadmap</h2>
+                <p>beta target: <strong>march 2026</strong></p>
+            </div>
+            <div class="slide-content">
+                <div class="col-2 scrollable">
+                    <table>
+                        <tr>
+                            <th>phase</th>
+                            <th>timeline</th>
+                            <th>milestone</th>
+                        </tr>
+                        <tr>
+                            <td><span class="tag">1</span> foundation</td>
+                            <td>nov-dec 2025</td>
+                            <td>data pipeline live, baseline metrics</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag">2</span> ears</td>
+                            <td>jan 2026</td>
+                            <td>SAM v1 deployed, WER &lt;15%</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag">3</span> judge</td>
+                            <td>feb 2026</td>
+                            <td>SCM v1, forced alignment + classification</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag">4</span> brain</td>
+                            <td>feb-mar 2026</td>
+                            <td>SRM v1, llama fine-tuned</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag">5</span> voice</td>
+                            <td>mar 2026</td>
+                            <td>SSM integrated, child-friendly</td>
+                        </tr>
+                        <tr>
+                            <td><span class="tag green">6</span> beta</td>
+                            <td>mar 2026</td>
+                            <td>ray ai beta, 3-5 pilot families</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col">
+                    <div class="card highlight">
+                        <h3>key milestones</h3>
+                        <ul>
+                            <li><strong>dec 2025:</strong> 10k labeled clips</li>
+                            <li><strong>jan 2026:</strong> SAM beats whisper by 30%+</li>
+                            <li><strong>feb 2026:</strong> end-to-end demo</li>
+                            <li><strong>mar 2026:</strong> beta with 5 families</li>
+                            <li><strong>jun 2026:</strong> public launch</li>
+                        </ul>
+                    </div>
+                    <div class="placeholder small">
+                        [IMAGE: Timeline visualization]<br>
+                        gantt-style or milestone markers
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 18: Team -->
+        <div class="slide" data-slide="18">
+            <div class="slide-header">
+                <h2>team</h2>
+            </div>
+            <div class="slide-content">
+                <div class="col scrollable">
+                    <h3>current leadership</h3>
+                    <div class="card">
+                        <table>
+                            <tr><th>role</th><th>focus</th></tr>
+                            <tr><td><strong>CPO</strong> (Varun)</td><td>product vision, therapy domain</td></tr>
+                            <tr><td><strong>CTO</strong> (Abhishek)</td><td>ml architecture, implementation</td></tr>
+                        </table>
+                    </div>
+                    <h3>key hires (with funding)</h3>
+                    <div class="card">
+                        <table>
+                            <tr><th>role</th><th>layer</th></tr>
+                            <tr><td>lead AI scientist (speech)</td><td>SAM + SCM</td></tr>
+                            <tr><td>NLP/LLM engineer</td><td>SRM</td></tr>
+                            <tr><td>ML ops / data engineer</td><td>pipeline</td></tr>
+                            <tr><td>backend architect</td><td>workflow</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="col scrollable">
+                    <h3>advisors (to add)</h3>
+                    <div class="card">
+                        <ul>
+                            <li><strong>SLP clinical advisor</strong> — validates protocols</li>
+                            <li><strong>pediatric specialist</strong> — developmental norms</li>
+                            <li><strong>regulatory consultant</strong> — CDSCO, data privacy</li>
+                        </ul>
+                    </div>
+                    <div class="card highlight">
+                        <h3>total team size</h3>
+                        <p>~4-5 new specialized engineers<br>+ existing app team<br>+ clinical advisors</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SLIDE 19: The Ask / Thank You -->
+        <div class="slide title-slide" data-slide="19">
+            <h1 style="font-size: 3rem;">the ask: $7-10M</h1>
+            <div class="card" style="max-width: 500px; margin: var(--space-xl) 0;">
+                <table>
+                    <tr><th>allocation</th><th>%</th></tr>
+                    <tr><td>AI/ML team hires</td><td>50%</td></tr>
+                    <tr><td>infrastructure & compute</td><td>25%</td></tr>
+                    <tr><td>clinical validation</td><td>15%</td></tr>
+                    <tr><td>operations</td><td>10%</td></tr>
+                </table>
+            </div>
+            <p class="quote" style="max-width: 600px;">"quality therapy will never again be the reason a child is left behind"</p>
+            <p style="margin-top: var(--space-xl); color: var(--text-muted);">thank you</p>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button id="prev-btn" title="Previous (←)">←</button>
+        <button id="next-btn" title="Next (→)">→</button>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress" id="progress"></div>
+
+    <!-- Slide Number -->
+    <div class="slide-number" id="slide-number">1 / 22</div>
+
+    <script>
+        // Slide Navigation
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentSlide = 0;
+
+        function showSlide(index) {
+            // Clamp index
+            if (index < 0) index = 0;
+            if (index >= totalSlides) index = totalSlides - 1;
+
+            // Update slides
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+
+            currentSlide = index;
+
+            // Update progress
+            const progress = ((index + 1) / totalSlides) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+
+            // Update slide number
+            document.getElementById('slide-number').textContent = `${index + 1} / ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Button controls
+        document.getElementById('next-btn').addEventListener('click', nextSlide);
+        document.getElementById('prev-btn').addEventListener('click', prevSlide);
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft' || e.key === 'Backspace') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                showSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                showSlide(totalSlides - 1);
+            } else if (e.key >= '1' && e.key <= '9') {
+                // Jump to slide 1-9
+                const slideNum = parseInt(e.key) - 1;
+                showSlide(slideNum);
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    nextSlide();
+                } else {
+                    prevSlide();
+                }
+            }
+        }
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>
