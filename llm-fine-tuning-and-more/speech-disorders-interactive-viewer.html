@@ -213,6 +213,7 @@
         mermaid.initialize({
             startOnLoad: false,
             theme: 'default',
+            securityLevel: 'loose',
             themeVariables: {
                 fontSize: '14px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
@@ -223,6 +224,8 @@
                 curve: 'basis'
             }
         });
+
+        console.log('Mermaid initialized');
 
         // diagram definitions
         const diagrams = {
@@ -289,15 +292,15 @@
 
     D --> D2[articulation disorders<br/>phonetic/motor-based<br/>3-5% preschoolers]
     D2 --> D2a[error types]
-    D2a --> D2a1[substitutions: w/r wed for red]
+    D2a --> D2a1[substitutions: w for r wed for red]
     D2a --> D2a2[omissions: ba for ball]
     D2a --> D2a3[distortions: lateral lisp]
     D2a --> D2a4[additions: buhlue for blue]
     D2 --> D2b[commonly affected sounds]
-    D2b --> D2b1[/r/ red: late developing age 6-7]
-    D2b --> D2b2[/s/ sun: middle developing age 4-5]
-    D2b --> D2b3[/l/ lion: middle developing]
-    D2b --> D2b4[/th/ think: late developing age 7-8]
+    D2b --> D2b1[r sound red: late developing age 6-7]
+    D2b --> D2b2[s sound sun: middle developing age 4-5]
+    D2b --> D2b3[l sound lion: middle developing]
+    D2b --> D2b4[th sound think: late developing age 7-8]
     D2 --> D2c[causes]
     D2c --> D2c1[structural: cleft, tongue-tie]
     D2c --> D2c2[motor learning difficulties]
@@ -311,9 +314,9 @@
     D3a --> D3a2[final consonant deletion: ca for cat<br/>eliminate by age 3]
     D3a --> D3a3[weak syllable deletion: nana for banana]
     D3 --> D3b[substitution processes]
-    D3b --> D3b1[fronting: tar for car<br/>eliminate by age 3.5]
-    D3b --> D3b2[stopping: tun for sun<br/>resolve by age 3-4.5]
-    D3b --> D3b3[gliding: wed for red<br/>normal until age 5-6]
+    D3b --> D3b1[fronting: tar for car eliminate by age 3.5]
+    D3b --> D3b2[stopping: tun for sun resolve by age 3-4.5]
+    D3b --> D3b3[gliding: wed for red normal until age 5-6]
     D3 --> D3c[assimilation processes]
     D3c --> D3c1[velar: gog for dog]
     D3c --> D3c2[labial: bub for bus]
@@ -436,9 +439,9 @@
 
     E --> E4[treatment intensity dosage]
     E4 --> E4a[session frequency]
-    E4a --> E4a1[moderate-severe: 2-3x/week]
-    E4a --> E4a2[cas intensive: 3-5 days/week]
-    E4a --> E4a3[mild: 1-2x/week]
+    E4a --> E4a1[moderate-severe: 2-3x per week]
+    E4a --> E4a2[cas intensive: 3-5 days per week]
+    E4a --> E4a3[mild: 1-2x per week]
     E4 --> E4b[session duration]
     E4b --> E4b1[30-45 minutes typical]
     E4b --> E4b2[30 min for young children: attention limits]
@@ -666,7 +669,7 @@
     Q4 -->|none identified| Idio[idiopathic functional<br/>articulation disorder:<br/>most common type]
 
     A1 --> A1a[identify specific error type]
-    A1a --> A1a1[substitution: w/r, t/k<br/>most common]
+    A1a --> A1a1[substitution: w for r, t for k most common]
     A1a --> A1a2[omission: final consonants<br/>or clusters]
     A1a --> A1a3[distortion: lateral/interdental lisp]
     A1a --> A1a4[addition: extra sounds inserted]
@@ -674,27 +677,27 @@
     A1a2 --> A1b
     A1a3 --> A1b
     A1a4 --> A1b
-    A1b -->|high stimulability| A1b1[good prognosis:<br/>traditional articulation therapy<br/>hierarchy approach<br/>2-3x/week, 30-45 min]
-    A1b -->|moderate stimulability| A1b2[fair prognosis:<br/>sensory-motor approach<br/>tactile cues, placement<br/>2-3x/week intensive]
-    A1b -->|low stimulability| A1b3[guarded prognosis:<br/>motor learning principles<br/>100+ trials/session<br/>3-5x/week intensive]
+    A1b -->|high stimulability| A1b1[good prognosis: traditional articulation therapy hierarchy approach 2-3x per week, 30-45 min]
+    A1b -->|moderate stimulability| A1b2[fair prognosis: sensory-motor approach tactile cues, placement 2-3x per week intensive]
+    A1b -->|low stimulability| A1b3[guarded prognosis: motor learning principles 100+ trials per session 3-5x per week intensive]
 
     P1 --> P1a[analyze phonological processes]
     P1a --> P1a1[syllable structure processes:<br/>cluster reduction, final consonant deletion,<br/>weak syllable deletion]
-    P1a --> P1a2[substitution processes:<br/>fronting k→t, stopping s→t,<br/>gliding r→w]
+    P1a --> P1a2[substitution processes: fronting k to t, stopping s to t, gliding r to w]
     P1a --> P1a3[assimilation processes:<br/>sounds become similar<br/>gog for dog]
     P1a1 --> P1b{severity assessment}
     P1a2 --> P1b
     P1a3 --> P1b
-    P1b -->|mild: 1-2 processes<br/>older child 5+| P1b1[select approach:<br/>minimal pairs therapy<br/>phonological awareness focus<br/>1-2x/week]
-    P1b -->|moderate: 3-4 processes<br/>age 3-5 years| P1b2[select approach:<br/>cycles approach hodson<br/>rotate through patterns<br/>2-3x/week, 2-6 hours/cycle]
-    P1b -->|severe: 5+ processes<br/>global collapse<br/>unintelligible| P1b3[select approach:<br/>multiple oppositions<br/>4 sounds simultaneously<br/>3x/week, 70+ trials/session]
+    P1b -->|mild: 1-2 processes older child 5+| P1b1[select approach: minimal pairs therapy phonological awareness focus 1-2x per week]
+    P1b -->|moderate: 3-4 processes age 3-5 years| P1b2[select approach: cycles approach hodson rotate through patterns 2-3x per week, 2-6 hours per cycle]
+    P1b -->|severe: 5+ processes global collapse unintelligible| P1b3[select approach: multiple oppositions 4 sounds simultaneously 3x per week, 70+ trials per session]
 
     CAS --> CAS1{confirm cas diagnosis:<br/>inconsistency + prosody issues +<br/>coarticulation errors?}
     CAS1 -->|yes, cas confirmed| CAS2[intensive motor practice required<br/>average 8.4 comorbid conditions]
     CAS2 --> CAS2a[dttc approach:<br/>dynamic temporal tactile cueing<br/>bottom-up, intensive practice<br/>systematic cueing hierarchy]
     CAS2 --> CAS2b[prompt approach:<br/>tactile-kinesthetic cues<br/>requires training<br/>limited evidence]
     CAS2 --> CAS2c[integral stimulation:<br/>watch me, listen, do what i do<br/>cueing hierarchy]
-    CAS2 --> CAS2d[frequency: 3-5 days/week<br/>or 4x/week in 12-16 session blocks<br/>100+ trials per session]
+    CAS2 --> CAS2d[frequency: 3-5 days per week or 4x per week in 12-16 session blocks 100+ trials per session]
     CAS1 -->|no, inconsistent ssd| CAS3[core vocabulary approach:<br/>50-70 functional words<br/>motor consistency focus<br/>intensive drill]
 
     Struct --> Struct1{type of structural issue?}
@@ -711,7 +714,7 @@
     Lang1 --> Lang1d[coordinate with special educators]
 
     Idio --> Idio1{age of child and<br/>number of errors?}
-    Idio1 -->|age 6+ few errors<br/>late developing sounds| Idio1a[traditional articulation therapy<br/>target /r/, /th/, /s/<br/>good prognosis]
+    Idio1 -->|age 6+ few errors<br/>late developing sounds| Idio1a[traditional articulation therapy target r, th, s sounds good prognosis]
     Idio1 -->|age 3-5 multiple errors| Idio1b[assess if phonological patterns<br/>may actually be phonological disorder<br/>re-analyze]
     Idio1 -->|age 2-3 developmental| Idio1c[monitor approach:<br/>many resolve naturally<br/>recheck in 6 months<br/>parent education meanwhile]
 
@@ -747,24 +750,46 @@
 
         // render diagram
         async function renderDiagram(index) {
-            const element = document.getElementById(`diagram${index}`);
-            const { svg } = await mermaid.render(`mermaid${index}`, diagrams[index]);
-            element.innerHTML = svg;
+            try {
+                console.log(`Starting render for diagram ${index}`);
+                const element = document.getElementById(`diagram${index}`);
 
-            // initialize pan-zoom
-            const svgElement = element.querySelector('svg');
-            panZoomInstances[index] = svgPanZoom(svgElement, {
-                zoomEnabled: true,
-                controlIconsEnabled: false,
-                fit: true,
-                center: true,
-                minZoom: 0.1,
-                maxZoom: 10,
-                zoomScaleSensitivity: 0.3,
-                dblClickZoomEnabled: true,
-                mouseWheelZoomEnabled: true,
-                onZoom: updateZoomInfo
-            });
+                if (!element) {
+                    console.error(`Element diagram${index} not found`);
+                    return;
+                }
+
+                console.log(`Rendering mermaid diagram ${index}...`);
+                const { svg } = await mermaid.render(`mermaid${index}`, diagrams[index]);
+                console.log(`Diagram ${index} rendered, inserting SVG...`);
+                element.innerHTML = svg;
+
+                // initialize pan-zoom
+                const svgElement = element.querySelector('svg');
+                if (!svgElement) {
+                    console.error(`SVG element not found for diagram ${index}`);
+                    return;
+                }
+
+                console.log(`Initializing pan-zoom for diagram ${index}`);
+                panZoomInstances[index] = svgPanZoom(svgElement, {
+                    zoomEnabled: true,
+                    controlIconsEnabled: false,
+                    fit: true,
+                    center: true,
+                    minZoom: 0.1,
+                    maxZoom: 10,
+                    zoomScaleSensitivity: 0.3,
+                    dblClickZoomEnabled: true,
+                    mouseWheelZoomEnabled: true,
+                    onZoom: updateZoomInfo
+                });
+                console.log(`Diagram ${index} complete`);
+            } catch (error) {
+                console.error(`Error rendering diagram ${index}:`, error);
+                document.getElementById(`diagram${index}`).innerHTML =
+                    `<div style="padding: 2rem; color: red;">Error rendering diagram: ${error.message}</div>`;
+            }
         }
 
         // switch tabs
@@ -847,10 +872,16 @@
 
         // initialize on load
         window.addEventListener('load', async () => {
-            await renderDiagram(1);
-            await renderDiagram(2);
-            await renderDiagram(3);
-            updateZoomInfo();
+            console.log('Page loaded, starting diagram rendering...');
+            try {
+                await renderDiagram(1);
+                await renderDiagram(2);
+                await renderDiagram(3);
+                updateZoomInfo();
+                console.log('All diagrams rendered successfully');
+            } catch (error) {
+                console.error('Error during initialization:', error);
+            }
         });
     </script>
 </body>
