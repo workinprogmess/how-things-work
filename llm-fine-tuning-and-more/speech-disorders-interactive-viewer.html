@@ -215,13 +215,14 @@
             theme: 'default',
             securityLevel: 'loose',
             themeVariables: {
-                fontSize: '14px',
+                fontSize: '18px',
                 fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
             },
             flowchart: {
                 useMaxWidth: false,
                 htmlLabels: true,
-                curve: 'basis'
+                curve: 'basis',
+                padding: 20
             }
         });
 
@@ -245,8 +246,8 @@
     B2 --> B2a[age 2: no words, no imitation]
     B2 --> B2b[age 3: unintelligible to family<br/>16% prevalence]
     B2 --> B2c[age 4: unintelligible to strangers<br/>2.1-23% have ssd]
-    B2 --> B2d[age 5+: persistent errors<br/>3.8% still have phonological disorders]
-    B2 --> B2e[age 6+: literacy risk if persists]
+    B2 --> B2d[age 5 or more: persistent errors<br/>3.8% still have phonological disorders]
+    B2 --> B2e[age 6 or more: literacy risk if persists]
 
     C --> C1[case history]
     C1 --> C1a[developmental milestones]
@@ -270,7 +271,7 @@
     C4 --> C4c[connected speech sample]
     C4 --> C4d[stimulability testing: can they produce with cues?]
     C --> C5[phonological awareness]
-    C5 --> C5a[rhyming, segmentation age 4+]
+    C5 --> C5a[rhyming, segmentation age 4 or more]
     C5 --> C5b[predicts literacy outcomes]
     C --> C6[intelligibility measurement]
     C6 --> C6a[percentage consonants correct PCC]
@@ -403,7 +404,7 @@
     E1a --> E1a4[supportive family environment]
     E1a --> E1a5[mild-moderate severity]
     E1 --> E1b[unfavorable indicators]
-    E1b --> E1b1[late presentation: age 6+ harder]
+    E1b --> E1b1[late presentation: age 6 or more harder]
     E1b --> E1b2[poor stimulability]
     E1b --> E1b3[comorbid language disorder: 40% rate]
     E1b --> E1b4[severe disorder]
@@ -433,7 +434,7 @@
     E3 --> E3c[motor-based cas, dysarthria]
     E3c --> E3c1[dynamic temporal tactile cueing dttc]
     E3c --> E3c2[prompt: tactile cues]
-    E3c --> E3c3[motor learning principles: 100+ trials]
+    E3c --> E3c3[motor learning principles: 100 or more trials]
     E3 --> E3d[inconsistent speech disorder]
     E3d --> E3d1[core vocabulary: 50-70 functional words]
 
@@ -448,8 +449,8 @@
     E4 --> E4c[trials per session]
     E4c --> E4c1[minimum: 23 trials]
     E4c --> E4c2[average: 77 trials]
-    E4c --> E4c3[severe cases: 70+ trials needed]
-    E4c --> E4c4[motor learning: 100+ trials]
+    E4c --> E4c3[severe cases: 70 or more trials needed]
+    E4c --> E4c4[motor learning: 100 or more trials]
 
     E --> E5[parent involvement plan]
     E5 --> E5a[parent coaching model]
@@ -498,15 +499,15 @@
     F2d --> F2d1[target 4 sounds simultaneously]
     F2d --> F2d2[for: global phoneme collapse severe ssd]
     F2d --> F2d3[minimum dose: 50 trials over 30 sessions]
-    F2d --> F2d4[severe: 70+ trials]
+    F2d --> F2d4[severe: 70 or more trials]
     F2 --> F2e[phonological awareness integration]
     F2e --> F2e1[rhyming, segmentation activities]
-    F2e --> F2e2[letter-sound knowledge age 4+]
+    F2e --> F2e2[letter-sound knowledge age 4 or more]
     F2e --> F2e3[supports literacy development]
 
     F --> F3[motor-based approaches]
     F3 --> F3a[principles of motor learning]
-    F3a --> F3a1[high practice frequency: 100+ trials]
+    F3a --> F3a1[high practice frequency: 100 or more trials]
     F3a --> F3a2[systematic simple to complex progression]
     F3a --> F3a3[variable practice contexts]
     F3a --> F3a4[appropriate feedback: knowledge of results]
@@ -534,13 +535,13 @@
     F5a --> F5a1[modify environment: reduce pressure]
     F5a --> F5a2[slow parent speech rate]
     F5a --> F5a3[palin parent-child interaction pci]
-    F5 --> F5b[direct therapy ages 5+]
+    F5 --> F5b[direct therapy ages 5 or more]
     F5b --> F5b1[easy onset: gentle word starts]
     F5b --> F5b2[light articulatory contacts]
     F5b --> F5b3[slow/stretched speech]
     F5b --> F5b4[voluntary stuttering: reduce fear]
     F5 --> F5c[monitoring approach]
-    F5c --> F5c1[if onset <6 months: watch and wait]
+    F5c --> F5c1[if onset less than 6 months: watch and wait]
     F5c --> F5c2[75-80% recover naturally]
 
     F --> F6[approaches with negative evidence]
@@ -601,29 +602,29 @@
     G4 --> G4e[monitor for regression]`,
 
             2: `graph LR
-    A[high school: 10+2<br/>science stream pcmb] --> B[entrance exam<br/>aiish exam or institution-specific]
-    B --> C[B.ASLP: bachelor in audiology and<br/>speech-language pathology<br/>4 years total]
+    A[high school: class 12 science stream pcmb] --> B[entrance exam aiish or institution-specific]
+    B --> C[B.ASLP: bachelor in audiology and speech-language pathology 4 years total]
     C --> C1[year 1: introductory]
-    C1 --> C1a[anatomy & physiology:<br/>speech, hearing, swallowing mechanisms]
+    C1 --> C1a[anatomy and physiology: speech, hearing, swallowing mechanisms]
     C1 --> C1b[linguistics: phonetics, syntax, semantics]
-    C1 --> C1c[psychology & child development]
+    C1 --> C1c[psychology and child development]
     C1 --> C1d[normal communication development]
-    C1 --> C1e[electronics & acoustics]
+    C1 --> C1e[electronics and acoustics]
     C1 --> C2[year 2: core disorders]
     C2 --> C2a[childhood communication disorders]
-    C2 --> C2b[articulation & phonological disorders]
-    C2 --> C2c[voice disorders & laryngectomy]
-    C2 --> C2d[diagnostic & educational audiology]
+    C2 --> C2b[articulation and phonological disorders]
+    C2 --> C2c[voice disorders and laryngectomy]
+    C2 --> C2d[diagnostic and educational audiology]
     C2 --> C2e[otorhinolaryngology ent]
-    C2 --> C2f[statistics & research methodology]
+    C2 --> C2f[statistics and research methodology]
     C2 --> C2g[community-oriented practices]
     C2 --> C3[year 3: advanced disorders]
-    C3 --> C3a[fluency & its disorders: stuttering]
+    C3 --> C3a[fluency and its disorders: stuttering]
     C3 --> C3b[neuro-motor speech: dysarthria, cas]
     C3 --> C3c[adult neuro-communication: aphasia]
     C3 --> C3d[rehabilitative audiology]
     C3 --> C3e[pediatric audiology]
-    C3 --> C3f[noise & hearing conservation]
+    C3 --> C3f[noise and hearing conservation]
     C3 --> C4[year 4: internship 1 year full-time]
     C4 --> C4a[clinical postings: hospitals]
     C4 --> C4b[special schools]
@@ -631,26 +632,26 @@
     C4 --> C4d[community service centers]
     C4 --> C4e[private clinics]
     C4 --> C4f[hands-on patient care supervised]
-    C4 --> D[RCI registration<br/>rehabilitation council of india<br/>mandatory for practice]
-    D --> E[entry-level SLP<br/>clinical practice begins]
-    E --> F[clinical experience<br/>2-3 years]
+    C4 --> D[RCI registration rehabilitation council of india mandatory for practice]
+    D --> E[entry-level SLP clinical practice begins]
+    E --> F[clinical experience 2-3 years]
     F --> G{choose pathway}
-    G -->|specialization| H[M.Sc. SLP<br/>2 years master's]
+    G -->|specialization| H[M.Sc. SLP 2 years masters]
     H --> H1[specialization options]
     H1 --> H1a[child language disorders]
     H1 --> H1b[fluency disorders]
     H1 --> H1c[voice disorders]
     H1 --> H1d[neuro-communication disorders]
     H1 --> H1e[craniofacial anomalies]
-    H --> I[advanced clinical practice<br/>specialist slp]
+    H --> I[advanced clinical practice specialist slp]
     I --> J{further study?}
-    J -->|yes| K[Ph.D.<br/>research/academia]
+    J -->|yes| K[Ph.D. research/academia]
     J -->|no| L[senior clinician/consultant]
     G -->|continue clinical| E
     K --> M[researcher/professor]`,
 
             3: `graph TD
-    Start[child with speech difficulty<br/>ages 2-8 years<br/>referred to slp] --> Assess[comprehensive assessment:<br/>case history + hearing + oral exam +<br/>speech sounds + language + intelligibility]
+    Start[child with speech difficulty ages 2-8 years referred to slp] --> Assess[comprehensive assessment: case history, hearing, oral exam, speech sounds, language, intelligibility]
 
     Assess --> Q1{can child produce<br/>error sound correctly<br/>when given model/cues?<br/>stimulability testing}
 
@@ -660,7 +661,7 @@
     Q2 -->|yes, pattern-based errors| P1[phonological disorder<br/>rule-based/cognitive-linguistic<br/>2-4% prevalence]
     Q2 -->|no, sound-specific only| Q3{does child produce<br/>same word differently<br/>each time tested?<br/>inconsistency assessment}
 
-    Q3 -->|yes, 10+ inconsistent<br/>out of 25 words| CAS[childhood apraxia of speech<br/>motor planning disorder<br/><1% prevalence<br/>or inconsistent ssd]
+    Q3 -->|yes, 10 or more inconsistent out of 25 words| CAS[childhood apraxia of speech motor planning disorder less than 1% prevalence or inconsistent ssd]
     Q3 -->|no, consistent errors| Q4{check for structural,<br/>hearing, or language issues}
 
     Q4 -->|structural abnormality<br/>identified| Struct[structural cause:<br/>cleft palate, tongue-tie,<br/>dental issues]
@@ -679,7 +680,7 @@
     A1a4 --> A1b
     A1b -->|high stimulability| A1b1[good prognosis: traditional articulation therapy hierarchy approach 2-3x per week, 30-45 min]
     A1b -->|moderate stimulability| A1b2[fair prognosis: sensory-motor approach tactile cues, placement 2-3x per week intensive]
-    A1b -->|low stimulability| A1b3[guarded prognosis: motor learning principles 100+ trials per session 3-5x per week intensive]
+    A1b -->|low stimulability| A1b3[guarded prognosis: motor learning principles 100 or more trials per session 3-5x per week intensive]
 
     P1 --> P1a[analyze phonological processes]
     P1a --> P1a1[syllable structure processes:<br/>cluster reduction, final consonant deletion,<br/>weak syllable deletion]
@@ -688,16 +689,16 @@
     P1a1 --> P1b{severity assessment}
     P1a2 --> P1b
     P1a3 --> P1b
-    P1b -->|mild: 1-2 processes older child 5+| P1b1[select approach: minimal pairs therapy phonological awareness focus 1-2x per week]
+    P1b -->|mild: 1-2 processes older child 5 or more years| P1b1[select approach: minimal pairs therapy phonological awareness focus 1-2x per week]
     P1b -->|moderate: 3-4 processes age 3-5 years| P1b2[select approach: cycles approach hodson rotate through patterns 2-3x per week, 2-6 hours per cycle]
-    P1b -->|severe: 5+ processes global collapse unintelligible| P1b3[select approach: multiple oppositions 4 sounds simultaneously 3x per week, 70+ trials per session]
+    P1b -->|severe: 5 or more processes global collapse unintelligible| P1b3[select approach: multiple oppositions 4 sounds simultaneously 3x per week, 70 or more trials per session]
 
-    CAS --> CAS1{confirm cas diagnosis:<br/>inconsistency + prosody issues +<br/>coarticulation errors?}
+    CAS --> CAS1{confirm cas diagnosis: inconsistency, prosody issues, coarticulation errors?}
     CAS1 -->|yes, cas confirmed| CAS2[intensive motor practice required<br/>average 8.4 comorbid conditions]
     CAS2 --> CAS2a[dttc approach:<br/>dynamic temporal tactile cueing<br/>bottom-up, intensive practice<br/>systematic cueing hierarchy]
     CAS2 --> CAS2b[prompt approach:<br/>tactile-kinesthetic cues<br/>requires training<br/>limited evidence]
     CAS2 --> CAS2c[integral stimulation:<br/>watch me, listen, do what i do<br/>cueing hierarchy]
-    CAS2 --> CAS2d[frequency: 3-5 days per week or 4x per week in 12-16 session blocks 100+ trials per session]
+    CAS2 --> CAS2d[frequency: 3-5 days per week or 4x per week in 12-16 session blocks 100 or more trials per session]
     CAS1 -->|no, inconsistent ssd| CAS3[core vocabulary approach:<br/>50-70 functional words<br/>motor consistency focus<br/>intensive drill]
 
     Struct --> Struct1{type of structural issue?}
@@ -709,12 +710,12 @@
 
     Lang --> Lang1[integrated speech-language therapy]
     Lang1 --> Lang1a[target both goals simultaneously]
-    Lang1 --> Lang1b[include phonological awareness<br/>age 4+ for literacy risk]
+    Lang1 --> Lang1b[include phonological awareness age 4 or more for literacy risk]
     Lang1 --> Lang1c[may need longer duration:<br/>comorbidity affects prognosis]
     Lang1 --> Lang1d[coordinate with special educators]
 
     Idio --> Idio1{age of child and<br/>number of errors?}
-    Idio1 -->|age 6+ few errors<br/>late developing sounds| Idio1a[traditional articulation therapy target r, th, s sounds good prognosis]
+    Idio1 -->|age 6 or more few errors late developing sounds| Idio1a[traditional articulation therapy target r, th, s sounds good prognosis]
     Idio1 -->|age 3-5 multiple errors| Idio1b[assess if phonological patterns<br/>may actually be phonological disorder<br/>re-analyze]
     Idio1 -->|age 2-3 developmental| Idio1c[monitor approach:<br/>many resolve naturally<br/>recheck in 6 months<br/>parent education meanwhile]
 
@@ -735,7 +736,7 @@
     Lang1 --> Monitor
     Idio1a --> Monitor
 
-    Monitor --> Progress{adequate progress?<br/>weekly probe data + parent/teacher reports}
+    Monitor --> Progress{adequate progress? weekly probe data, parent and teacher reports}
     Progress -->|yes, meeting goals| Progress1[continue current approach<br/>advance in hierarchy<br/>add new targets when ready]
     Progress -->|no, inadequate progress| Progress2[analyze barriers:<br/>inappropriate targets?<br/>insufficient intensity?<br/>poor compliance?<br/>unidentified comorbidity?]
     Progress2 --> Progress2a[modify intervention:<br/>change targets<br/>increase session frequency<br/>increase trials per session<br/>or change approach entirely]
@@ -744,8 +745,8 @@
     Progress1 --> Monitor
     Progress2a --> Monitor
 
-    Progress3 --> Discharge[discharge criteria met:<br/>age-appropriate production +<br/>intelligible in all contexts +<br/>functional communication +<br/>maintaining in conversation]
-    Discharge --> Discharge1[discharge plan:<br/>summary of progress +<br/>home maintenance activities +<br/>follow-up at 3-6 months +<br/>monitor for regression]`
+    Progress3 --> Discharge[discharge criteria met: age-appropriate production, intelligible in all contexts, functional communication, maintaining in conversation]
+    Discharge --> Discharge1[discharge plan: summary of progress, home maintenance activities, follow-up at 3-6 months, monitor for regression]`
         };
 
         // render diagram
@@ -772,6 +773,11 @@
                 }
 
                 console.log(`Initializing pan-zoom for diagram ${index}`);
+
+                // Set explicit dimensions on SVG
+                svgElement.style.width = '100%';
+                svgElement.style.height = '100%';
+
                 panZoomInstances[index] = svgPanZoom(svgElement, {
                     zoomEnabled: true,
                     controlIconsEnabled: false,
@@ -782,8 +788,13 @@
                     zoomScaleSensitivity: 0.3,
                     dblClickZoomEnabled: true,
                     mouseWheelZoomEnabled: true,
-                    onZoom: updateZoomInfo
+                    panEnabled: true,
+                    onZoom: function(zoom) {
+                        updateZoomInfo();
+                    }
                 });
+
+                console.log(`Pan-zoom instance created:`, panZoomInstances[index]);
                 console.log(`Diagram ${index} complete`);
             } catch (error) {
                 console.error(`Error rendering diagram ${index}:`, error);
