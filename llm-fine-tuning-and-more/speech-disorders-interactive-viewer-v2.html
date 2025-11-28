@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>child speech disorders - interactive taxonomy viewer</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            background: white;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            padding: 0 2rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .tab:hover {
+            background: #f8f8f8;
+            color: #2c3e50;
+        }
+
+        .tab.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+
+        .controls {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+            border-color: #3498db;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 300px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .zoom-info {
+            font-size: 0.85rem;
+            color: #666;
+            padding: 0.5rem 1rem;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+
+        .diagram-container {
+            height: calc(100vh - 180px);
+            background: white;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        .diagram-container:active {
+            cursor: grabbing;
+        }
+
+        .diagram-wrapper {
+            width: 100%;
+            height: 100%;
+            display: none;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .diagram-wrapper.active {
+            display: block;
+        }
+
+        .diagram-content {
+            transform-origin: 0 0;
+            transition: transform 0.1s ease-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .help-text {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #666;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            pointer-events: none;
+        }
+
+        .help-text strong {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>child speech disorders: comprehensive taxonomy and therapy journey</h1>
+        <p>interactive visualization - ages 2-8 years | indian and global context</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab(1)">
+            comprehensive taxonomy & therapy pathway
+        </div>
+        <div class="tab" onclick="switchTab(2)">
+            indian slp training pathway
+        </div>
+        <div class="tab" onclick="switchTab(3)">
+            clinical decision tree
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="zoom(1.2)">➕ zoom in</button>
+        <button class="btn" onclick="zoom(0.8)">➖ zoom out</button>
+        <button class="btn" onclick="resetView()">↻ reset view</button>
+        <input type="text" class="search-box" id="searchBox" placeholder="search nodes..." onkeyup="searchNodes()">
+        <span class="zoom-info" id="zoomInfo">zoom: 100%</span>
+    </div>
+
+    <div class="diagram-container" id="container">
+        <div class="diagram-wrapper active" id="wrapper1">
+            <div class="diagram-content" id="diagram1">
+                <pre class="mermaid">
+graph TD
+    A[child speech sound disorders ages 2-8 years] --> B[identification and referral]
+    A --> C[comprehensive assessment]
+    A --> D[diagnosis and classification]
+    A --> E[treatment planning]
+    A --> F[intervention delivery]
+    A --> G[progress monitoring and outcomes]
+
+    B --> B1[who identifies?]
+    B1 --> B1a[parents: notice speech delays]
+    B1 --> B1b[pediatricians: developmental screening]
+    B1 --> B1c[teachers/anganwadi: classroom observation]
+    B --> B2[red flags by age]
+    B2 --> B2a[age 2: no words, no imitation]
+    B2 --> B2b[age 3: unintelligible to family 16% prevalence]
+    B2 --> B2c[age 4: unintelligible to strangers 2.1-23% have ssd]
+    B2 --> B2d[age 5+: persistent errors 3.8% still have phonological disorders]
+    B2 --> B2e[age 6+: literacy risk if persists]
+
+    C --> C1[case history]
+    C1 --> C1a[developmental milestones]
+    C1 --> C1b[medical history: hearing, neuro, structural]
+    C1 --> C1c[family history: 60% genetic in stuttering]
+    C1 --> C1d[languages spoken: multilingual assessment]
+    C1 --> C1e[indian context: consanguinity, perinatal issues]
+
+    C --> C2[hearing screening]
+    C2 --> C2a[pure tone audiometry]
+    C2 --> C2b[rule out hearing loss as cause]
+
+    C --> C3[oral mechanism exam]
+    C3 --> C3a[structure: palate, tongue, lips, teeth]
+    C3 --> C3b[function: strength, range, coordination]
+    C3 --> C3c[diadochokinesis: rapid movements]
+
+    C --> C4[speech sound assessment]
+    C4 --> C4a[standardized tests]
+    C4a --> C4a1[GFTA-3: most widely used]
+    C4a --> C4a2[DEAP: comprehensive]
+    C4a --> C4a3[KLPA-3: phonological analysis]
+    C4 --> C4b[phonetic inventory: sounds child can make]
+    C4 --> C4c[connected speech sample]
+    C4 --> C4d[stimulability testing: can they produce with cues?]
+                </pre>
+            </div>
+        </div>
+        <div class="diagram-wrapper" id="wrapper2">
+            <div class="diagram-content" id="diagram2">
+                <pre class="mermaid">
+graph LR
+    A[high school: 10+2 science stream pcmb] --> B[entrance exam aiish or institution-specific]
+    B --> C[B.ASLP: bachelor in audiology and speech-language pathology 4 years total]
+    C --> C1[year 1: introductory]
+    C1 --> C2[year 2: core disorders]
+    C2 --> C3[year 3: advanced disorders]
+    C3 --> C4[year 4: internship 1 year full-time]
+    C4 --> D[RCI registration rehabilitation council of india mandatory for practice]
+    D --> E[entry-level SLP clinical practice begins]
+    E --> F[clinical experience 2-3 years]
+    F --> G{choose pathway}
+    G -->|specialization| H[M.Sc. SLP 2 years masters]
+    G -->|continue clinical| E
+    H --> I[advanced clinical practice specialist slp]
+    I --> J{further study?}
+    J -->|yes| K[Ph.D. research/academia]
+    J -->|no| L[senior clinician/consultant]
+                </pre>
+            </div>
+        </div>
+        <div class="diagram-wrapper" id="wrapper3">
+            <div class="diagram-content" id="diagram3">
+                <pre class="mermaid">
+graph TD
+    Start[child with speech difficulty ages 2-8 years referred to slp] --> Assess[comprehensive assessment]
+    Assess --> Q1{can child produce error sound correctly when given model/cues?}
+    Q1 -->|yes, highly stimulable| Q2{does child use predictable error patterns?}
+    Q1 -->|no, poor stimulability| A1[likely articulation disorder motor/phonetic production issue]
+    Q2 -->|yes, pattern-based errors| P1[phonological disorder rule-based/cognitive-linguistic]
+    Q2 -->|no, sound-specific only| Q3{does child produce same word differently each time?}
+    Q3 -->|yes, inconsistent| CAS[childhood apraxia of speech motor planning disorder]
+    Q3 -->|no, consistent errors| Idio[idiopathic functional articulation disorder]
+                </pre>
+            </div>
+        </div>
+
+        <div class="help-text">
+            <strong>controls:</strong> mouse wheel to zoom | click & drag to pan | scroll to move
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 1;
+        let scale = 1;
+        let panning = false;
+        let pointX = 0;
+        let pointY = 0;
+        let start = { x: 0, y: 0 };
+
+        function switchTab(tabNumber) {
+            currentTab = tabNumber;
+            document.querySelectorAll('.tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i + 1 === tabNumber);
+            });
+            document.querySelectorAll('.diagram-wrapper').forEach((wrapper, i) => {
+                wrapper.classList.toggle('active', i + 1 === tabNumber);
+            });
+            resetView();
+        }
+
+        function zoom(factor) {
+            scale *= factor;
+            scale = Math.max(0.1, Math.min(scale, 10));
+            updateTransform();
+            updateZoomInfo();
+        }
+
+        function resetView() {
+            scale = 1;
+            pointX = 0;
+            pointY = 0;
+            updateTransform();
+            updateZoomInfo();
+        }
+
+        function updateTransform() {
+            const diagram = document.querySelector(`#diagram${currentTab}`);
+            if (diagram) {
+                diagram.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+            }
+        }
+
+        function updateZoomInfo() {
+            document.getElementById('zoomInfo').textContent = `zoom: ${Math.round(scale * 100)}%`;
+        }
+
+        // Mouse wheel zoom
+        document.getElementById('container').addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            zoom(delta);
+        });
+
+        // Pan with mouse drag
+        document.getElementById('container').addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            start = { x: e.clientX - pointX, y: e.clientY - pointY };
+            panning = true;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!panning) return;
+            e.preventDefault();
+            pointX = e.clientX - start.x;
+            pointY = e.clientY - start.y;
+            updateTransform();
+        });
+
+        document.addEventListener('mouseup', () => {
+            panning = false;
+        });
+
+        function searchNodes() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const diagram = document.querySelector(`#diagram${currentTab} svg`);
+
+            if (!diagram) return;
+
+            diagram.querySelectorAll('.node').forEach(node => {
+                const text = node.textContent.toLowerCase();
+                if (searchTerm && text.includes(searchTerm)) {
+                    node.querySelector('rect, circle, polygon')?.setAttribute('stroke', '#3498db');
+                    node.querySelector('rect, circle, polygon')?.setAttribute('stroke-width', '3px');
+                    node.style.opacity = '1';
+                } else if (searchTerm) {
+                    node.style.opacity = '0.3';
+                } else {
+                    node.style.opacity = '1';
+                    node.querySelector('rect, circle, polygon')?.setAttribute('stroke', 'rgb(0, 0, 0)');
+                    node.querySelector('rect, circle, polygon')?.setAttribute('stroke-width', '1.5px');
+                }
+            });
+        }
+
+        updateZoomInfo();
+    </script>
+</body>
+</html>
