@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pediatric occupational therapy - interactive taxonomy viewer</title>
+    <script type="module">
+        import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true
+            }
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            background: white;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            padding: 0 2rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .tab:hover {
+            background: #f8f8f8;
+            color: #2c3e50;
+        }
+
+        .tab.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+
+        .controls {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+            border-color: #3498db;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 300px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .zoom-info {
+            font-size: 0.85rem;
+            color: #666;
+            padding: 0.5rem 1rem;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+
+        .diagram-container {
+            height: calc(100vh - 180px);
+            background: white;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        .diagram-container:active {
+            cursor: grabbing;
+        }
+
+        .diagram-wrapper {
+            width: 100%;
+            height: 100%;
+            display: none;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .diagram-wrapper.active {
+            display: block;
+        }
+
+        .diagram-content {
+            transform-origin: 0 0;
+            transition: transform 0.1s ease-out;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .help-text {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #666;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            pointer-events: none;
+        }
+
+        .help-text strong {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>pediatric occupational therapy: comprehensive taxonomy and clinical pathways</h1>
+        <p>interactive visualization - ages 2-12 years | indian and global context</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab(1)">
+            comprehensive pediatric OT pathway
+        </div>
+        <div class="tab" onclick="switchTab(2)">
+            indian OT training pathway
+        </div>
+        <div class="tab" onclick="switchTab(3)">
+            clinical decision tree
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="zoom(1.2)">➕ zoom in</button>
+        <button class="btn" onclick="zoom(0.8)">➖ zoom out</button>
+        <button class="btn" onclick="resetView()">↻ reset view</button>
+        <input type="text" class="search-box" id="searchBox" placeholder="search nodes..." onkeyup="searchNodes()">
+        <span class="zoom-info" id="zoomInfo">zoom: 100%</span>
+    </div>
+
+    <div class="diagram-container" id="container">
+        <div class="diagram-wrapper active" id="wrapper1">
+            <div class="diagram-content" id="diagram1">
+                <pre class="mermaid">
+graph TD
+    A[child with developmental or participation challenges ages 2-12 years] --> B[identification and referral]
+    A --> C[comprehensive OT assessment]
+    A --> D[diagnosis and classification]
+    A --> E[intervention planning]
+    A --> F[intervention delivery]
+    A --> G[outcome measurement and progress monitoring]
+
+    B --> B1[who identifies?]
+    B1 --> B1a[parents: notice developmental delays or struggles with daily activities]
+    B1 --> B1b[pediatricians: developmental screening and medical red flags]
+    B1 --> B1c[teachers: classroom observations, handwriting, behavior concerns]
+    B1 --> B1d[other allied professionals: speech therapists, physiotherapists, psychologists]
+
+    B --> B2[red flags by age]
+    B2 --> B2a[ages 2-3: not walking by 18 months, no words, no pretend play, fisted grasp at 18 months]
+    B2 --> B2b[ages 3-5: cant copy circle by 3, not jumping, ignoring peers, extreme sensory aversions]
+    B2 --> B2c[ages 6-8: illegible handwriting despite instruction, cant tie shoes by 7, labeled bad kid]
+    B2 --> B2d[ages 9-12: persistent handwriting issues, social isolation, organizational difficulties]
+
+    B --> B3[referral pathways in India]
+    B3 --> B3a[public: PHCs, DEICs, tertiary hospitals like AIIMS NIMHANS]
+    B3 --> B3b[private: clinics and hospitals in urban areas]
+    B3 --> B3c[schools: special schools often have OTs, limited in mainstream]
+    B3 --> B3d[NGOs: subsidized services like Action for Autism, Tamana]
+
+    C --> C1[case history]
+    C1 --> C1a[prenatal and birth: complications, prematurity, birth weight]
+    C1 --> C1b[developmental milestones: motor, communication, social, self-care]
+    C1 --> C1c[medical history: diagnoses, medications, surgeries]
+    C1 --> C1d[family history: genetic conditions, consanguinity in Indian context]
+    C1 --> C1e[education: school performance, supports in place]
+    C1 --> C1f[daily routines: typical day, sleep, eating, play, cultural practices]
+
+    C --> C2[standardized assessments]
+    C2 --> C2a[sensory: Sensory Profile 2, SPM, EASI for ASI]
+    C2 --> C2b[motor: MABC-2 gold standard for DCD, BOT-2, PDMS-2 for early childhood]
+    C2 --> C2c[functional: COPM client-centered, PEDI, WeeFIM, SFA for school]
+    C2 --> C2d[visual-motor: Beery VMI, TVPS-4 non-motor visual perception]
+    C2 --> C2e[handwriting: ETCH, MHA for legibility and speed]
+    C2 --> C2f[autism: CARS-2 screening and severity]
+    C2 --> C2g[executive function: BRIEF for ADHD and ASD]
+
+    C --> C3[clinical observations]
+    C3 --> C3a[sensory processing: responses to input, seeking or avoiding behaviors]
+    C3 --> C3b[motor: muscle tone, postural control, bilateral coordination, praxis]
+    C3 --> C3c[visual-motor: eye-hand coordination, copying, construction]
+    C3 --> C3d[play: sensorimotor, symbolic, constructive, games with rules, social interaction]
+    C3 --> C3e[self-regulation: attention, frustration tolerance, transitions, arousal]
+
+    C --> C4[contextual assessment]
+    C4 --> C4a[home: accessibility, sensory environment, cultural practices, family routines]
+    C4 --> C4b[school: classroom setup, academic demands, social demands, teacher support]
+    C4 --> C4c[community: recreational activities, religious participation, transportation]
+
+    D --> D1[common diagnoses]
+    D1 --> D1a[autism spectrum disorder: 1 in 100 in India, 90-95% have sensory issues, motor difficulties, self-care challenges]
+    D1 --> D1b[ADHD: 11.32% in India, 85.2% have sensory differences, executive function deficits]
+    D1 --> D1c[DCD: 5-6% globally, motor skill deficits interfering with daily life, 45% have sensory processing issues]
+    D1 --> D1d[sensory processing disorder: 5-16% general population, not standalone DSM diagnosis]
+    D1 --> D1e[cerebral palsy: 2-3 per 1000 in India, hand function and self-care focus for OT]
+    D1 --> D1f[Down syndrome: 1 in 800-1000 in India, hypotonia, motor delays]
+    D1 --> D1g[learning disabilities: dysgraphia, visual-motor integration deficits]
+
+    D --> D2[differential diagnosis]
+    D2 --> D2a[sensory issues across diagnoses: ASD 90-95%, ADHD 85.2%, DCD 45%, typical 16-25.7%]
+    D2 --> D2b[distinguishing features: social communication for ASD, attention for ADHD, coordination for DCD]
+    D2 --> D2c[co-occurring conditions: DCD plus ADHD 30-50%, ASD plus ADHD 30-50%, anxiety with all]
+    D2 --> D2d[when to refer: developmental pediatrician for ASD ADHD diagnosis, psychologist for mental health, speech therapist for communication, physiotherapist for gross motor]
+
+    E --> E1[goal setting]
+    E1 --> E1a[use COPM or similar client-centered measure]
+    E1 --> E1b[identify family priorities: academic success, self-care independence, social participation, cultural activities]
+    E1 --> E1c[set SMART goals: specific, measurable, achievable, relevant, time-bound]
+    E1 --> E1d[child involvement: even young children can participate in activity choice]
+
+    E --> E2[intervention selection based on evidence]
+    E2 --> E2a[sensory processing difficulties: Ayres Sensory Integration ASI if trained and equipped, otherwise sensory strategies and modifications]
+    E2 --> E2b[motor skill functional goals: CO-OP for age 7 or more with cognitive ability, task-specific training for younger or significant intellectual disability]
+    E2 --> E2c[handwriting: task-specific practice, biomechanical approach, assistive technology if persistent]
+    E2 --> E2d[self-care: task-specific training in natural contexts, adaptive equipment, environmental modifications]
+    E2 --> E2e[all: parent and teacher education for carryover]
+
+    E --> E3[resource considerations]
+    E3 --> E3a[well-equipped clinic: ASI is option]
+    E3 --> E3b[school-based limited equipment: CO-OP, consultation model, task-specific training]
+    E3 --> E3c[telehealth: parent coaching, CO-OP adapted, environmental modifications]
+    E3 --> E3d[home-based: functional context-based interventions, caregiver training]
+    E3 --> E3e[Indian context: low-cost adaptations, community resources, telepractice for rural areas]
+
+    F --> F1[evidence-based interventions]
+    F1 --> F1a[Ayres Sensory Integration: RCT 2024 effective for DCD, telehealth adaptation 2024, requires fidelity and training]
+    F1 --> F1b[CO-OP: superior to standard care 2022 for cerebral palsy and spina bifida, effective for DCD, 7-step framework Goal-Plan-Do-Check]
+    F1 --> F1c[task-specific training: repeated practice in natural contexts with feedback and grading]
+    F1 --> F1d[environmental modifications and assistive technology: reduce barriers, cost-effective, empowering]
+    F1 --> F1e[sensory diets: planned sensory activities proactively scheduled, limited research but clinical consensus]
+    F1 --> F1f[handwriting interventions: task-specific practice most effective, consider assistive technology]
+
+    F --> F2[service delivery models]
+    F2 --> F2a[individual clinic-based: traditional model, intensive intervention]
+    F2 --> F2b[group clinic-based: cost-effective, social interaction, less individualized]
+    F2 --> F2c[school-based: natural context, consultation with teachers, limited equipment]
+    F2 --> F2d[home-based: functional context, family training, flexible]
+    F2 --> F2e[telehealth: accessible for rural India, parent coaching model, technology barriers]
+    F2 --> F2f[hybrid: combination of above for optimal outcomes]
+
+    F --> F3[frequency and duration]
+    F3 --> F3a[typical: 1-2 times per week for 30-60 minutes]
+    F3 --> F3b[intensive models: 3-5 times per week for specific goals]
+    F3 --> F3c[consultation: monthly or as-needed with caregiver implementation between]
+    F3 --> F3d[duration: varies widely, average 6 months to 2 years, some ongoing for complex needs]
+
+    G --> G1[outcome measures]
+    G1 --> G1a[Goal Attainment Scaling GAS: individualized, 5-point scale, culturally adaptable, widely used in research]
+    G1 --> G1b[COPM: client-centered, performance and satisfaction ratings, clinically significant change is 2 or more points]
+    G1 --> G1c[standardized re-administration: MABC-2, Sensory Profile, BOT-2 for objective data]
+    G1 --> G1d[functional measures: PEDI, WeeFIM, SFA for daily activities and school]
+    G1 --> G1e[observational: play assessments, behavioral observations, participation quality]
+
+    G --> G2[progress monitoring]
+    G2 --> G2a[ongoing data collection: session notes, goal progress tracking]
+    G2 --> G2b[regular re-assessment: every 3-6 months or per institutional policy]
+    G2 --> G2c[adjust intervention if insufficient progress after 6-8 weeks]
+    G2 --> G2d[communicate with family and team regularly]
+
+    G --> G3[discharge planning]
+    G3 --> G3a[goals achieved: celebrate success, provide home program for maintenance]
+    G3 --> G3b[plateau reached: transition to less intensive services or discharge with follow-up as needed]
+    G3 --> G3c[transition: to different service provider, school-based services, adult services for older teens]
+    G3 --> G3d[family choice: respect family decision if they choose to discontinue]
+                </pre>
+            </div>
+        </div>
+        <div class="diagram-wrapper" id="wrapper2">
+            <div class="diagram-content" id="diagram2">
+                <pre class="mermaid">
+graph LR
+    A[high school class 12: PCB science stream] --> B[entrance exam: AIISH or institution-specific or NEET]
+    B --> C[Bachelor of Occupational Therapy BOT: 4.5 years total]
+    C --> C1[year 1: foundation sciences anatomy physiology biochemistry psychology introduction to OT]
+    C1 --> C2[year 2: pathology pharmacology medicine surgery psychiatry OT in physical dysfunction psychosocial pediatrics intro]
+    C2 --> C3[year 3: advanced pediatric OT neurological orthopedic hand therapy CBR assistive technology research methods]
+    C3 --> C4[year 4: specialization geriatric vocational admin ethics research project]
+    C4 --> C5[6-month internship: rotations in physical dysfunction psychosocial pediatrics CBR supervised practice]
+    C5 --> D[RCI registration: Rehabilitation Council of India mandatory for practice renewable every 5 years]
+    D --> E[entry-level OT: clinical practice in hospitals rehab centers special schools clinics home-based teletherapy]
+    E --> F[clinical experience: 2-5 years diverse settings develop area of interest]
+    F --> G{choose pathway?}
+    G -->|specialization| H[Master of Occupational Therapy MOT: 2 years specializations pediatrics neurosciences musculoskeletal psychiatry CBR hand therapy]
+    G -->|continue clinical| E
+    H --> I[advanced clinical practice: specialist OT supervisory roles private practice consultation]
+    I --> J{further study?}
+    J -->|yes| K[PhD in Rehabilitation Sciences or OT: 3-5 years research academia specialized expertise]
+    J -->|no| L[senior clinician consultant: teaching clinical supervision leadership roles industry consulting]
+    K --> M[academic career: faculty in BOT MOT programs research positions policy development]
+                </pre>
+            </div>
+        </div>
+        <div class="diagram-wrapper" id="wrapper3">
+            <div class="diagram-content" id="diagram3">
+                <pre class="mermaid">
+graph TD
+    Start[child with OT needs: comprehensive assessment completed] --> Q1{what is primary concern?}
+
+    Q1 -->|sensory processing difficulties| S1{access to sensory gym and ASI training?}
+    S1 -->|yes| S2[consider Ayres Sensory Integration: child-directed, adaptive responses, fidelity criteria, evidence from 2024 RCTs]
+    S1 -->|no| S3[sensory strategies and environmental modifications: sensory diet, parent education, classroom accommodations, low-cost adaptations]
+
+    Q1 -->|motor skill deficits with functional goals| M1{child age 7 or more with cognitive ability for strategies?}
+    M1 -->|yes| M2{therapist trained in CO-OP?}
+    M2 -->|yes| M3[CO-OP approach: Goal-Plan-Do-Check, guided discovery, client-chosen goals, 10 sessions typical, strong evidence]
+    M2 -->|no| M4[task-specific training: repeated practice in natural context, motor learning principles, functional and contextually relevant]
+    M1 -->|no younger or cognitive limitations| M4
+
+    Q1 -->|handwriting difficulties| H1{age and severity?}
+    H1 -->|early grades mild to moderate| H2[task-specific handwriting intervention: letter formation drills, biomechanical approach, sensorimotor if underlying issues]
+    H1 -->|persistent severe impacting academics| H3[assistive technology: keyboarding, speech-to-text, accommodations for academic success while building skills]
+
+    Q1 -->|self-care deficits| SC1[task-specific training in natural contexts: practice dressing feeding toileting at home, adaptive equipment, environmental modifications, parent training for carryover]
+
+    Q1 -->|multiple or complex concerns| MC1[comprehensive approach: combine interventions based on priorities, address foundational sensory-motor issues, functional goal-directed activities, family education]
+
+    M3 --> Monitor[progress monitoring: GAS, COPM, functional observations every 3-6 weeks]
+    M4 --> Monitor
+    S2 --> Monitor
+    S3 --> Monitor
+    H2 --> Monitor
+    H3 --> Monitor
+    SC1 --> Monitor
+    MC1 --> Monitor
+
+    Monitor --> Q2{progress evident after 6-8 weeks?}
+    Q2 -->|yes making good progress| Continue[continue current approach: adjust goals as achieved, maintain family communication]
+    Q2 -->|minimal or no progress| Adjust[re-assess and adjust: consider alternative intervention, review goals with family, check for barriers to implementation, consult with team]
+    Q2 -->|goals achieved| Discharge[discharge planning: celebrate success, home program for maintenance, follow-up as needed, transition if appropriate]
+                </pre>
+            </div>
+        </div>
+
+        <div class="help-text">
+            <strong>controls:</strong> mouse wheel to zoom | click & drag to pan | scroll to move
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 1;
+        let scale = 1;
+        let panning = false;
+        let pointX = 0;
+        let pointY = 0;
+        let start = { x: 0, y: 0 };
+
+        function switchTab(tabNumber) {
+            currentTab = tabNumber;
+            document.querySelectorAll('.tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i + 1 === tabNumber);
+            });
+            document.querySelectorAll('.diagram-wrapper').forEach((wrapper, i) => {
+                wrapper.classList.toggle('active', i + 1 === tabNumber);
+            });
+            resetView();
+        }
+
+        function zoom(factor) {
+            scale *= factor;
+            scale = Math.max(0.1, Math.min(scale, 10));
+            updateTransform();
+            updateZoomInfo();
+        }
+
+        function resetView() {
+            scale = 1;
+            pointX = 0;
+            pointY = 0;
+            updateTransform();
+            updateZoomInfo();
+        }
+
+        function updateTransform() {
+            const diagram = document.querySelector(`#diagram${currentTab}`);
+            if (diagram) {
+                diagram.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+            }
+        }
+
+        function updateZoomInfo() {
+            document.getElementById('zoomInfo').textContent = `zoom: ${Math.round(scale * 100)}%`;
+        }
+
+        // Mouse wheel zoom
+        document.getElementById('container').addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? 0.9 : 1.1;
+            zoom(delta);
+        });
+
+        // Pan with mouse drag
+        document.getElementById('container').addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            start = { x: e.clientX - pointX, y: e.clientY - pointY };
+            panning = true;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!panning) return;
+            e.preventDefault();
+            pointX = e.clientX - start.x;
+            pointY = e.clientY - start.y;
+            updateTransform();
+        });
+
+        document.addEventListener('mouseup', () => {
+            panning = false;
+        });
+
+        function searchNodes() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const diagram = document.querySelector(`#diagram${currentTab} svg`);
+
+            if (!diagram) return;
+
+            diagram.querySelectorAll('.node').forEach(node => {
+                const text = node.textContent.toLowerCase();
+                if (searchTerm && text.includes(searchTerm)) {
+                    node.querySelector('rect, circle, polygon')?.setAttribute('stroke', '#3498db');
+                    node.querySelector('rect, circle, polygon')?.setAttribute('stroke-width', '3px');
+                    node.style.opacity = '1';
+                } else if (searchTerm) {
+                    node.style.opacity = '0.3';
+                } else {
+                    node.style.opacity = '1';
+                    node.querySelector('rect, circle, polygon')?.setAttribute('stroke', 'rgb(0, 0, 0)');
+                    node.querySelector('rect, circle, polygon')?.setAttribute('stroke-width', '1.5px');
+                }
+            });
+        }
+
+        updateZoomInfo();
+    </script>
+</body>
+</html>
