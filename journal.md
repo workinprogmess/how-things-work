@@ -1,5 +1,13 @@
 # journal.md
 
+## 2025-12-05 15:31
+
+### branch rename and new folder
+
+- renamed local branch from miami to node-ing for this task
+- created node-based-research-tool-and-more/ for upcoming research work
+- next: start collecting research materials inside the new folder
+
 ## 2025-11-23 17:30
 
 ### comprehensive research: ot and aba therapy ai for children
