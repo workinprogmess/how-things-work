@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sunshine | peak xv series a</title>
+    <style>
+        /* ============================================
+           DESIGN SYSTEM v2
+           - satoshi font throughout
+           - bolder sunshine palette (not pastel)
+           - large dramatic typography
+           - animated text reveals
+           - smooth elastic transitions
+           - generous whitespace
+           - all lowercase
+        ============================================ */
+
+        @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap');
+
+        :root {
+            /* sunshine palette - confident, not pastel */
+            --sun-50: #FFFAF5;
+            --sun-100: #FFF0E0;
+            --sun-200: #FFDAB8;
+            --sun-300: #FFC285;
+            --sun-400: #FFA54D;
+            --sun-500: #FF8C1A;  /* primary - bold orange */
+            --sun-600: #E67300;
+            --sun-700: #CC6600;
+
+            /* secondary playful colors */
+            --coral: #FF6B5B;
+            --golden: #FFB800;
+            --mint: #00C9A7;
+            --sky: #4DA6FF;
+
+            /* neutrals */
+            --white: #FFFFFF;
+            --cream: #FDFBF9;
+            --gray-100: #F5F3F0;
+            --gray-200: #E8E4DF;
+            --gray-300: #D0CBC4;
+            --gray-400: #A39E96;
+            --gray-500: #736E66;
+            --gray-600: #5C5750;
+            --gray-900: #1A1816;
+            --black: #0D0B0A;
+
+            /* typography scale */
+            --text-xs: clamp(0.75rem, 1vw, 0.875rem);
+            --text-sm: clamp(0.875rem, 1.2vw, 1rem);
+            --text-base: clamp(1rem, 1.5vw, 1.125rem);
+            --text-lg: clamp(1.125rem, 1.8vw, 1.375rem);
+            --text-xl: clamp(1.375rem, 2.2vw, 1.75rem);
+            --text-2xl: clamp(1.75rem, 3vw, 2.5rem);
+            --text-3xl: clamp(2.25rem, 4.5vw, 3.5rem);
+            --text-4xl: clamp(3rem, 6vw, 5rem);
+            --text-hero: clamp(4rem, 10vw, 8rem);
+
+            /* spacing */
+            --space-1: 0.25rem;
+            --space-2: 0.5rem;
+            --space-3: 0.75rem;
+            --space-4: 1rem;
+            --space-6: 1.5rem;
+            --space-8: 2rem;
+            --space-10: 2.5rem;
+            --space-12: 3rem;
+            --space-16: 4rem;
+            --space-20: 5rem;
+            --space-24: 6rem;
+
+            /* animation */
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+            --duration-fast: 300ms;
+            --duration-normal: 500ms;
+            --duration-slow: 800ms;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Satoshi', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--cream);
+            color: var(--gray-900);
+            overflow: hidden;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            text-transform: lowercase;
+        }
+
+        /* ============================================
+           SLIDE CONTAINER & TRANSITIONS
+        ============================================ */
+
+        .deck {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition:
+                opacity var(--duration-slow) var(--ease-out-expo),
+                transform var(--duration-slow) var(--ease-out-expo),
+                visibility var(--duration-slow);
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .slide.exiting {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+        ============================================ */
+
+        .text-hero {
+            font-size: var(--text-hero);
+            font-weight: 900;
+            line-height: 1;
+            letter-spacing: -0.04em;
+        }
+
+        .text-4xl {
+            font-size: var(--text-4xl);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+        }
+
+        .text-3xl {
+            font-size: var(--text-3xl);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+        }
+
+        .text-2xl {
+            font-size: var(--text-2xl);
+            font-weight: 500;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+        }
+
+        .text-xl {
+            font-size: var(--text-xl);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        .text-lg {
+            font-size: var(--text-lg);
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .text-base {
+            font-size: var(--text-base);
+            line-height: 1.6;
+        }
+
+        .text-sm {
+            font-size: var(--text-sm);
+            line-height: 1.5;
+        }
+
+        .text-xs {
+            font-size: var(--text-xs);
+            line-height: 1.4;
+        }
+
+        .text-muted {
+            color: var(--gray-400);
+        }
+
+        .text-light {
+            color: var(--gray-500);
+        }
+
+        .text-accent {
+            color: var(--sun-500);
+        }
+
+        .font-bold {
+            font-weight: 700;
+        }
+
+        .font-semibold {
+            font-weight: 500;
+        }
+
+        /* ============================================
+           ANIMATED TEXT REVEAL
+        ============================================ */
+
+        .fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition:
+                transform var(--duration-slow) var(--ease-out-expo),
+                opacity var(--duration-normal) var(--ease-out-expo);
+        }
+
+        .slide.active .fade-up {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .fade-up.delay-1 { transition-delay: 0.15s; }
+        .fade-up.delay-2 { transition-delay: 0.3s; }
+        .fade-up.delay-3 { transition-delay: 0.45s; }
+        .fade-up.delay-4 { transition-delay: 0.6s; }
+        .fade-up.delay-5 { transition-delay: 0.75s; }
+
+        /* ============================================
+           SLIDE 0: HELLO PEAK XV
+        ============================================ */
+
+        .slide-hello {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--sun-500);
+        }
+
+        .slide-hello .content {
+            text-align: center;
+            padding: var(--space-8);
+        }
+
+        .slide-hello .hello-text {
+            color: var(--white);
+        }
+
+        /* ============================================
+           SLIDE 1: TITLE (Map Right)
+        ============================================ */
+
+        .slide-title-split {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            min-height: 100vh;
+        }
+
+        .slide-title-split .content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: var(--space-16);
+            padding-right: var(--space-8);
+            z-index: 2;
+        }
+
+        .slide-title-split .map-bg {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: var(--sun-50);
+        }
+
+        .slide-title-split .map-bg img {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+        }
+
+        .slide-title-split .brand-name {
+            color: var(--sun-500);
+            margin-bottom: var(--space-2);
+        }
+
+        .slide-title-split .brand-by {
+            color: var(--gray-400);
+            margin-bottom: var(--space-8);
+        }
+
+        .slide-title-split .tagline {
+            color: var(--gray-500);
+        }
+
+        /* ============================================
+           SLIDE 3: VISION (Full Bleed Child Image)
+        ============================================ */
+
+        .slide-vision {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .slide-vision .bg-image {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .slide-vision .bg-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .slide-vision .bg-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                135deg,
+                rgba(255,140,26,0.85) 0%,
+                rgba(255,140,26,0.6) 50%,
+                rgba(255,140,26,0.3) 100%
+            );
+        }
+
+        .slide-vision .content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: var(--space-8);
+            max-width: 900px;
+        }
+
+        .slide-vision .vision-text {
+            color: var(--white);
+            text-shadow: 0 2px 20px rgba(0,0,0,0.2);
+        }
+
+        /* ============================================
+           SLIDE 4: TEAM
+        ============================================ */
+
+        .slide-team {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
+            background: var(--gray-100);
+        }
+
+        .team-member {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: var(--space-12);
+        }
+
+        .team-member:first-child {
+            background: var(--white);
+        }
+
+        .team-member .photo-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--space-8);
+        }
+
+        .team-member .photo-main img {
+            width: 280px;
+            height: 280px;
+            object-fit: cover;
+            border-radius: 24px;
+            box-shadow:
+                0 25px 50px -12px rgba(0,0,0,0.15),
+                0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .team-member:first-child .photo-main img {
+            transform: rotate(-2deg);
+        }
+
+        .team-member:last-child .photo-main img {
+            transform: rotate(2deg);
+        }
+
+        .team-member .info {
+            text-align: center;
+        }
+
+        .team-member .name {
+            font-size: var(--text-2xl);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-2);
+        }
+
+        .team-member .title {
+            font-size: var(--text-lg);
+            color: var(--sun-500);
+            font-weight: 500;
+            margin-bottom: var(--space-4);
+        }
+
+        .team-member .bio {
+            font-size: var(--text-sm);
+            color: var(--gray-500);
+            line-height: 1.6;
+        }
+
+        .team-member .bio span {
+            display: block;
+            margin-bottom: var(--space-1);
+        }
+
+        /* ============================================
+           NAVIGATION
+        ============================================ */
+
+        .nav {
+            position: fixed;
+            bottom: var(--space-8);
+            right: var(--space-8);
+            display: flex;
+            gap: var(--space-3);
+            z-index: 100;
+        }
+
+        .nav button {
+            width: 48px;
+            height: 48px;
+            border: none;
+            background: var(--white);
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            color: var(--gray-600);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all var(--duration-fast) var(--ease-out-expo);
+            font-family: 'Satoshi', sans-serif;
+        }
+
+        .nav button:hover {
+            background: var(--sun-500);
+            color: var(--white);
+            transform: scale(1.1);
+        }
+
+        /* progress dots */
+        .progress-dots {
+            position: fixed;
+            bottom: var(--space-8);
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: var(--space-2);
+            z-index: 100;
+        }
+
+        .progress-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gray-300);
+            transition: all var(--duration-fast) var(--ease-out-expo);
+            cursor: pointer;
+        }
+
+        .progress-dot.active {
+            background: var(--sun-500);
+            transform: scale(1.3);
+        }
+
+        .progress-dot:hover {
+            background: var(--sun-300);
+        }
+
+        /* slide counter */
+        .slide-counter {
+            position: fixed;
+            bottom: var(--space-8);
+            left: var(--space-8);
+            font-size: var(--text-sm);
+            color: var(--gray-400);
+            z-index: 100;
+            font-family: 'Satoshi', sans-serif;
+        }
+
+        /* ============================================
+           RESPONSIVE
+        ============================================ */
+
+        @media (max-width: 1024px) {
+            .slide-title-split {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto 1fr;
+            }
+
+            .slide-title-split .content {
+                padding: var(--space-8);
+                order: 1;
+            }
+
+            .slide-title-split .map-bg {
+                order: 2;
+                max-height: 40vh;
+            }
+
+            .slide-team {
+                grid-template-columns: 1fr;
+            }
+
+            .team-member .photo-main img {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="deck">
+
+        <!-- SLIDE 0: HELLO PEAK XV -->
+        <div class="slide slide-hello active" data-slide="0">
+            <div class="content">
+                <h1 class="text-hero hello-text fade-up">hello, peak xv :)</h1>
+            </div>
+        </div>
+
+        <!-- SLIDE 1: TITLE -->
+        <div class="slide slide-title-split" data-slide="1">
+            <div class="content">
+                <h1 class="text-hero brand-name fade-up">sunshine</h1>
+                <p class="text-2xl brand-by fade-up delay-1">(by lissun)</p>
+                <p class="text-xl tagline fade-up delay-2">ai-powered child development platform</p>
+            </div>
+            <div class="map-bg fade-up delay-3">
+                <img src="deck-images/india-map-sunshine.png" alt="sunshine centers across india">
+            </div>
+        </div>
+
+        <!-- SLIDE 2: VISION -->
+        <div class="slide slide-vision" data-slide="2">
+            <div class="bg-image fade-up">
+                <img src="deck-images/child-running-joy.png" alt="indian child running joyfully">
+            </div>
+            <div class="content">
+                <h2 class="text-hero vision-text fade-up delay-1">every child must realize their potential</h2>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: TEAM -->
+        <div class="slide slide-team" data-slide="3">
+            <!-- Varun -->
+            <div class="team-member">
+                <div class="photo-main fade-up">
+                    <img src="deck-images/varun-headshot.png" alt="varun gandhi">
+                </div>
+                <div class="info fade-up delay-1">
+                    <h2 class="name">varun gandhi</h2>
+                    <p class="title">cpo, lissun</p>
+                    <div class="bio">
+                        <span>cofounded being & onething</span>
+                        <span>icai</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Abhishek -->
+            <div class="team-member">
+                <div class="photo-main fade-up delay-1">
+                    <img src="deck-images/abhishek-headshot.png" alt="abhishek sharma">
+                </div>
+                <div class="info fade-up delay-2">
+                    <h2 class="name">abhishek sharma</h2>
+                    <p class="title">cto, lissun</p>
+                    <div class="bio">
+                        <span>cofounded being</span>
+                        <span>ex-kodak, honeywell</span>
+                        <span>3+ patents</span>
+                        <span>ms from rit, us</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav">
+        <button id="prev" title="previous (←)">←</button>
+        <button id="next" title="next (→)">→</button>
+    </div>
+
+    <!-- Progress dots -->
+    <div class="progress-dots" id="dots"></div>
+
+    <!-- Slide counter -->
+    <div class="slide-counter" id="counter">1 / 4</div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let current = 0;
+
+        // create progress dots
+        const dotsContainer = document.getElementById('dots');
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'progress-dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        });
+
+        function updateCounter() {
+            document.getElementById('counter').textContent = `${current + 1} / ${totalSlides}`;
+        }
+
+        function updateDots() {
+            document.querySelectorAll('.progress-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === current);
+            });
+        }
+
+        function goToSlide(index) {
+            if (index < 0 || index >= totalSlides || index === current) return;
+
+            slides[current].classList.remove('active');
+            slides[current].classList.add('exiting');
+
+            setTimeout(() => {
+                slides[current].classList.remove('exiting');
+                current = index;
+                slides[current].classList.add('active');
+                updateCounter();
+                updateDots();
+            }, 100);
+        }
+
+        function next() {
+            if (current < totalSlides - 1) goToSlide(current + 1);
+        }
+
+        function prev() {
+            if (current > 0) goToSlide(current - 1);
+        }
+
+        // button controls
+        document.getElementById('next').addEventListener('click', next);
+        document.getElementById('prev').addEventListener('click', prev);
+
+        // keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                next();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prev();
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                goToSlide(totalSlides - 1);
+            }
+        });
+
+        // touch support
+        let touchStartX = 0;
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        document.addEventListener('touchend', (e) => {
+            const diff = touchStartX - e.changedTouches[0].screenX;
+            if (Math.abs(diff) > 50) {
+                diff > 0 ? next() : prev();
+            }
+        });
+    </script>
+</body>
+</html>

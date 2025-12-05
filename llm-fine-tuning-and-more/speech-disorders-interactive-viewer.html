@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>child speech disorders - interactive taxonomy viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/svg-pan-zoom@3.6.1/dist/svg-pan-zoom.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .header p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .tabs {
+            background: white;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            padding: 0 2rem;
+        }
+
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #666;
+        }
+
+        .tab:hover {
+            background: #f8f8f8;
+            color: #2c3e50;
+        }
+
+        .tab.active {
+            color: #3498db;
+            border-bottom-color: #3498db;
+        }
+
+        .controls {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f0f0f0;
+            border-color: #3498db;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .search-box {
+            flex: 1;
+            max-width: 300px;
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .zoom-info {
+            font-size: 0.85rem;
+            color: #666;
+            padding: 0.5rem 1rem;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+
+        .diagram-container {
+            height: calc(100vh - 180px);
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .diagram-wrapper {
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+
+        .diagram-wrapper.active {
+            display: block;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        #diagram1, #diagram2, #diagram3 {
+            width: 100%;
+            height: 100%;
+        }
+
+        .help-text {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            color: #666;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .help-text strong {
+            color: #3498db;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>child speech disorders: comprehensive taxonomy and therapy journey</h1>
+        <p>interactive visualization - ages 2-8 years | indian and global context</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="switchTab(1)">
+            comprehensive taxonomy & therapy pathway
+        </div>
+        <div class="tab" onclick="switchTab(2)">
+            indian slp training pathway
+        </div>
+        <div class="tab" onclick="switchTab(3)">
+            clinical decision tree
+        </div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="zoomIn()">➕ zoom in</button>
+        <button class="btn" onclick="zoomOut()">➖ zoom out</button>
+        <button class="btn" onclick="resetZoom()">↻ reset view</button>
+        <button class="btn" onclick="fitToScreen()">⛶ fit to screen</button>
+        <input type="text" class="search-box" id="searchBox" placeholder="search nodes..." onkeyup="searchNodes()">
+        <span class="zoom-info" id="zoomInfo">zoom: 100%</span>
+    </div>
+
+    <div class="diagram-container">
+        <div class="diagram-wrapper active" id="wrapper1">
+            <div id="diagram1"></div>
+        </div>
+        <div class="diagram-wrapper" id="wrapper2">
+            <div id="diagram2"></div>
+        </div>
+        <div class="diagram-wrapper" id="wrapper3">
+            <div id="diagram3"></div>
+        </div>
+
+        <div class="help-text">
+            <strong>controls:</strong> mouse wheel to zoom | click & drag to pan | double-click to reset
+        </div>
+    </div>
+
+    <script>
+        let panZoomInstances = {};
+        let currentTab = 1;
+
+        // mermaid initialization
+        mermaid.initialize({
+            startOnLoad: false,
+            theme: 'default',
+            securityLevel: 'loose',
+            themeVariables: {
+                fontSize: '18px',
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+            },
+            flowchart: {
+                useMaxWidth: false,
+                htmlLabels: true,
+                curve: 'basis',
+                padding: 20
+            }
+        });
+
+        console.log('Mermaid initialized');
+
+        // diagram definitions
+        const diagrams = {
+            1: `graph TD
+    A[child speech sound disorders<br/>ages 2-8 years] --> B[identification & referral]
+    A --> C[comprehensive assessment]
+    A --> D[diagnosis & classification]
+    A --> E[treatment planning]
+    A --> F[intervention delivery]
+    A --> G[progress monitoring & outcomes]
+
+    B --> B1[who identifies?]
+    B1 --> B1a[parents: notice speech delays]
+    B1 --> B1b[pediatricians: developmental screening]
+    B1 --> B1c[teachers/anganwadi: classroom observation]
+    B --> B2[red flags by age]
+    B2 --> B2a[age 2: no words, no imitation]
+    B2 --> B2b[age 3: unintelligible to family<br/>16% prevalence]
+    B2 --> B2c[age 4: unintelligible to strangers<br/>2.1-23% have ssd]
+    B2 --> B2d[age 5 or more: persistent errors<br/>3.8% still have phonological disorders]
+    B2 --> B2e[age 6 or more: literacy risk if persists]
+
+    C --> C1[case history]
+    C1 --> C1a[developmental milestones]
+    C1 --> C1b[medical history: hearing, neuro, structural]
+    C1 --> C1c[family history: 60% genetic in stuttering]
+    C1 --> C1d[languages spoken: multilingual assessment]
+    C1 --> C1e[indian context: consanguinity, perinatal issues]
+    C --> C2[hearing screening]
+    C2 --> C2a[pure tone audiometry]
+    C2 --> C2b[rule out hearing loss as cause]
+    C --> C3[oral mechanism exam]
+    C3 --> C3a[structure: palate, tongue, lips, teeth]
+    C3 --> C3b[function: strength, range, coordination]
+    C3 --> C3c[diadochokinesis: rapid movements]
+    C --> C4[speech sound assessment]
+    C4 --> C4a[standardized tests]
+    C4a --> C4a1[GFTA-3: most widely used]
+    C4a --> C4a2[DEAP: comprehensive]
+    C4a --> C4a3[KLPA-3: phonological analysis]
+    C4 --> C4b[phonetic inventory: sounds child can make]
+    C4 --> C4c[connected speech sample]
+    C4 --> C4d[stimulability testing: can they produce with cues?]
+    C --> C5[phonological awareness]
+    C5 --> C5a[rhyming, segmentation age 4 or more]
+    C5 --> C5b[predicts literacy outcomes]
+    C --> C6[intelligibility measurement]
+    C6 --> C6a[percentage consonants correct PCC]
+    C6 --> C6b[% understood by family vs strangers]
+    C --> C7[language assessment]
+    C7 --> C7a[receptive: understanding]
+    C7 --> C7b[expressive: production]
+    C7 --> C7c[40% comorbidity with language disorder]
+
+    D --> D1[etiological classification]
+    D1 --> D1a[organic: identifiable cause]
+    D1a --> D1a1[structural: cleft palate, tongue-tie]
+    D1a --> D1a2[neurological: cas, dysarthria]
+    D1a --> D1a3[sensory: hearing loss]
+    D1 --> D1b[idiopathic: no known cause most common]
+    D1b --> D1b1[functional articulation disorders]
+    D1b --> D1b2[phonological disorders]
+    D1b --> D1b3[inconsistent speech disorder]
+
+    D --> D2[articulation disorders<br/>phonetic/motor-based<br/>3-5% preschoolers]
+    D2 --> D2a[error types]
+    D2a --> D2a1[substitutions: w for r wed for red]
+    D2a --> D2a2[omissions: ba for ball]
+    D2a --> D2a3[distortions: lateral lisp]
+    D2a --> D2a4[additions: buhlue for blue]
+    D2 --> D2b[commonly affected sounds]
+    D2b --> D2b1[r sound red: late developing age 6-7]
+    D2b --> D2b2[s sound sun: middle developing age 4-5]
+    D2b --> D2b3[l sound lion: middle developing]
+    D2b --> D2b4[th sound think: late developing age 7-8]
+    D2 --> D2c[causes]
+    D2c --> D2c1[structural: cleft, tongue-tie]
+    D2c --> D2c2[motor learning difficulties]
+    D2c --> D2c3[hearing loss: can't hear differences]
+    D2c --> D2c4[dental/orthodontic issues]
+    D2c --> D2c5[idiopathic: most common, unknown]
+
+    D --> D3[phonological disorders<br/>rule-based/linguistic<br/>2-4% preschoolers]
+    D3 --> D3a[syllable structure errors]
+    D3a --> D3a1[cluster reduction: top for stop<br/>normal until age 4-5]
+    D3a --> D3a2[final consonant deletion: ca for cat<br/>eliminate by age 3]
+    D3a --> D3a3[weak syllable deletion: nana for banana]
+    D3 --> D3b[substitution processes]
+    D3b --> D3b1[fronting: tar for car eliminate by age 3.5]
+    D3b --> D3b2[stopping: tun for sun resolve by age 3-4.5]
+    D3b --> D3b3[gliding: wed for red normal until age 5-6]
+    D3 --> D3c[assimilation processes]
+    D3c --> D3c1[velar: gog for dog]
+    D3c --> D3c2[labial: bub for bus]
+    D3c --> D3c3[nasal: nunny for funny]
+    D3 --> D3d[causes]
+    D3d --> D3d1[cognitive-linguistic: sound pattern rules]
+    D3d --> D3d2[phonological representation issues]
+    D3d --> D3d3[auditory processing difficulties]
+    D3d --> D3d4[language delay comorbidity]
+
+    D --> D4[childhood apraxia of speech cas<br/>motor planning disorder<br/><1% prevalence but serious]
+    D4 --> D4a[core characteristics]
+    D4a --> D4a1[inconsistent errors: same word different each time]
+    D4a --> D4a2[prosody issues: rhythm, stress abnormal]
+    D4a --> D4a3[coarticulation errors: transitions between sounds]
+    D4 --> D4b[additional features]
+    D4b --> D4b1[groping: visible struggle to position mouth]
+    D4b --> D4b2[errors increase with length/complexity]
+    D4b --> D4b3[better automatic vs volitional speech]
+    D4 --> D4c[causes]
+    D4c --> D4c1[neurological: motor planning brain pathways]
+    D4c --> D4c2[genetic: specific genes under research]
+    D4c --> D4c3[mostly idiopathic: no identified cause]
+    D4 --> D4d[comorbidity high]
+    D4d --> D4d1[average 8.4 comorbid conditions per child]
+    D4d --> D4d2[5.6 communication comorbidities]
+
+    D --> D5[pediatric dysarthria<br/>neuromuscular weakness<br/><1% prevalence]
+    D5 --> D5a[causes]
+    D5a --> D5a1[cerebral palsy: most common]
+    D5a --> D5a2[traumatic brain injury]
+    D5a --> D5a3[muscular dystrophy]
+    D5 --> D5b[characteristics]
+    D5b --> D5b1[consistent impairment across all tasks]
+    D5b --> D5b2[affects: respiration, phonation, resonance]
+    D5b --> D5b3[muscle weakness/paralysis present]
+
+    D --> D6[fluency disorders stuttering<br/>1% persistent, 5% lifetime]
+    D6 --> D6a[types]
+    D6a --> D6a1[developmental: onset ages 2-5 average 33 months]
+    D6a --> D6a2[75-80% recover naturally within 12-24 months]
+    D6a --> D6a3[persistent: continues beyond age 6-7]
+    D6 --> D6b[characteristics]
+    D6b --> D6b1[repetitions: b-b-b-ball]
+    D6b --> D6b2[prolongations: sssssnake]
+    D6b --> D6b3[blocks: tense stoppage, no sound]
+    D6b --> D6b4[secondary behaviors: eye blinks, tension]
+    D6 --> D6c[causes multifactorial]
+    D6c --> D6c1[genetic: 60% family history]
+    D6c --> D6c2[neurological: brain structure differences]
+    D6c --> D6c3[developmental: rapid language growth period]
+
+    D --> D7[voice disorders<br/>6-23% pediatric prevalence]
+    D7 --> D7a[types]
+    D7a --> D7a1[hoarseness/breathiness]
+    D7a --> D7a2[inappropriate pitch]
+    D7a --> D7a3[loudness issues]
+    D7 --> D7b[causes]
+    D7b --> D7b1[vocal nodules: 41-73% of voice disorders]
+    D7b --> D7b2[vocal abuse: yelling, excessive talking]
+    D7b --> D7b3[neurological conditions]
+
+    D --> D8[resonance disorders<br/>hypernasality/hyponasality]
+    D8 --> D8a[causes]
+    D8a --> D8a1[cleft palate: most common structural]
+    D8a --> D8a2[velopharyngeal dysfunction vpd]
+    D8a --> D8a3[adenoidectomy: post-surgery changes]
+    D8a --> D8a4[neurological: cerebral palsy]
+
+    D --> D9[severity determination]
+    D9 --> D9a[pcc percentage consonants correct]
+    D9a --> D9a1[mild: higher pcc]
+    D9a --> D9a2[moderate: mid-range pcc]
+    D9a --> D9a3[severe: low pcc]
+    D9 --> D9b[intelligibility impact]
+    D9 --> D9c[number of errors]
+    D9 --> D9d[age-appropriateness of patterns]
+
+    E --> E1[prognosis determination]
+    E1 --> E1a[favorable indicators]
+    E1a --> E1a1[younger age: earlier intervention better]
+    E1a --> E1a2[high stimulability: can produce with cues]
+    E1a --> E1a3[no comorbidities]
+    E1a --> E1a4[supportive family environment]
+    E1a --> E1a5[mild-moderate severity]
+    E1 --> E1b[unfavorable indicators]
+    E1b --> E1b1[late presentation: age 6 or more harder]
+    E1b --> E1b2[poor stimulability]
+    E1b --> E1b3[comorbid language disorder: 40% rate]
+    E1b --> E1b4[severe disorder]
+    E1b --> E1b5[cas diagnosis: requires intensive therapy]
+
+    E --> E2[goal selection smart goals]
+    E2 --> E2a[specific: target sounds/patterns]
+    E2 --> E2b[measurable: 80% accuracy criterion]
+    E2 --> E2c[achievable: based on stimulability]
+    E2 --> E2d[relevant: functional impact on intelligibility]
+    E2 --> E2e[time-bound: 8-12 weeks per goal]
+    E2 --> E2f[target selection criteria]
+    E2f --> E2f1[developmental appropriateness]
+    E2f --> E2f2[stimulability level]
+    E2f --> E2f3[frequency in language]
+    E2f --> E2f4[family priorities]
+    E2f --> E2f5[complexity for generalization]
+
+    E --> E3[approach selection]
+    E3 --> E3a[few errors 1-3 sounds, older, mild]
+    E3a --> E3a1[traditional articulation therapy]
+    E3a --> E3a2[minimal pairs approach]
+    E3 --> E3b[multiple processes, moderate-severe]
+    E3b --> E3b1[cycles approach: prominent method]
+    E3b --> E3b2[maximal oppositions]
+    E3b --> E3b3[multiple oppositions: severe cases]
+    E3 --> E3c[motor-based cas, dysarthria]
+    E3c --> E3c1[dynamic temporal tactile cueing dttc]
+    E3c --> E3c2[prompt: tactile cues]
+    E3c --> E3c3[motor learning principles: 100 or more trials]
+    E3 --> E3d[inconsistent speech disorder]
+    E3d --> E3d1[core vocabulary: 50-70 functional words]
+
+    E --> E4[treatment intensity dosage]
+    E4 --> E4a[session frequency]
+    E4a --> E4a1[moderate-severe: 2-3x per week]
+    E4a --> E4a2[cas intensive: 3-5 days per week]
+    E4a --> E4a3[mild: 1-2x per week]
+    E4 --> E4b[session duration]
+    E4b --> E4b1[30-45 minutes typical]
+    E4b --> E4b2[30 min for young children: attention limits]
+    E4 --> E4c[trials per session]
+    E4c --> E4c1[minimum: 23 trials]
+    E4c --> E4c2[average: 77 trials]
+    E4c --> E4c3[severe cases: 70 or more trials needed]
+    E4c --> E4c4[motor learning: 100 or more trials]
+
+    E --> E5[parent involvement plan]
+    E5 --> E5a[parent coaching model]
+    E5a --> E5a1[attend sessions alongside child]
+    E5a --> E5a2[learn techniques with feedback]
+    E5a --> E5a3[implement in daily routines]
+    E5 --> E5b[evidence: coached parents = better outcomes]
+    E5 --> E5c[home practice activities]
+    E5c --> E5c1[specific to current goals]
+    E5c --> E5c2[functional and meaningful]
+    E5c --> E5c3[integrate: bathtime, mealtime, play]
+
+    F --> F1[articulation therapy traditional]
+    F1 --> F1a[hierarchy stages]
+    F1a --> F1a1[stage 1: ear training auditory discrimination]
+    F1a --> F1a2[stage 2: sound isolation motor placement]
+    F1a --> F1a3[stage 3: syllable level ta-ta-ta]
+    F1a --> F1a4[stage 4: word level initial/medial/final]
+    F1a --> F1a5[stage 5: phrase level]
+    F1a --> F1a6[stage 6: sentence level]
+    F1a --> F1a7[stage 7: conversation & generalization]
+    F1 --> F1b[techniques]
+    F1b --> F1b1[visual cues: mirrors]
+    F1b --> F1b2[tactile cues: tongue placement]
+    F1b --> F1b3[verbal cues: instructions]
+    F1b --> F1b4[shaping: gradual approximation]
+    F1b --> F1b5[drill and practice]
+
+    F --> F2[phonological approaches]
+    F2 --> F2a[cycles approach hodson]
+    F2a --> F2a1[principle: stimulate emergence, not mastery]
+    F2a --> F2a2[cycle length: 2-6 hours per pattern]
+    F2a --> F2a3[rotate through all patterns]
+    F2a --> F2a4[repeat cycles with more complex targets]
+    F2a --> F2a5[evidence: prominent research support]
+    F2 --> F2b[minimal pairs therapy]
+    F2b --> F2b1[word contrasts: pea vs tea]
+    F2b --> F2b2[highlight meaning changes with sound changes]
+    F2b --> F2b3[phonological awareness focus]
+    F2b --> F2b4[for: older children, few errors, mild ssd]
+    F2 --> F2c[maximal oppositions]
+    F2c --> F2c1[contrast maximally different sounds]
+    F2c --> F2c2[example: bun vs sun place, manner, voice]
+    F2c --> F2c3[theory: greater generalization]
+    F2 --> F2d[multiple oppositions]
+    F2d --> F2d1[target 4 sounds simultaneously]
+    F2d --> F2d2[for: global phoneme collapse severe ssd]
+    F2d --> F2d3[minimum dose: 50 trials over 30 sessions]
+    F2d --> F2d4[severe: 70 or more trials]
+    F2 --> F2e[phonological awareness integration]
+    F2e --> F2e1[rhyming, segmentation activities]
+    F2e --> F2e2[letter-sound knowledge age 4 or more]
+    F2e --> F2e3[supports literacy development]
+
+    F --> F3[motor-based approaches]
+    F3 --> F3a[principles of motor learning]
+    F3a --> F3a1[high practice frequency: 100 or more trials]
+    F3a --> F3a2[systematic simple to complex progression]
+    F3a --> F3a3[variable practice contexts]
+    F3a --> F3a4[appropriate feedback: knowledge of results]
+    F3 --> F3b[dttc for cas]
+    F3b --> F3b1[bottom-up: simple to complex movements]
+    F3b --> F3b2[intensive practice]
+    F3b --> F3b3[systematic cueing: heavy to light support]
+    F3b --> F3b4[focus: prosody and coarticulation]
+    F3b --> F3b5[starts with: functional words child priorities]
+    F3 --> F3c[prompt tactile-kinesthetic]
+    F3c --> F3c1[tactile prompts on face/jaw]
+    F3c --> F3c2[trained approach: requires certification]
+    F3c --> F3c3[evidence: limited, small benefits]
+    F3 --> F3d[integral stimulation]
+    F3d --> F3d1[watch me, listen to me, do what i do]
+    F3d --> F3d2[cueing hierarchy: decreasing support]
+
+    F --> F4[core vocabulary for inconsistent ssd]
+    F4 --> F4a[practice 50-70 high-frequency functional words]
+    F4 --> F4b[focus: motor consistency not phoneme accuracy]
+    F4 --> F4c[intensive drill for automaticity]
+
+    F --> F5[fluency therapy]
+    F5 --> F5a[indirect therapy ages 2-5]
+    F5a --> F5a1[modify environment: reduce pressure]
+    F5a --> F5a2[slow parent speech rate]
+    F5a --> F5a3[palin parent-child interaction pci]
+    F5 --> F5b[direct therapy ages 5 or more]
+    F5b --> F5b1[easy onset: gentle word starts]
+    F5b --> F5b2[light articulatory contacts]
+    F5b --> F5b3[slow/stretched speech]
+    F5b --> F5b4[voluntary stuttering: reduce fear]
+    F5 --> F5c[monitoring approach]
+    F5c --> F5c1[if onset less than 6 months: watch and wait]
+    F5c --> F5c2[75-80% recover naturally]
+
+    F --> F6[approaches with negative evidence]
+    F6 --> F6a[non-speech oral motor exercises nsomes]
+    F6a --> F6a1[tongue push-ups, blowing, oral massage]
+    F6a --> F6a2[evidence: clear they do NOT produce speech changes]
+    F6a --> F6a3[rationale: non-speech behaviors not precursors]
+    F6 --> F6b[blowing/sucking for vpd]
+    F6b --> F6b1[not effective for velopharyngeal closure]
+    F6b --> F6b2[treatment instead: surgery + speech therapy]
+
+    G --> G1[progress monitoring methods]
+    G1 --> G1a[weekly probe data]
+    G1a --> G1a1[test target sounds in controlled contexts]
+    G1a --> G1a2[accuracy percentage tracking]
+    G1 --> G1b[work samples]
+    G1b --> G1b1[audio/video recordings]
+    G1b --> G1b2[compare baseline to current]
+    G1 --> G1c[parent reports]
+    G1c --> G1c1[carryover to home environment]
+    G1c --> G1c2[functional communication changes]
+    G1 --> G1d[teacher reports]
+    G1d --> G1d1[classroom intelligibility]
+    G1d --> G1d2[peer interactions]
+    G1 --> G1e[intelligibility remeasurement]
+    G1e --> G1e1[pcc recalculation]
+    G1e --> G1e2[% understood changes]
+
+    G --> G2[review and adjust cycle]
+    G2 --> G2a[review frequency: every 4-6 weeks]
+    G2 --> G2b[adequate progress]
+    G2b --> G2b1[continue current approach]
+    G2b --> G2b2[advance to next hierarchy level]
+    G2b --> G2b3[add new targets]
+    G2 --> G2c[inadequate progress]
+    G2c --> G2c1[analyze why: targets, intensity, compliance]
+    G2c --> G2c2[modify approach: change targets]
+    G2c --> G2c3[increase intensity: more sessions/trials]
+    G2c --> G2c4[consider reassessment]
+    G2c --> G2c5[consider referrals: hearing recheck, medical]
+    G2 --> G2d[goals met]
+    G2d --> G2d1[advance to next phase]
+    G2d --> G2d2[focus on generalization & carryover]
+    G2d --> G2d3[prepare for discharge]
+
+    G --> G3[discharge criteria]
+    G3 --> G3a[age-appropriate speech production]
+    G3 --> G3b[intelligible in all contexts]
+    G3 --> G3c[sounds maintaining in conversation]
+    G3 --> G3d[functional communication achieved]
+    G3 --> G3e[family satisfied with outcomes]
+
+    G --> G4[discharge plan]
+    G4 --> G4a[summary of progress]
+    G4 --> G4b[home activities to maintain skills]
+    G4 --> G4c[recommendations for monitoring]
+    G4 --> G4d[follow-up plan at 3-6 months]
+    G4 --> G4e[monitor for regression]`,
+
+            2: `graph LR
+    A[high school: class 12 science stream pcmb] --> B[entrance exam aiish or institution-specific]
+    B --> C[B.ASLP: bachelor in audiology and speech-language pathology 4 years total]
+    C --> C1[year 1: introductory]
+    C1 --> C1a[anatomy and physiology: speech, hearing, swallowing mechanisms]
+    C1 --> C1b[linguistics: phonetics, syntax, semantics]
+    C1 --> C1c[psychology and child development]
+    C1 --> C1d[normal communication development]
+    C1 --> C1e[electronics and acoustics]
+    C1 --> C2[year 2: core disorders]
+    C2 --> C2a[childhood communication disorders]
+    C2 --> C2b[articulation and phonological disorders]
+    C2 --> C2c[voice disorders and laryngectomy]
+    C2 --> C2d[diagnostic and educational audiology]
+    C2 --> C2e[otorhinolaryngology ent]
+    C2 --> C2f[statistics and research methodology]
+    C2 --> C2g[community-oriented practices]
+    C2 --> C3[year 3: advanced disorders]
+    C3 --> C3a[fluency and its disorders: stuttering]
+    C3 --> C3b[neuro-motor speech: dysarthria, cas]
+    C3 --> C3c[adult neuro-communication: aphasia]
+    C3 --> C3d[rehabilitative audiology]
+    C3 --> C3e[pediatric audiology]
+    C3 --> C3f[noise and hearing conservation]
+    C3 --> C4[year 4: internship 1 year full-time]
+    C4 --> C4a[clinical postings: hospitals]
+    C4 --> C4b[special schools]
+    C4 --> C4c[military hospitals]
+    C4 --> C4d[community service centers]
+    C4 --> C4e[private clinics]
+    C4 --> C4f[hands-on patient care supervised]
+    C4 --> D[RCI registration rehabilitation council of india mandatory for practice]
+    D --> E[entry-level SLP clinical practice begins]
+    E --> F[clinical experience 2-3 years]
+    F --> G{choose pathway}
+    G -->|specialization| H[M.Sc. SLP 2 years masters]
+    H --> H1[specialization options]
+    H1 --> H1a[child language disorders]
+    H1 --> H1b[fluency disorders]
+    H1 --> H1c[voice disorders]
+    H1 --> H1d[neuro-communication disorders]
+    H1 --> H1e[craniofacial anomalies]
+    H --> I[advanced clinical practice specialist slp]
+    I --> J{further study?}
+    J -->|yes| K[Ph.D. research/academia]
+    J -->|no| L[senior clinician/consultant]
+    G -->|continue clinical| E
+    K --> M[researcher/professor]`,
+
+            3: `graph TD
+    Start[child with speech difficulty ages 2-8 years referred to slp] --> Assess[comprehensive assessment: case history, hearing, oral exam, speech sounds, language, intelligibility]
+
+    Assess --> Q1{can child produce<br/>error sound correctly<br/>when given model/cues?<br/>stimulability testing}
+
+    Q1 -->|yes, highly stimulable| Q2{does child use<br/>predictable error patterns<br/>across multiple sounds?<br/>phonological process analysis}
+    Q1 -->|no, poor stimulability| A1[likely articulation disorder<br/>motor/phonetic production issue<br/>3-5% prevalence]
+
+    Q2 -->|yes, pattern-based errors| P1[phonological disorder<br/>rule-based/cognitive-linguistic<br/>2-4% prevalence]
+    Q2 -->|no, sound-specific only| Q3{does child produce<br/>same word differently<br/>each time tested?<br/>inconsistency assessment}
+
+    Q3 -->|yes, 10 or more inconsistent out of 25 words| CAS[childhood apraxia of speech motor planning disorder less than 1% prevalence or inconsistent ssd]
+    Q3 -->|no, consistent errors| Q4{check for structural,<br/>hearing, or language issues}
+
+    Q4 -->|structural abnormality<br/>identified| Struct[structural cause:<br/>cleft palate, tongue-tie,<br/>dental issues]
+    Q4 -->|hearing loss<br/>identified| Hear[hearing loss:<br/>contributing factor<br/>address first]
+    Q4 -->|language delay<br/>comorbid| Lang[comorbid language disorder<br/>40% rate with ssd<br/>integrated therapy needed]
+    Q4 -->|none identified| Idio[idiopathic functional<br/>articulation disorder:<br/>most common type]
+
+    A1 --> A1a[identify specific error type]
+    A1a --> A1a1[substitution: w for r, t for k most common]
+    A1a --> A1a2[omission: final consonants<br/>or clusters]
+    A1a --> A1a3[distortion: lateral/interdental lisp]
+    A1a --> A1a4[addition: extra sounds inserted]
+    A1a1 --> A1b{check stimulability again}
+    A1a2 --> A1b
+    A1a3 --> A1b
+    A1a4 --> A1b
+    A1b -->|high stimulability| A1b1[good prognosis: traditional articulation therapy hierarchy approach 2-3x per week, 30-45 min]
+    A1b -->|moderate stimulability| A1b2[fair prognosis: sensory-motor approach tactile cues, placement 2-3x per week intensive]
+    A1b -->|low stimulability| A1b3[guarded prognosis: motor learning principles 100 or more trials per session 3-5x per week intensive]
+
+    P1 --> P1a[analyze phonological processes]
+    P1a --> P1a1[syllable structure processes:<br/>cluster reduction, final consonant deletion,<br/>weak syllable deletion]
+    P1a --> P1a2[substitution processes: fronting k to t, stopping s to t, gliding r to w]
+    P1a --> P1a3[assimilation processes:<br/>sounds become similar<br/>gog for dog]
+    P1a1 --> P1b{severity assessment}
+    P1a2 --> P1b
+    P1a3 --> P1b
+    P1b -->|mild: 1-2 processes older child 5 or more years| P1b1[select approach: minimal pairs therapy phonological awareness focus 1-2x per week]
+    P1b -->|moderate: 3-4 processes age 3-5 years| P1b2[select approach: cycles approach hodson rotate through patterns 2-3x per week, 2-6 hours per cycle]
+    P1b -->|severe: 5 or more processes global collapse unintelligible| P1b3[select approach: multiple oppositions 4 sounds simultaneously 3x per week, 70 or more trials per session]
+
+    CAS --> CAS1{confirm cas diagnosis: inconsistency, prosody issues, coarticulation errors?}
+    CAS1 -->|yes, cas confirmed| CAS2[intensive motor practice required<br/>average 8.4 comorbid conditions]
+    CAS2 --> CAS2a[dttc approach:<br/>dynamic temporal tactile cueing<br/>bottom-up, intensive practice<br/>systematic cueing hierarchy]
+    CAS2 --> CAS2b[prompt approach:<br/>tactile-kinesthetic cues<br/>requires training<br/>limited evidence]
+    CAS2 --> CAS2c[integral stimulation:<br/>watch me, listen, do what i do<br/>cueing hierarchy]
+    CAS2 --> CAS2d[frequency: 3-5 days per week or 4x per week in 12-16 session blocks 100 or more trials per session]
+    CAS1 -->|no, inconsistent ssd| CAS3[core vocabulary approach:<br/>50-70 functional words<br/>motor consistency focus<br/>intensive drill]
+
+    Struct --> Struct1{type of structural issue?}
+    Struct1 -->|cleft palate| Struct1a[multidisciplinary team:<br/>surgery + orthodontics +<br/>speech therapy for articulation<br/>not oral motor exercises evidence: negative]
+    Struct1 -->|tongue-tie ankyloglossia| Struct1b[assess functional impact<br/>may need frenectomy +<br/>articulation therapy]
+    Struct1 -->|dental malocclusion| Struct1c[orthodontics referral +<br/>articulation therapy<br/>coordinate timing]
+
+    Hear --> Hear1[audiology referral<br/>hearing aids/cochlear implant<br/>then speech therapy<br/>rule out as primary cause]
+
+    Lang --> Lang1[integrated speech-language therapy]
+    Lang1 --> Lang1a[target both goals simultaneously]
+    Lang1 --> Lang1b[include phonological awareness age 4 or more for literacy risk]
+    Lang1 --> Lang1c[may need longer duration:<br/>comorbidity affects prognosis]
+    Lang1 --> Lang1d[coordinate with special educators]
+
+    Idio --> Idio1{age of child and<br/>number of errors?}
+    Idio1 -->|age 6 or more few errors late developing sounds| Idio1a[traditional articulation therapy target r, th, s sounds good prognosis]
+    Idio1 -->|age 3-5 multiple errors| Idio1b[assess if phonological patterns<br/>may actually be phonological disorder<br/>re-analyze]
+    Idio1 -->|age 2-3 developmental| Idio1c[monitor approach:<br/>many resolve naturally<br/>recheck in 6 months<br/>parent education meanwhile]
+
+    A1b1 --> Monitor[progress monitoring every 4-6 weeks]
+    A1b2 --> Monitor
+    A1b3 --> Monitor
+    P1b1 --> Monitor
+    P1b2 --> Monitor
+    P1b3 --> Monitor
+    CAS2a --> Monitor
+    CAS2b --> Monitor
+    CAS2c --> Monitor
+    CAS3 --> Monitor
+    Struct1a --> Monitor
+    Struct1b --> Monitor
+    Struct1c --> Monitor
+    Hear1 --> Monitor
+    Lang1 --> Monitor
+    Idio1a --> Monitor
+
+    Monitor --> Progress{adequate progress? weekly probe data, parent and teacher reports}
+    Progress -->|yes, meeting goals| Progress1[continue current approach<br/>advance in hierarchy<br/>add new targets when ready]
+    Progress -->|no, inadequate progress| Progress2[analyze barriers:<br/>inappropriate targets?<br/>insufficient intensity?<br/>poor compliance?<br/>unidentified comorbidity?]
+    Progress2 --> Progress2a[modify intervention:<br/>change targets<br/>increase session frequency<br/>increase trials per session<br/>or change approach entirely]
+    Progress -->|goals achieved| Progress3[prepare for discharge]
+
+    Progress1 --> Monitor
+    Progress2a --> Monitor
+
+    Progress3 --> Discharge[discharge criteria met: age-appropriate production, intelligible in all contexts, functional communication, maintaining in conversation]
+    Discharge --> Discharge1[discharge plan: summary of progress, home maintenance activities, follow-up at 3-6 months, monitor for regression]`
+        };
+
+        // render diagram
+        async function renderDiagram(index) {
+            try {
+                console.log(`Starting render for diagram ${index}`);
+                const element = document.getElementById(`diagram${index}`);
+
+                if (!element) {
+                    console.error(`Element diagram${index} not found`);
+                    return;
+                }
+
+                console.log(`Rendering mermaid diagram ${index}...`);
+                const { svg } = await mermaid.render(`mermaid${index}`, diagrams[index]);
+                console.log(`Diagram ${index} rendered, inserting SVG...`);
+                element.innerHTML = svg;
+
+                // initialize pan-zoom
+                const svgElement = element.querySelector('svg');
+                if (!svgElement) {
+                    console.error(`SVG element not found for diagram ${index}`);
+                    return;
+                }
+
+                console.log(`Initializing pan-zoom for diagram ${index}`);
+
+                // Set explicit dimensions on SVG
+                svgElement.style.width = '100%';
+                svgElement.style.height = '100%';
+
+                panZoomInstances[index] = svgPanZoom(svgElement, {
+                    zoomEnabled: true,
+                    controlIconsEnabled: false,
+                    fit: true,
+                    center: true,
+                    minZoom: 0.1,
+                    maxZoom: 10,
+                    zoomScaleSensitivity: 0.3,
+                    dblClickZoomEnabled: true,
+                    mouseWheelZoomEnabled: true,
+                    panEnabled: true,
+                    onZoom: function(zoom) {
+                        updateZoomInfo();
+                    }
+                });
+
+                console.log(`Pan-zoom instance created:`, panZoomInstances[index]);
+                console.log(`Diagram ${index} complete`);
+            } catch (error) {
+                console.error(`Error rendering diagram ${index}:`, error);
+                document.getElementById(`diagram${index}`).innerHTML =
+                    `<div style="padding: 2rem; color: red;">Error rendering diagram: ${error.message}</div>`;
+            }
+        }
+
+        // switch tabs
+        function switchTab(tabNumber) {
+            currentTab = tabNumber;
+
+            // update tab UI
+            document.querySelectorAll('.tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i + 1 === tabNumber);
+            });
+
+            // update diagram display
+            document.querySelectorAll('.diagram-wrapper').forEach((wrapper, i) => {
+                wrapper.classList.toggle('active', i + 1 === tabNumber);
+            });
+        }
+
+        // zoom controls
+        function zoomIn() {
+            if (panZoomInstances[currentTab]) {
+                panZoomInstances[currentTab].zoomIn();
+            }
+        }
+
+        function zoomOut() {
+            if (panZoomInstances[currentTab]) {
+                panZoomInstances[currentTab].zoomOut();
+            }
+        }
+
+        function resetZoom() {
+            if (panZoomInstances[currentTab]) {
+                panZoomInstances[currentTab].resetZoom();
+                panZoomInstances[currentTab].center();
+            }
+        }
+
+        function fitToScreen() {
+            if (panZoomInstances[currentTab]) {
+                panZoomInstances[currentTab].fit();
+                panZoomInstances[currentTab].center();
+            }
+        }
+
+        function updateZoomInfo() {
+            if (panZoomInstances[currentTab]) {
+                const zoom = panZoomInstances[currentTab].getZoom();
+                document.getElementById('zoomInfo').textContent = `zoom: ${Math.round(zoom * 100)}%`;
+            }
+        }
+
+        // search functionality
+        function searchNodes() {
+            const searchTerm = document.getElementById('searchBox').value.toLowerCase();
+            const svg = document.querySelector(`#diagram${currentTab} svg`);
+
+            if (!svg) return;
+
+            // reset all highlights
+            svg.querySelectorAll('.node').forEach(node => {
+                node.style.opacity = '1';
+                node.querySelector('rect, circle, polygon')?.setAttribute('stroke', 'rgb(0, 0, 0)');
+                node.querySelector('rect, circle, polygon')?.setAttribute('stroke-width', '1.5px');
+            });
+
+            if (searchTerm) {
+                svg.querySelectorAll('.node').forEach(node => {
+                    const text = node.textContent.toLowerCase();
+                    if (text.includes(searchTerm)) {
+                        // highlight matching nodes
+                        node.querySelector('rect, circle, polygon')?.setAttribute('stroke', '#3498db');
+                        node.querySelector('rect, circle, polygon')?.setAttribute('stroke-width', '3px');
+                    } else {
+                        // dim non-matching nodes
+                        node.style.opacity = '0.3';
+                    }
+                });
+            }
+        }
+
+        // initialize on load
+        window.addEventListener('load', async () => {
+            console.log('Page loaded, starting diagram rendering...');
+            try {
+                await renderDiagram(1);
+                await renderDiagram(2);
+                await renderDiagram(3);
+                updateZoomInfo();
+                console.log('All diagrams rendered successfully');
+            } catch (error) {
+                console.error('Error during initialization:', error);
+            }
+        });
+    </script>
+</body>
+</html>

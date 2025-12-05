@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speech Disorders Interactive Viewer</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+        .header {
+            background: #2c3e50;
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .header p { font-size: 0.9rem; opacity: 0.9; }
+        .tabs {
+            background: white;
+            border-bottom: 2px solid #e0e0e0;
+            display: flex;
+            padding: 0 2rem;
+        }
+        .tab {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+            color: #666;
+        }
+        .tab:hover { background: #f8f8f8; color: #2c3e50; }
+        .tab.active { color: #3498db; border-bottom-color: #3498db; }
+        .controls {
+            background: white;
+            padding: 1rem 2rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #f0f0f0; border-color: #3498db; }
+        .zoom-info {
+            font-size: 0.85rem;
+            color: #666;
+            padding: 0.5rem 1rem;
+            background: #f8f8f8;
+            border-radius: 4px;
+        }
+        .viewer {
+            height: calc(100vh - 180px);
+            background: white;
+            position: relative;
+            overflow: hidden;
+            cursor: grab;
+        }
+        .viewer:active { cursor: grabbing; }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            transform-origin: 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>child speech disorders: comprehensive taxonomy and therapy journey</h1>
+        <p>interactive visualization - ages 2-8 years | indian and global context</p>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active" onclick="loadDiagram(1)">comprehensive taxonomy & therapy pathway</div>
+        <div class="tab" onclick="loadDiagram(2)">indian slp training pathway</div>
+        <div class="tab" onclick="loadDiagram(3)">clinical decision tree</div>
+    </div>
+
+    <div class="controls">
+        <button class="btn" onclick="zoom(1.2)">➕ zoom in</button>
+        <button class="btn" onclick="zoom(0.8)">➖ zoom out</button>
+        <button class="btn" onclick="reset()">↻ reset</button>
+        <span class="zoom-info" id="info">zoom: 100% | use mouse wheel to zoom, drag to pan</span>
+    </div>
+
+    <div class="viewer" id="viewer">
+        <p style="padding: 2rem; color: #666;">Loading diagram...</p>
+    </div>
+
+    <script>
+        let currentDiagram = 1;
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        let isDragging = false;
+        let startX, startY;
+
+        const diagrams = {
+            1: 'https://mermaid.ink/svg/Z3JhcGggVEQKICAgIEFbY2hpbGQgc3BlZWNoIHNvdW5kIGRpc29yZGVyc10gLS0+IEJbaWRlbnRpZmljYXRpb24gYW5kIHJlZmVycmFsXQogICAgQSAtLT4gQ1tjb21wcmVoZW5zaXZlIGFzc2Vzc21lbnRdCiAgICBBIC0tPiBEW2RpYWdub3NpcyBhbmQgY2xhc3NpZmljYXRpb25dCiAgICBBIC0tPiBFW3RyZWF0bWVudCBwbGFubmluZ10KICAgIEEgLS0+IEZbaW50ZXJ2ZW50aW9uIGRlbGl2ZXJ5XQogICAgQSAtLT4gR1twcm9ncmVzcyBtb25pdG9yaW5nXQ==',
+            2: 'https://mermaid.ink/svg/Z3JhcGggTFIKICAgIEFbaGlnaCBzY2hvb2xdIC0tPiBCW2VudHJhbmNlIGV4YW1dCiAgICBCIC0tPiBDW0IuQVNMUF0KICAgIEMgLS0+IERbUkNJIHJlZ2lzdHJhdGlvbl0KICAgIEQgLS0+IEVbZW50cnktbGV2ZWwgU0xQXQogICAgRSAtLT4gRltjbGluaWNhbCBleHBlcmllbmNlXQogICAgRiAtLT4gR3tjaG9vc2UgcGF0aHdheX0KICAgIEcgLS0+fHNwZWNpYWxpemF0aW9ufCBIW00uU2MuIFNMUF0=',
+            3: 'https://mermaid.ink/svg/Z3JhcGggVEQKICAgIFN0YXJ0W2NoaWxkIHdpdGggc3BlZWNoIGRpZmZpY3VsdHld=='
+        };
+
+        function loadDiagram(num) {
+            currentDiagram = num;
+            document.querySelectorAll('.tab').forEach((t, i) => {
+                t.classList.toggle('active', i + 1 === num);
+            });
+            const viewer = document.getElementById('viewer');
+            viewer.innerHTML = `<iframe src="https://mermaid.live/view#pako:eNpVkE1qw0AMha8itE6gFxAhQqELQ6HQTZeFlGIy8k8mM2MYjyEhd-_YTpOuJJ6-90l6Z-wdJ-zx4mP0yYd4xlpDLQFqie_wDi_QSnCth3jBt_gJH_AFX-MbvMdXeI-v8B5f4T2-wnuswVd4j6_wHl_hPb7Ce3yF9_gK7_EV3uMrvMdXeI-v8B5f4T2-wnuswVd4j6_wHl_hPb7Ce3yF9_gK7_EV3uMrvMdXeI-v8B5f4T2-wnuswVd4j6_wHl_hPb7Ce3yF9_gK7w=="></iframe>`;
+            reset();
+        }
+
+        function zoom(factor) {
+            scale *= factor;
+            scale = Math.max(0.5, Math.min(scale, 5));
+            update();
+        }
+
+        function reset() {
+            scale = 1;
+            translateX = 0;
+            translateY = 0;
+            update();
+        }
+
+        function update() {
+            const iframe = document.querySelector('iframe');
+            if (iframe) {
+                iframe.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+            }
+            document.getElementById('info').textContent = `zoom: ${Math.round(scale * 100)}% | use mouse wheel to zoom, drag to pan`;
+        }
+
+        const viewer = document.getElementById('viewer');
+        viewer.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            zoom(e.deltaY < 0 ? 1.1 : 0.9);
+        });
+
+        viewer.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            startX = e.clientX - translateX;
+            startY = e.clientY - translateY;
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            translateX = e.clientX - startX;
+            translateY = e.clientY - startY;
+            update();
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        loadDiagram(1);
+    </script>
+</body>
+</html>
