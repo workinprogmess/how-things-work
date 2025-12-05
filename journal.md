@@ -1,5 +1,13 @@
 # journal.md
 
+## 2025-12-05 15:59
+
+### merged tuning history into node-ing
+
+- merged tuning branch into node-ing so tuning commits count toward default branch contributions
+- brought over all tuning assets (guides, diagrams, investor deck files)
+- next: verify contributions graph reflects merged history
+
 ## 2025-12-05 15:31
 
 ### branch rename and new folder
