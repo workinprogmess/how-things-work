@@ -1,354 +1,354 @@
-# Color Palette & Combination Generator Tools Research
+# color palette & combination generator tools research
 
-## Overview
+## overview
 
-This research covers popular (and some lesser-known) color code, palette, and combination generator tools - their features, traffic, and pricing models.
-
----
-
-## Tier 1: High Traffic Tools (1M+ monthly visits)
-
-### 1. Coolors
-| Attribute | Details |
-|-----------|---------|
-| **URL** | [coolors.co](https://coolors.co/) |
-| **Monthly Traffic** | ~4.3M visits |
-| **Pricing** | Free (ad-supported), Premium available |
-| **Global Rank** | #7,156 |
-
-**Features:**
-- Lightning-fast palette generation (spacebar to generate)
-- 10M+ existing palettes to explore
-- Adjust by shade, hue, saturation
-- Color blindness accessibility testing
-- Export with color code info (HEX, RGB, CMYK, HSL)
-- Available as: Web app, iOS app, Adobe extension, Chrome extension
-- Save, share, and organize palettes
-- Image color extraction
-- Gradient generator
-- Contrast checker
-
-**Why it's popular:** Speed and simplicity. One-tap generation makes it frictionless for quick inspiration.
+this research covers popular (and some lesser-known) color code, palette, and combination generator tools - their features, traffic, and pricing models.
 
 ---
 
-### 2. Adobe Color
-| Attribute | Details |
+## tier 1: high traffic tools (1m+ monthly visits)
+
+### 1. coolors
+| attribute | details |
 |-----------|---------|
-| **URL** | [color.adobe.com](https://color.adobe.com/) |
-| **Monthly Traffic** | Part of Adobe ecosystem (~380M for adobe.com) |
-| **Pricing** | Free (no Adobe account required) |
+| **url** | [coolors.co](https://coolors.co/) |
+| **monthly traffic** | ~4.3m visits |
+| **pricing** | free (ad-supported), premium available |
+| **global rank** | #7,156 |
 
-**Features:**
-- Color harmony rules: Analogous, Monochromatic, Triad, Complementary, Split-Complementary, Double Split-Complementary, Square, Compound, Shades
-- "Extract Theme" from uploaded images
-- Color wheel with full control
-- CMYK, RGB, HSB, LAB values
-- Accessibility tools (contrast checker)
-- Explore trending palettes
-- Integration with Adobe Creative Cloud
-- Save to CC Libraries
+**features:**
+- lightning-fast palette generation (spacebar to generate)
+- 10m+ existing palettes to explore
+- adjust by shade, hue, saturation
+- color blindness accessibility testing
+- export with color code info (hex, rgb, cmyk, hsl)
+- available as: web app, ios app, adobe extension, chrome extension
+- save, share, and organize palettes
+- image color extraction
+- gradient generator
+- contrast checker
 
-**Why it's popular:** Professional-grade tool from a trusted design company, seamless Creative Cloud integration.
+**why it's popular:** speed and simplicity. one-tap generation makes it frictionless for quick inspiration.
 
 ---
 
-### 3. Color Hunt
-| Attribute | Details |
+### 2. adobe color
+| attribute | details |
 |-----------|---------|
-| **URL** | [colorhunt.co](https://colorhunt.co/) |
-| **Monthly Traffic** | ~2.2M visits |
-| **Pricing** | Free |
-| **Global Rank** | ~23,905 |
+| **url** | [color.adobe.com](https://color.adobe.com/) |
+| **monthly traffic** | part of adobe ecosystem (~380m for adobe.com) |
+| **pricing** | free (no adobe account required) |
 
-**Features:**
-- Curated, hand-picked color palettes
-- Community-driven submissions
-- Simple 4-color palette cards
-- One-click copy hex codes
-- Sort by: Trending, Popular, New, Random
-- Filter by color categories (Pastel, Vintage, Retro, Neon, etc.)
-- Daily new palettes
-- Chrome extension available
+**features:**
+- color harmony rules: analogous, monochromatic, triad, complementary, split-complementary, double split-complementary, square, compound, shades
+- "extract theme" from uploaded images
+- color wheel with full control
+- cmyk, rgb, hsb, lab values
+- accessibility tools (contrast checker)
+- explore trending palettes
+- integration with adobe creative cloud
+- save to cc libraries
 
-**Why it's popular:** Human-curated quality over AI randomness. Instagram-like browsing experience.
+**why it's popular:** professional-grade tool from a trusted design company, seamless creative cloud integration.
 
 ---
 
-### 4. ColorSpace (mycolor.space)
-| Attribute | Details |
+### 3. color hunt
+| attribute | details |
 |-----------|---------|
-| **URL** | [mycolor.space](https://mycolor.space/) |
-| **Monthly Traffic** | ~1.3M visits |
-| **Pricing** | Free |
-| **Global Rank** | ~101,531 |
+| **url** | [colorhunt.co](https://colorhunt.co/) |
+| **monthly traffic** | ~2.2m visits |
+| **pricing** | free |
+| **global rank** | ~23,905 |
 
-**Features:**
-- Enter one color, generate multiple palette types
-- Gradient generator
-- CSS gradient code export
-- Multiple palette styles: Generic, Matching, Spot, Natural, etc.
+**features:**
+- curated, hand-picked color palettes
+- community-driven submissions
+- simple 4-color palette cards
+- one-click copy hex codes
+- sort by: trending, popular, new, random
+- filter by color categories (pastel, vintage, retro, neon, etc.)
+- daily new palettes
+- chrome extension available
+
+**why it's popular:** human-curated quality over ai randomness. instagram-like browsing experience.
+
+---
+
+### 4. colorspace (mycolor.space)
+| attribute | details |
+|-----------|---------|
+| **url** | [mycolor.space](https://mycolor.space/) |
+| **monthly traffic** | ~1.3m visits |
+| **pricing** | free |
+| **global rank** | ~101,531 |
+
+**features:**
+- enter one color, generate multiple palette types
+- gradient generator
+- css gradient code export
+- multiple palette styles: generic, matching, spot, natural, etc.
 - 3-color gradient generator
-- Clean, minimal interface
+- clean, minimal interface
 
-**Why it's popular:** One input color generates many variations instantly.
-
----
-
-### 5. Color-Hex
-| Attribute | Details |
-|-----------|---------|
-| **URL** | [color-hex.com](https://www.color-hex.com/) |
-| **Monthly Traffic** | ~839K visits |
-| **Pricing** | Free |
-| **Global Rank** | ~13,838 |
-
-**Features:**
-- Comprehensive color information (RGB, HSL, HSV, CMYK)
-- CSS and HTML color codes
-- Color palettes gallery
-- Color blending tool
-- Tints and shades generator
-- Community palette sharing
-- Color of the day
-
-**Why it's popular:** Reference tool for developers needing quick color code conversions.
+**why it's popular:** one input color generates many variations instantly.
 
 ---
 
-## Tier 2: Medium Traffic Tools (100K-1M monthly visits)
-
-### 6. Paletton
-| Attribute | Details |
+### 5. color-hex
+| attribute | details |
 |-----------|---------|
-| **URL** | [paletton.com](https://paletton.com/) |
-| **Monthly Traffic** | ~350-380K visits |
-| **Pricing** | Free |
+| **url** | [color-hex.com](https://www.color-hex.com/) |
+| **monthly traffic** | ~839k visits |
+| **pricing** | free |
+| **global rank** | ~13,838 |
 
-**Features:**
-- Advanced color wheel exploration
-- Schemes: Monochromatic, Adjacent (Analogic), Triad, Tetrad
-- Fine-tune with distance and angle controls
-- Preview in mockup contexts (website, artwork)
-- Export to CSS, LESS, SASS, XML, PNG, ACO, GPL
-- Colorblind simulation
-- 20M+ visitors since 2009
+**features:**
+- comprehensive color information (rgb, hsl, hsv, cmyk)
+- css and html color codes
+- color palettes gallery
+- color blending tool
+- tints and shades generator
+- community palette sharing
+- color of the day
 
-**Why it's popular:** Deep color theory tool for serious designers who want control.
+**why it's popular:** reference tool for developers needing quick color code conversions.
 
 ---
 
-### 7. Colormind
-| Attribute | Details |
+## tier 2: medium traffic tools (100k-1m monthly visits)
+
+### 6. paletton
+| attribute | details |
 |-----------|---------|
-| **URL** | [colormind.io](http://colormind.io/) |
-| **Monthly Traffic** | ~275K visits |
-| **Pricing** | Free (core), optional advanced features |
-| **Global Rank** | ~52,040 |
+| **url** | [paletton.com](https://paletton.com/) |
+| **monthly traffic** | ~350-380k visits |
+| **pricing** | free |
 
-**Features:**
-- Deep learning AI-powered generation
-- Learns from photographs, movies, popular art
-- Different datasets loaded daily
-- Color locking (lock colors, regenerate others)
-- Position-aware generation (placement matters)
-- Website color tool (preview on UI templates)
-- Image upload for palette extraction
-- Export: CSS, JSON, design tool formats
+**features:**
+- advanced color wheel exploration
+- schemes: monochromatic, adjacent (analogic), triad, tetrad
+- fine-tune with distance and angle controls
+- preview in mockup contexts (website, artwork)
+- export to css, less, sass, xml, png, aco, gpl
+- colorblind simulation
+- 20m+ visitors since 2009
 
-**Why it's popular:** AI that learns from real-world aesthetics, not just math.
+**why it's popular:** deep color theory tool for serious designers who want control.
 
 ---
 
-### 8. Huemint
-| Attribute | Details |
+### 7. colormind
+| attribute | details |
 |-----------|---------|
-| **URL** | [huemint.com](https://huemint.com/) |
-| **Monthly Traffic** | Not specified (launched 2021) |
-| **Pricing** | Free (API free for non-commercial) |
+| **url** | [colormind.io](http://colormind.io/) |
+| **monthly traffic** | ~275k visits |
+| **pricing** | free (core), optional advanced features |
+| **global rank** | ~52,040 |
 
-**Features:**
-- Context-aware AI generation (understands roles: background, foreground, accent)
-- Templates: Brand, Website, Illustration, Gradient, Bootstrap themes
-- Three AI modes: Transformer, Diffusion Model, Random Creative
-- "Creativity/temperature" slider (safe to adventurous)
-- Lock colors while regenerating
-- Contrast matrix (set targets between roles)
-- Upload and re-color flat graphics
-- Bootstrap SCSS export
-- Public API available
+**features:**
+- deep learning ai-powered generation
+- learns from photographs, movies, popular art
+- different datasets loaded daily
+- color locking (lock colors, regenerate others)
+- position-aware generation (placement matters)
+- website color tool (preview on ui templates)
+- image upload for palette extraction
+- export: css, json, design tool formats
 
-**Why it's popular:** Generates palettes that understand design context, not just colors.
+**why it's popular:** ai that learns from real-world aesthetics, not just math.
 
 ---
 
-## Tier 3: Specialized/Niche Tools
-
-### 9. Khroma
-| Attribute | Details |
+### 8. huemint
+| attribute | details |
 |-----------|---------|
-| **URL** | [khroma.co](https://www.khroma.co/) |
-| **Monthly Traffic** | Not specified |
-| **Pricing** | Free (basic), paid plans for advanced |
+| **url** | [huemint.com](https://huemint.com/) |
+| **monthly traffic** | not specified (launched 2021) |
+| **pricing** | free (api free for non-commercial) |
 
-**Features:**
-- Personalized AI that learns YOUR preferences
-- Train by selecting 50 colors you like
-- Blocks colors you don't like
-- View as: Typography, Gradient, Palette, Custom image
-- Search/filter by hue, tint, value, hex, rgb
-- Unlimited saved library
-- WCAG accessibility ratings
-- Color names and all code formats
+**features:**
+- context-aware ai generation (understands roles: background, foreground, accent)
+- templates: brand, website, illustration, gradient, bootstrap themes
+- three ai modes: transformer, diffusion model, random creative
+- "creativity/temperature" slider (safe to adventurous)
+- lock colors while regenerating
+- contrast matrix (set targets between roles)
+- upload and re-color flat graphics
+- bootstrap scss export
+- public api available
 
-**Why it's popular:** Truly personalized - learns your taste instead of generic generation.
+**why it's popular:** generates palettes that understand design context, not just colors.
 
 ---
 
-### 10. Realtime Colors
-| Attribute | Details |
+## tier 3: specialized/niche tools
+
+### 9. khroma
+| attribute | details |
 |-----------|---------|
-| **URL** | [realtimecolors.com](https://www.realtimecolors.com/) |
-| **Monthly Traffic** | Not specified (newer tool) |
-| **Pricing** | 100% Free |
+| **url** | [khroma.co](https://www.khroma.co/) |
+| **monthly traffic** | not specified |
+| **pricing** | free (basic), paid plans for advanced |
 
-**Features:**
-- Live preview on actual website mockup
-- See colors in context immediately
-- Traffic-light contrast system (AAA/AA compliance visual)
-- 5 color roles: Text, Background, Primary, Secondary, Accent
-- Font pairing preview
-- Export: CSS, Tailwind CSS, SCSS, .zip, .png, QR code
-- Randomize button
-- Color locking
-- Shareable links
+**features:**
+- personalized ai that learns your preferences
+- train by selecting 50 colors you like
+- blocks colors you don't like
+- view as: typography, gradient, palette, custom image
+- search/filter by hue, tint, value, hex, rgb
+- unlimited saved library
+- wcag accessibility ratings
+- color names and all code formats
 
-**Why it's popular:** Solves the "how will this look on a real site?" problem.
+**why it's popular:** truly personalized - learns your taste instead of generic generation.
 
 ---
 
-### 11. Material Design Color Tool
-| Attribute | Details |
+### 10. realtime colors
+| attribute | details |
 |-----------|---------|
-| **URL** | [material.io/resources/color](https://m3.material.io/theme-builder) |
-| **Monthly Traffic** | Part of Google ecosystem |
-| **Pricing** | Free |
+| **url** | [realtimecolors.com](https://www.realtimecolors.com/) |
+| **monthly traffic** | not specified (newer tool) |
+| **pricing** | 100% free |
 
-**Features:**
-- Google's official Material Design system
-- Primary + Secondary color pairing
+**features:**
+- live preview on actual website mockup
+- see colors in context immediately
+- traffic-light contrast system (aaa/aa compliance visual)
+- 5 color roles: text, background, primary, secondary, accent
+- font pairing preview
+- export: css, tailwind css, scss, .zip, .png, qr code
+- randomize button
+- color locking
+- shareable links
+
+**why it's popular:** solves the "how will this look on a real site?" problem.
+
+---
+
+### 11. material design color tool
+| attribute | details |
+|-----------|---------|
+| **url** | [material.io/resources/color](https://m3.material.io/theme-builder) |
+| **monthly traffic** | part of google ecosystem |
+| **pricing** | free |
+
+**features:**
+- google's official material design system
+- primary + secondary color pairing
 - 13-tone palettes (0-100% tonal values)
-- Accessibility evaluation for typography legibility
-- Preview on Material UI components
-- Material 3: Dynamic color, large screen support, design tokens
-- Figma plugin (Material Theme Builder)
-- Export design tokens
+- accessibility evaluation for typography legibility
+- preview on material ui components
+- material 3: dynamic color, large screen support, design tokens
+- figma plugin (material theme builder)
+- export design tokens
 
-**Why it's popular:** Official Google tool, essential for Android/Material Design projects.
+**why it's popular:** official google tool, essential for android/material design projects.
 
 ---
 
-### 12. Muzli Colors
-| Attribute | Details |
+### 12. muzli colors
+| attribute | details |
 |-----------|---------|
-| **URL** | [colors.muz.li](https://colors.muz.li/) |
-| **Monthly Traffic** | Part of InVision ecosystem |
-| **Pricing** | Free |
+| **url** | [colors.muz.li](https://colors.muz.li/) |
+| **monthly traffic** | part of invision ecosystem |
+| **pricing** | free |
 
-**Features:**
-- Color wheel with saturation/brightness controls
-- Up to 4 complementary colors
-- Palette types: Analogic, Monochromatic, Triad, Complementary, Tetradic, Random
-- Preview in website/app mockups + 3D environment
-- AI text-to-palette generation
-- Save/share with account (optional)
-- SVG export
+**features:**
+- color wheel with saturation/brightness controls
+- up to 4 complementary colors
+- palette types: analogic, monochromatic, triad, complementary, tetradic, random
+- preview in website/app mockups + 3d environment
+- ai text-to-palette generation
+- save/share with account (optional)
+- svg export
 
-**Why it's popular:** Great previews, InVision/design community backing.
+**why it's popular:** great previews, invision/design community backing.
 
 ---
 
-### 13. Pigment by ShapeFactory
-| Attribute | Details |
+### 13. pigment by shapefactory
+| attribute | details |
 |-----------|---------|
-| **URL** | [pigment.shapefactory.co](https://pigment.shapefactory.co/) |
-| **Monthly Traffic** | Not specified |
-| **Pricing** | Free |
+| **url** | [pigment.shapefactory.co](https://pigment.shapefactory.co/) |
+| **monthly traffic** | not specified |
+| **pricing** | free |
 
-**Features:**
-- Colors based on "lighting and pigment" not math
-- Slider-based exploration
-- Contrast-focused combinations
-- Export: SVG, Sketch palette
-- Gradient generator
-- HEX, RGB, Pantone codes
-- Unsplash integration (palette from photos)
-- Single-page, minimal interface
+**features:**
+- colors based on "lighting and pigment" not math
+- slider-based exploration
+- contrast-focused combinations
+- export: svg, sketch palette
+- gradient generator
+- hex, rgb, pantone codes
+- unsplash integration (palette from photos)
+- single-page, minimal interface
 
-**Why it's popular:** Different approach - simulates real pigment/light behavior.
+**why it's popular:** different approach - simulates real pigment/light behavior.
 
 ---
 
-## Summary Table
+## summary table
 
-| Tool | Monthly Traffic | Pricing | Key Differentiator |
+| tool | monthly traffic | pricing | key differentiator |
 |------|-----------------|---------|-------------------|
-| **Coolors** | 4.3M | Free/Premium | Speed, simplicity, multi-platform |
-| **Adobe Color** | (Adobe ecosystem) | Free | Pro features, CC integration |
-| **Color Hunt** | 2.2M | Free | Human-curated quality |
-| **ColorSpace** | 1.3M | Free | One-input, many outputs |
-| **Color-Hex** | 839K | Free | Developer reference tool |
-| **Paletton** | 350K | Free | Deep color theory control |
-| **Colormind** | 275K | Free | AI learns from art/movies |
-| **Huemint** | - | Free | Context-aware roles |
-| **Khroma** | - | Free/Paid | Personalized AI learning |
-| **Realtime Colors** | - | Free | Live website preview |
-| **Material Design** | (Google) | Free | Official Material system |
-| **Muzli Colors** | - | Free | AI text-to-palette |
-| **Pigment** | - | Free | Pigment/light-based |
+| **coolors** | 4.3m | free/premium | speed, simplicity, multi-platform |
+| **adobe color** | (adobe ecosystem) | free | pro features, cc integration |
+| **color hunt** | 2.2m | free | human-curated quality |
+| **colorspace** | 1.3m | free | one-input, many outputs |
+| **color-hex** | 839k | free | developer reference tool |
+| **paletton** | 350k | free | deep color theory control |
+| **colormind** | 275k | free | ai learns from art/movies |
+| **huemint** | - | free | context-aware roles |
+| **khroma** | - | free/paid | personalized ai learning |
+| **realtime colors** | - | free | live website preview |
+| **material design** | (google) | free | official material system |
+| **muzli colors** | - | free | ai text-to-palette |
+| **pigment** | - | free | pigment/light-based |
 
 ---
 
-## Common Features Across Tools
+## common features across tools
 
-1. **Color formats**: HEX, RGB, HSL, CMYK, HSB
-2. **Export options**: CSS, SVG, PNG, design tool formats
-3. **Accessibility**: Contrast checking, WCAG compliance, colorblind simulation
-4. **Image extraction**: Upload image to extract palette
-5. **Color locking**: Lock certain colors, regenerate others
-6. **Sharing**: URL sharing, account-based saving
-
----
-
-## Feature Categories
-
-### Generation Methods
-- **Random/Spacebar**: Coolors, Color Hunt
-- **Color wheel/Theory**: Adobe Color, Paletton, Muzli
-- **AI/ML**: Colormind, Huemint, Khroma
-- **Personalized AI**: Khroma
-- **Text-to-palette**: Muzli Colors
-
-### Preview Capabilities
-- **UI Mockups**: Realtime Colors, Material Design, Huemint, Muzli
-- **3D Environment**: Muzli Colors
-- **Typography preview**: Khroma, Realtime Colors
-
-### Target Users
-- **Quick inspiration**: Coolors, Color Hunt
-- **Professional designers**: Adobe Color, Paletton
-- **Developers**: Color-Hex, Realtime Colors
-- **Brand designers**: Huemint, Material Design
-- **Personal projects**: Khroma, Pigment
+1. **color formats**: hex, rgb, hsl, cmyk, hsb
+2. **export options**: css, svg, png, design tool formats
+3. **accessibility**: contrast checking, wcag compliance, colorblind simulation
+4. **image extraction**: upload image to extract palette
+5. **color locking**: lock certain colors, regenerate others
+6. **sharing**: url sharing, account-based saving
 
 ---
 
-## Sources
+## feature categories
 
-- [SimilarWeb - Coolors](https://www.similarweb.com/website/coolors.co/)
-- [SimilarWeb - Color Hunt](https://www.similarweb.com/website/colorhunt.co/)
-- [Ahrefs - Color-Hex](https://ahrefs.com/websites/color-hex.com)
-- [SEMrush - Paletton](https://www.semrush.com/website/paletton.com/overview/)
-- [Noun Project Blog](https://blog.thenounproject.com/7-of-the-best-color-palette-generators/)
-- [Venngage](https://venngage.com/blog/color-palette-generators/)
-- [JUST Creative](https://justcreative.com/best-color-palette-generators)
+### generation methods
+- **random/spacebar**: coolors, color hunt
+- **color wheel/theory**: adobe color, paletton, muzli
+- **ai/ml**: colormind, huemint, khroma
+- **personalized ai**: khroma
+- **text-to-palette**: muzli colors
+
+### preview capabilities
+- **ui mockups**: realtime colors, material design, huemint, muzli
+- **3d environment**: muzli colors
+- **typography preview**: khroma, realtime colors
+
+### target users
+- **quick inspiration**: coolors, color hunt
+- **professional designers**: adobe color, paletton
+- **developers**: color-hex, realtime colors
+- **brand designers**: huemint, material design
+- **personal projects**: khroma, pigment
+
+---
+
+## sources
+
+- [similarweb - coolors](https://www.similarweb.com/website/coolors.co/)
+- [similarweb - color hunt](https://www.similarweb.com/website/colorhunt.co/)
+- [ahrefs - color-hex](https://ahrefs.com/websites/color-hex.com)
+- [semrush - paletton](https://www.semrush.com/website/paletton.com/overview/)
+- [noun project blog](https://blog.thenounproject.com/7-of-the-best-color-palette-generators/)
+- [venngage](https://venngage.com/blog/color-palette-generators/)
+- [just creative](https://justcreative.com/best-color-palette-generators)
