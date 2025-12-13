@@ -1,608 +1,608 @@
-# Existing Tools Audit: Node-Based Infinite Canvas Research
+# existing tools audit: node-based infinite canvas research
 
-> Research for building a node-based infinite canvas research tool with multimodality and LLM integration.
+> research for building a node-based infinite canvas research tool with multimodality and llm integration.
 
 ---
 
-## Table of Contents
+## table of contents
 
-1. [Canvas/Spatial Tools](#1-canvasspatial-tools)
-   - [Heptabase](#11-heptabase)
+1. [canvas/spatial tools](#1-canvasspatial-tools)
+   - [heptabase](#11-heptabase)
    - [tldraw](#12-tldraw)
-   - [Obsidian Canvas](#13-obsidian-canvas)
-   - [Kinopio](#14-kinopio)
-   - [Miro](#15-miro)
-   - [Scapple](#16-scapple)
-   - [AFFiNE](#17-affine)
-   - [Excalidraw](#18-excalidraw)
-2. [AI-Native Tools](#2-ai-native-tools)
-   - [Napkin AI](#21-napkin-ai)
-   - [Perplexity Pages](#22-perplexity-pages)
-   - [ChatGPT Canvas](#23-chatgpt-canvas)
-   - [Lex](#24-lex)
-   - [Cursor](#25-cursor-ai-code-editor)
-3. [Technical Deep Dive: Rendering & Performance](#3-technical-deep-dive-rendering--performance)
-4. [Feature Matrix Comparison](#4-feature-matrix-comparison)
-5. [Key Learnings for Our Tool](#5-key-learnings-for-our-tool)
-6. [Sources](#6-sources)
+   - [obsidian canvas](#13-obsidian-canvas)
+   - [kinopio](#14-kinopio)
+   - [miro](#15-miro)
+   - [scapple](#16-scapple)
+   - [affine](#17-affine)
+   - [excalidraw](#18-excalidraw)
+2. [ai-native tools](#2-ai-native-tools)
+   - [napkin ai](#21-napkin-ai)
+   - [perplexity pages](#22-perplexity-pages)
+   - [chatgpt canvas](#23-chatgpt-canvas)
+   - [lex](#24-lex)
+   - [cursor](#25-cursor-ai-code-editor)
+3. [technical deep dive: rendering & performance](#3-technical-deep-dive-rendering--performance)
+4. [feature matrix comparison](#4-feature-matrix-comparison)
+5. [key learnings for our tool](#5-key-learnings-for-our-tool)
+6. [sources](#6-sources)
 
 ---
 
-## 1. Canvas/Spatial Tools
+## 1. canvas/spatial tools
 
-### 1.1 Heptabase
+### 1.1 heptabase
 
-**What it is:** Visual knowledge base for students, researchers, and lifelong learners. Currently the most developed app in the visual note-taking space.
+**what it is:** visual knowledge base for students, researchers, and lifelong learners. currently the most developed app in the visual note-taking space.
 
-**Core Model:**
-- Card-based system on infinite canvas
-- Cards live in a central "Cards" repository — can be reused across multiple whiteboards without duplication
-- Bi-directional links between cards
-- Free-form whiteboard with connection lines forming neural web-like structures
+**core model:**
+- card-based system on infinite canvas
+- cards live in a central "cards" repository — can be reused across multiple whiteboards without duplication
+- bi-directional links between cards
+- free-form whiteboard with connection lines forming neural web-like structures
 
-**Key Features:**
-| Feature | Details |
+**key features:**
+| feature | details |
 |---------|---------|
-| Canvas | Infinite, zoomable whiteboard |
-| Cards | Reusable across boards, no duplication |
-| PDF Integration | Drag & drop highlights from PDF to canvas; clicking opens original location |
-| Readwise Sync | Exceptional integration for highlights |
-| Project Management | Kanban views built-in |
-| Templates | Slash command for instant template access |
-| Cloud Sync | Built-in, multi-device |
+| canvas | infinite, zoomable whiteboard |
+| cards | reusable across boards, no duplication |
+| pdf integration | drag & drop highlights from pdf to canvas; clicking opens original location |
+| readwise sync | exceptional integration for highlights |
+| project management | kanban views built-in |
+| templates | slash command for instant template access |
+| cloud sync | built-in, multi-device |
 
-**AI Roadmap (2024-2025):**
-- "Chat: Ask AI questions using the entire knowledge base as context"
-- Web tab integration
-- Moving toward AI as active thinking partner
+**ai roadmap (2024-2025):**
+- "chat: ask ai questions using the entire knowledge base as context"
+- web tab integration
+- moving toward ai as active thinking partner
 
-**Strengths:**
-- Fast iteration, solid PDF annotation, powerful search
-- Bridges PKM-style notes with whiteboard flexibility
-- Excellent for research-focused work and structured thinking
+**strengths:**
+- fast iteration, solid pdf annotation, powerful search
+- bridges pkm-style notes with whiteboard flexibility
+- excellent for research-focused work and structured thinking
 
-**Weaknesses:**
-- Subscription only ($11.99/month), no free tier
-- Cloud-dependent (data on their servers)
+**weaknesses:**
+- subscription only ($11.99/month), no free tier
+- cloud-dependent (data on their servers)
 
-**Relevance to Our Tool:** High. Heptabase's card-reuse model and PDF integration are directly applicable. Their approach to making cards "live" in a repository while appearing on multiple canvases solves duplication issues.
+**relevance to our tool:** high. heptabase's card-reuse model and pdf integration are directly applicable. their approach to making cards "live" in a repository while appearing on multiple canvases solves duplication issues.
 
 ---
 
 ### 1.2 tldraw
 
-**What it is:** Open-source infinite canvas SDK for React. Powers tldraw.com and many third-party apps.
+**what it is:** open-source infinite canvas sdk for react. powers tldraw.com and many third-party apps.
 
-**Core Architecture:**
-- React-based component library
-- In-memory reactive database for state management
-- "Editor" god object controls the canvas
-- Monorepo with yarn workspaces + lazyrepo for task orchestration
+**core architecture:**
+- react-based component library
+- in-memory reactive database for state management
+- "editor" god object controls the canvas
+- monorepo with yarn workspaces + lazyrepo for task orchestration
 
-**Key Technical Features:**
-| Feature | Details |
+**key technical features:**
+| feature | details |
 |---------|---------|
-| Rendering | Canvas API + WebGL shaders for backgrounds |
-| Shapes | Custom React components for interactive shapes |
-| Embedding | Videos, images, entire websites on canvas |
-| Camera | Full programmatic control for pan/zoom/slideshows |
-| Multiplayer | WebSocket + Cloudflare Durable Objects |
-| Persistence | Automatic, production-ready backend |
+| rendering | canvas api + webgl shaders for backgrounds |
+| shapes | custom react components for interactive shapes |
+| embedding | videos, images, entire websites on canvas |
+| camera | full programmatic control for pan/zoom/slideshows |
+| multiplayer | websocket + cloudflare durable objects |
+| persistence | automatic, production-ready backend |
 
-**Extension Points:**
-- Custom shapes and tools via React
-- UI overrides for menus/toolbars
-- TldrawEditor component for minimal engine without default UI
-- Canvas SDK for custom widgets
+**extension points:**
+- custom shapes and tools via react
+- ui overrides for menus/toolbars
+- tldraweditor component for minimal engine without default ui
+- canvas sdk for custom widgets
 
-**Licensing:** Free with "Made with tldraw" watermark; business license to remove.
+**licensing:** free with "made with tldraw" watermark; business license to remove.
 
-**Relevance to Our Tool:** Very High. tldraw is a candidate foundation. Its React integration, extensibility model, and production-ready sync are exactly what we need. Can embed custom node components.
+**relevance to our tool:** very high. tldraw is a candidate foundation. its react integration, extensibility model, and production-ready sync are exactly what we need. can embed custom node components.
 
 ---
 
-### 1.3 Obsidian Canvas
+### 1.3 obsidian canvas
 
-**What it is:** Core plugin in Obsidian for visual, non-linear note organization.
+**what it is:** core plugin in obsidian for visual, non-linear note organization.
 
-**Core Model:**
-- Double-click creates "cards" (unnamed text notes, not .md files by default)
-- Cards can be converted to files
-- Drag-and-drop notes from vault onto canvas
-- Connections via lines/arrows
+**core model:**
+- double-click creates "cards" (unnamed text notes, not .md files by default)
+- cards can be converted to files
+- drag-and-drop notes from vault onto canvas
+- connections via lines/arrows
 
-**Key Features:**
-| Feature | Details |
+**key features:**
+| feature | details |
 |---------|---------|
-| Node Types | Text cards, notes from vault, images, PDFs, videos, websites |
-| Web Embeds | URLs become interactive browser windows within canvas |
-| Integration | Deep integration with Obsidian vault/knowledge base |
-| Storage | Local-first, markdown-based |
+| node types | text cards, notes from vault, images, pdfs, videos, websites |
+| web embeds | urls become interactive browser windows within canvas |
+| integration | deep integration with obsidian vault/knowledge base |
+| storage | local-first, markdown-based |
 
-**Enhanced Plugins:**
-- Advanced Canvas: Graph view integration, flowcharts, presentations
-- Mindmap plugins for hierarchical views
+**enhanced plugins:**
+- advanced canvas: graph view integration, flowcharts, presentations
+- mindmap plugins for hierarchical views
 
-**Strengths:**
-- Integrated with existing knowledge base
-- Local-first, you own your data
-- Rich media embedding (including live websites)
+**strengths:**
+- integrated with existing knowledge base
+- local-first, you own your data
+- rich media embedding (including live websites)
 
-**Weaknesses:**
-- Requires Obsidian ecosystem
-- Cards are second-class citizens vs. vault notes
-- No built-in collaboration
+**weaknesses:**
+- requires obsidian ecosystem
+- cards are second-class citizens vs. vault notes
+- no built-in collaboration
 
-**Relevance to Our Tool:** Medium. The website embedding feature is notable. Integration with existing knowledge base is a pattern to consider.
+**relevance to our tool:** medium. the website embedding feature is notable. integration with existing knowledge base is a pattern to consider.
 
 ---
 
-### 1.4 Kinopio
+### 1.4 kinopio
 
-**What it is:** Playful spatial thinking tool for collecting and connecting thoughts. Independent/organic software.
+**what it is:** playful spatial thinking tool for collecting and connecting thoughts. independent/organic software.
 
-**Design Philosophy:**
-- "What's the fastest way to get an idea down spatially without thinking about it?"
-- No toolbars — drag an image, it becomes part of canvas
-- Inspired by modular synthesizers — "patch cables" connecting ideas
+**design philosophy:**
+- "what's the fastest way to get an idea down spatially without thinking about it?"
+- no toolbars — drag an image, it becomes part of canvas
+- inspired by modular synthesizers — "patch cables" connecting ideas
 
-**Key Features:**
-| Feature | Details |
+**key features:**
+| feature | details |
 |---------|---------|
-| Cards | 100 free, unlimited with subscription |
-| Connections | Drag one note onto another to connect |
-| Media | Images, GIFs, MP3s, YouTube, Spotify embeds |
-| Tags | Backlinked [[tags]] |
-| Drawing | Freehand anywhere |
-| Collaboration | Real-time, space groups |
-| Export | PDF, open API |
+| cards | 100 free, unlimited with subscription |
+| connections | drag one note onto another to connect |
+| media | images, gifs, mp3s, youtube, spotify embeds |
+| tags | backlinked [[tags]] |
+| drawing | freehand anywhere |
+| collaboration | real-time, space groups |
+| export | pdf, open api |
 
-**Pricing:** Free for 100 cards; paid by users, not VC-funded.
+**pricing:** free for 100 cards; paid by users, not vc-funded.
 
-**Strengths:**
-- Playful, personality-driven design encourages engagement
-- Friction-free note creation
-- Good for "sense-making" phase of thinking
+**strengths:**
+- playful, personality-driven design encourages engagement
+- friction-free note creation
+- good for "sense-making" phase of thinking
 
-**Weaknesses:**
-- Limited features vs. comprehensive whiteboard tools
-- Not enterprise-integrated
-- Can be overwhelming for new users
+**weaknesses:**
+- limited features vs. comprehensive whiteboard tools
+- not enterprise-integrated
+- can be overwhelming for new users
 
-**Relevance to Our Tool:** Medium. The "fastest path to capture" philosophy is important. Their patch-cable metaphor for connections is elegant.
+**relevance to our tool:** medium. the "fastest path to capture" philosophy is important. their patch-cable metaphor for connections is elegant.
 
 ---
 
-### 1.5 Miro
+### 1.5 miro
 
-**What it is:** Enterprise collaborative whiteboard. The incumbent in the space.
+**what it is:** enterprise collaborative whiteboard. the incumbent in the space.
 
-**Core Features:**
-| Feature | Details |
+**core features:**
+| feature | details |
 |---------|---------|
-| Canvas | Infinite, zoomable |
-| Widgets | Dot voting, polling, people widget, story points |
-| Diagrams | AI-generated from notes |
-| Integrations | 150+ apps (Google, Microsoft, Slack, Jira, Figma, etc.) |
-| Display Support | Large HDTVs, Surface Hub, Zoom Rooms |
+| canvas | infinite, zoomable |
+| widgets | dot voting, polling, people widget, story points |
+| diagrams | ai-generated from notes |
+| integrations | 150+ apps (google, microsoft, slack, jira, figma, etc.) |
+| display support | large hdtvs, surface hub, zoom rooms |
 
-**2024 Updates — Intelligent Canvas:**
-- AI-powered workflows
-- Diagram mode for faster flowchart creation
-- Canvas SDK for custom widgets via JavaScript/React
-- Layer support improvements
+**2024 updates — intelligent canvas:**
+- ai-powered workflows
+- diagram mode for faster flowchart creation
+- canvas sdk for custom widgets via javascript/react
+- layer support improvements
 
-**Performance Reality:**
-> "Large dashboards can sometimes slow down, affecting user experience."
-> "The platform can be slow with large files or many users collaborating simultaneously."
+**performance reality:**
+> "large dashboards can sometimes slow down, affecting user experience."
+> "the platform can be slow with large files or many users collaborating simultaneously."
 
-**Strengths:**
-- Enterprise-ready, massive integration ecosystem
-- Meeting facilitation features
-- Template library
+**strengths:**
+- enterprise-ready, massive integration ecosystem
+- meeting facilitation features
+- template library
 
-**Weaknesses:**
-- Performance degrades at scale
-- Limited offline functionality
-- Mobile experience inferior to desktop
+**weaknesses:**
+- performance degrades at scale
+- limited offline functionality
+- mobile experience inferior to desktop
 
-**Relevance to Our Tool:** Low-Medium. Miro's widget system and AI diagram generation are interesting. Their performance issues at scale are a warning.
+**relevance to our tool:** low-medium. miro's widget system and ai diagram generation are interesting. their performance issues at scale are a warning.
 
 ---
 
-### 1.6 Scapple
+### 1.6 scapple
 
-**What it is:** Minimalist brainstorming tool from Literature & Latte (Scrivener makers).
+**what it is:** minimalist brainstorming tool from literature & latte (scrivener makers).
 
-**Core Philosophy:**
-- Virtual sheet of paper — notes anywhere, connect by drag-and-drop
-- No forced hierarchy (unlike most mind-mapping tools)
-- Any note can connect to any other note
+**core philosophy:**
+- virtual sheet of paper — notes anywhere, connect by drag-and-drop
+- no forced hierarchy (unlike most mind-mapping tools)
+- any note can connect to any other note
 
-**Key Features:**
-| Feature | Details |
+**key features:**
+| feature | details |
 |---------|---------|
-| Note Creation | Double-click anywhere |
-| Connections | Drag-and-drop, no forced hierarchy |
-| Zoom | Infinite canvas growth |
-| Media | PDF and image import |
-| Export | Integrates with Scrivener |
+| note creation | double-click anywhere |
+| connections | drag-and-drop, no forced hierarchy |
+| zoom | infinite canvas growth |
+| media | pdf and image import |
+| export | integrates with scrivener |
 
-**Pricing:** $20.99 one-time (or $16.79 edu).
+**pricing:** $20.99 one-time (or $16.79 edu).
 
-**Strengths:**
-- Extreme simplicity — "just enough functionality to not distract"
-- Flexibility — doesn't restrict workflow
-- Stable, reliable
+**strengths:**
+- extreme simplicity — "just enough functionality to not distract"
+- flexibility — doesn't restrict workflow
+- stable, reliable
 
-**Weaknesses:**
-- Desktop only (no mobile/web)
-- No collaboration
-- Straight-line connectors only (no bézier curves)
+**weaknesses:**
+- desktop only (no mobile/web)
+- no collaboration
+- straight-line connectors only (no bézier curves)
 
-**Relevance to Our Tool:** Low. The "no forced hierarchy" principle is valuable. Their simplicity is admirable but we need more features.
+**relevance to our tool:** low. the "no forced hierarchy" principle is valuable. their simplicity is admirable but we need more features.
 
 ---
 
-### 1.7 AFFiNE
+### 1.7 affine
 
-**What it is:** Open-source, local-first alternative to Notion + Miro. Privacy-focused.
+**what it is:** open-source, local-first alternative to notion + miro. privacy-focused.
 
-**Core Architecture:**
-- Local-first: data saved locally, cloud sync optional
-- Built with Rust + TypeScript
-- Single command line deployment
+**core architecture:**
+- local-first: data saved locally, cloud sync optional
+- built with rust + typescript
+- single command line deployment
 
-**Key Features:**
-| Feature | Details |
+**key features:**
+| feature | details |
 |---------|---------|
-| Modes | Paper Mode (document) + Edgeless Mode (whiteboard) per page |
-| Blocks | Rich text, sticky notes, web embeds, databases, shapes, slides |
-| One-Click Convert | Any block can transform to another type |
-| Cross-Platform | Web, Desktop (Mac/Win/Linux), Mobile (iOS/Android) |
-| Self-Host | Full self-hosting support |
-| Collaboration | Real-time sync when enabled |
+| modes | paper mode (document) + edgeless mode (whiteboard) per page |
+| blocks | rich text, sticky notes, web embeds, databases, shapes, slides |
+| one-click convert | any block can transform to another type |
+| cross-platform | web, desktop (mac/win/linux), mobile (ios/android) |
+| self-host | full self-hosting support |
+| collaboration | real-time sync when enabled |
 
-**Strengths:**
-- True local-first with optional cloud
-- Open source, self-hostable
-- Document + whiteboard in one
+**strengths:**
+- true local-first with optional cloud
+- open source, self-hostable
+- document + whiteboard in one
 
-**Weaknesses:**
-- Less mature than Notion/Miro
-- Smaller ecosystem
+**weaknesses:**
+- less mature than notion/miro
+- smaller ecosystem
 
-**Relevance to Our Tool:** High. AFFiNE's local-first architecture and document/whiteboard duality are directly applicable. The one-click block conversion is clever.
+**relevance to our tool:** high. affine's local-first architecture and document/whiteboard duality are directly applicable. the one-click block conversion is clever.
 
 ---
 
-### 1.8 Excalidraw
+### 1.8 excalidraw
 
-**What it is:** Open-source virtual whiteboard with hand-drawn aesthetic. End-to-end encrypted collaboration.
+**what it is:** open-source virtual whiteboard with hand-drawn aesthetic. end-to-end encrypted collaboration.
 
-**Core Architecture:**
-- Dual canvas architecture: one for interactivity, one as background (performance optimization)
-- Culling: only renders visible elements
-- PWA with offline support
-- Local-first with autosave to browser
+**core architecture:**
+- dual canvas architecture: one for interactivity, one as background (performance optimization)
+- culling: only renders visible elements
+- pwa with offline support
+- local-first with autosave to browser
 
-**Performance Data:**
-| Element Count | Performance |
+**performance data:**
+| element count | performance |
 |---------------|-------------|
-| 4k-8k objects | Works well |
-| 8k+ objects | Starts to struggle |
-| 14k-24k objects | Unusable (~10 FPS) |
+| 4k-8k objects | works well |
+| 8k+ objects | starts to struggle |
+| 14k-24k objects | unusable (~10 fps) |
 
-**Suggested Improvements (from issues):**
-- WebGL via Pixi.js for rendering boost
-- Binary formats (FlatBuffers) instead of JSON for large files
-- Web Workers for intensive computation
+**suggested improvements (from issues):**
+- webgl via pixi.js for rendering boost
+- binary formats (flatbuffers) instead of json for large files
+- web workers for intensive computation
 
-**Key Features:**
-- Hand-drawn visual style
-- Shape libraries
-- Arrow-binding & labeled arrows
-- Export PNG/SVG
-- End-to-end encryption for collaboration
+**key features:**
+- hand-drawn visual style
+- shape libraries
+- arrow-binding & labeled arrows
+- export png/svg
+- end-to-end encryption for collaboration
 
-**Relevance to Our Tool:** Medium-High. Their dual-canvas architecture and culling strategy are important patterns. Their performance ceiling (8k elements) is a benchmark to exceed.
+**relevance to our tool:** medium-high. their dual-canvas architecture and culling strategy are important patterns. their performance ceiling (8k elements) is a benchmark to exceed.
 
 ---
 
-## 2. AI-Native Tools
+## 2. ai-native tools
 
-### 2.1 Napkin AI
+### 2.1 napkin ai
 
-**What it is:** Visual AI for turning text into diagrams, charts, and infographics.
+**what it is:** visual ai for turning text into diagrams, charts, and infographics.
 
-**Core Workflow:**
-1. Paste text into Napkin
-2. Click spark icon on any paragraph
-3. AI generates multiple visual options
-4. Customize colors, shapes, fonts, icons
+**core workflow:**
+1. paste text into napkin
+2. click spark icon on any paragraph
+3. ai generates multiple visual options
+4. customize colors, shapes, fonts, icons
 
-**Key Features:**
-| Feature | Details |
+**key features:**
+| feature | details |
 |---------|---------|
-| Visual Types | 30+ (mind maps, flowcharts, Venn, bar/pie charts, etc.) |
-| Elastic Design | Diagrams auto-adjust as text evolves |
-| Brand Styles | Upload brand colors/fonts, reuse across visuals |
-| Export | PNG, SVG, PDF, PowerPoint |
-| Integrations | Google Docs/Slides, MS Office, Notion, Slack, Medium, etc. |
+| visual types | 30+ (mind maps, flowcharts, venn, bar/pie charts, etc.) |
+| elastic design | diagrams auto-adjust as text evolves |
+| brand styles | upload brand colors/fonts, reuse across visuals |
+| export | png, svg, pdf, powerpoint |
+| integrations | google docs/slides, ms office, notion, slack, medium, etc. |
 
-**Growth:** 5M+ users, $1.7M ARR with 15-person team (2025).
+**growth:** 5m+ users, $1.7m arr with 15-person team (2025).
 
-**Pricing:** Free (500 weekly credits), Plus ($10k monthly credits), Pro ($30k monthly).
+**pricing:** free (500 weekly credits), plus ($10k monthly credits), pro ($30k monthly).
 
-**Strengths:**
-- Speed — text to diagram in seconds
-- Elastic design (auto-adjusting)
-- Strong export/integration
+**strengths:**
+- speed — text to diagram in seconds
+- elastic design (auto-adjusting)
+- strong export/integration
 
-**Weaknesses:**
-- Visuals can feel repetitive
-- Struggles with nebulous/unclear text
-- Optimized for clarity, not artistic variation
+**weaknesses:**
+- visuals can feel repetitive
+- struggles with nebulous/unclear text
+- optimized for clarity, not artistic variation
 
-**Relevance to Our Tool:** Medium. The "spark icon" interaction pattern for AI invocation is excellent. Auto-adjusting visuals as content changes is a feature to consider.
+**relevance to our tool:** medium. the "spark icon" interaction pattern for ai invocation is excellent. auto-adjusting visuals as content changes is a feature to consider.
 
 ---
 
-### 2.2 Perplexity Pages
+### 2.2 perplexity pages
 
-**What it is:** Tool for transforming research into formatted, shareable articles.
+**what it is:** tool for transforming research into formatted, shareable articles.
 
-**Core Workflow:**
-1. Search/research a topic
-2. Pages structures it into a well-formatted article
-3. Customize tone, structure, add visuals
-4. Publish to Perplexity library or share link
+**core workflow:**
+1. search/research a topic
+2. pages structures it into a well-formatted article
+3. customize tone, structure, add visuals
+4. publish to perplexity library or share link
 
-**Key Features:**
-| Feature | Details |
+**key features:**
+| feature | details |
 |---------|---------|
-| Tone | Customizable for audience (general vs. expert) |
-| Structure | Add, rearrange, remove sections |
-| Visuals | AI-generated, uploaded, or sourced online |
-| Interactivity | Readers can ask follow-up questions |
-| Conversion | Turn chat threads into pages |
+| tone | customizable for audience (general vs. expert) |
+| structure | add, rearrange, remove sections |
+| visuals | ai-generated, uploaded, or sourced online |
+| interactivity | readers can ask follow-up questions |
+| conversion | turn chat threads into pages |
 
-**Target Users:** Educators, researchers, hobbyists sharing knowledge.
+**target users:** educators, researchers, hobbyists sharing knowledge.
 
-**Relevance to Our Tool:** Medium. The "readers can ask follow-up questions" feature is interesting for our export/share functionality. Converting threads to pages = converting nodes to documents.
+**relevance to our tool:** medium. the "readers can ask follow-up questions" feature is interesting for our export/share functionality. converting threads to pages = converting nodes to documents.
 
 ---
 
-### 2.3 ChatGPT Canvas
+### 2.3 chatgpt canvas
 
-**What it is:** OpenAI's side-panel interface for writing and coding projects.
+**what it is:** openai's side-panel interface for writing and coding projects.
 
-**Core Model:**
-- Separate workspace beside chat window
-- Direct text/code editing
-- Inline suggestions from AI
-- Highlight sections for targeted focus
+**core model:**
+- separate workspace beside chat window
+- direct text/code editing
+- inline suggestions from ai
+- highlight sections for targeted focus
 
-**Writing Shortcuts:**
-- Suggest edits (inline)
-- Adjust length
-- Change reading level (Kindergarten → Graduate School)
-- Add final polish (grammar, clarity)
+**writing shortcuts:**
+- suggest edits (inline)
+- adjust length
+- change reading level (kindergarten → graduate school)
+- add final polish (grammar, clarity)
 
-**Coding Shortcuts:**
-- Review code (inline suggestions)
-- Add logs/comments
-- Fix bugs
-- Port to other languages
+**coding shortcuts:**
+- review code (inline suggestions)
+- add logs/comments
+- fix bugs
+- port to other languages
 
-**Technical Details:**
-- Powered by modified GPT-4o (trained with o1 data)
+**technical details:**
+- powered by modified gpt-4o (trained with o1 data)
 - 83% more reliable at detecting when to activate canvas
-- Python runs in browser via Pyodide (WebAssembly)
-- Can make network requests (unlike Code Interpreter)
+- python runs in browser via pyodide (webassembly)
+- can make network requests (unlike code interpreter)
 
-**Relevance to Our Tool:** High. The "reading level" slider is a great UX pattern. Inline suggestions with accept/reject is exactly what we need for node editing. The selective highlighting for targeted AI focus is important.
+**relevance to our tool:** high. the "reading level" slider is a great ux pattern. inline suggestions with accept/reject is exactly what we need for node editing. the selective highlighting for targeted ai focus is important.
 
 ---
 
-### 2.4 Lex
+### 2.4 lex
 
-**What it is:** Minimalist word processor with AI writing assistance.
+**what it is:** minimalist word processor with ai writing assistance.
 
-**Core Features:**
-| Feature | Details |
+**core features:**
+| feature | details |
 |---------|---------|
-| AI Checks | Grammar, brevity, clichés, readability, passive voice, confidence, repetition |
-| Ask Lex | Sidebar assistant with preset prompts |
-| Collaboration | Live co-editing, commenting |
-| Versions | Save document versions |
-| Export | PDF, Markdown, Word, HTML, LaTeX |
-| Models | GPT-3.5 (free), GPT-4.1 + Claude Opus/Sonnet (Pro) |
+| ai checks | grammar, brevity, clichés, readability, passive voice, confidence, repetition |
+| ask lex | sidebar assistant with preset prompts |
+| collaboration | live co-editing, commenting |
+| versions | save document versions |
+| export | pdf, markdown, word, html, latex |
+| models | gpt-3.5 (free), gpt-4.1 + claude opus/sonnet (pro) |
 
-**AI Check Workflow:**
-1. Run checks
-2. Issues highlighted in pink
-3. Click to see AI suggestion
-4. Accept/reject with one click
+**ai check workflow:**
+1. run checks
+2. issues highlighted in pink
+3. click to see ai suggestion
+4. accept/reject with one click
 
-**Relevance to Our Tool:** Medium. The AI check system (highlight → suggestion → accept/reject) is a clean pattern. Their model selection approach is worth noting.
+**relevance to our tool:** medium. the ai check system (highlight → suggestion → accept/reject) is a clean pattern. their model selection approach is worth noting.
 
 ---
 
-### 2.5 Cursor (AI Code Editor)
+### 2.5 cursor (ai code editor)
 
-**What it is:** AI-powered IDE built as a VS Code fork with deep LLM integration.
+**what it is:** ai-powered ide built as a vs code fork with deep llm integration.
 
-**Architecture:**
-- Modified VS Code fork (retains plugin ecosystem)
-- In-house embeddings/AST for "knowing your codebase"
-- Static system prompt + tool descriptions for prompt caching
-- Agent mode: LLM runs multiple times until user-facing response
+**architecture:**
+- modified vs code fork (retains plugin ecosystem)
+- in-house embeddings/ast for "knowing your codebase"
+- static system prompt + tool descriptions for prompt caching
+- agent mode: llm runs multiple times until user-facing response
 
-**LLM Integration Patterns:**
-| Pattern | Details |
+**llm integration patterns:**
+| pattern | details |
 |---------|---------|
-| Prompt Caching | Static prompts → reduced cost + latency |
-| Streaming UX | Visual indicators while tool calls stream |
-| Autonomy Slider | Tab completion → Cmd+K edits → Full agent |
-| Tool Results | Client computes tool results, feeds back to agent |
-| Project Rules | Named instruction sets, fetched on demand |
+| prompt caching | static prompts → reduced cost + latency |
+| streaming ux | visual indicators while tool calls stream |
+| autonomy slider | tab completion → cmd+k edits → full agent |
+| tool results | client computes tool results, feeds back to agent |
+| project rules | named instruction sets, fetched on demand |
 
-**Key Insight:**
-> "The entire system prompt and tool descriptions are static... this is critical for agents which make an LLM call on every tool use."
+**key insight:**
+> "the entire system prompt and tool descriptions are static... this is critical for agents which make an llm call on every tool use."
 
-**Relevance to Our Tool:** Very High. Cursor's architecture patterns are directly applicable:
-- Prompt caching strategy
-- Autonomy slider (how much AI control)
-- Tool-based agent architecture
-- Static system prompts for latency
+**relevance to our tool:** very high. cursor's architecture patterns are directly applicable:
+- prompt caching strategy
+- autonomy slider (how much ai control)
+- tool-based agent architecture
+- static system prompts for latency
 
 ---
 
-## 3. Technical Deep Dive: Rendering & Performance
+## 3. technical deep dive: rendering & performance
 
-### WebGL vs Canvas2D
+### webgl vs canvas2d
 
-| Aspect | Canvas2D | WebGL |
+| aspect | canvas2d | webgl |
 |--------|----------|-------|
-| Initial Load | ~15ms (faster) | ~40ms |
-| Re-render (pan/zoom) | Up to 1.2ms | ~0.01ms (much faster) |
-| Memory | ~4MB for 1024x1024 | 5-10x more |
-| Batching | No batching (individual API calls) | Efficient batching via GPU |
-| Matrix Transforms | Per-element CPU | GPU-accelerated |
+| initial load | ~15ms (faster) | ~40ms |
+| re-render (pan/zoom) | up to 1.2ms | ~0.01ms (much faster) |
+| memory | ~4mb for 1024x1024 | 5-10x more |
+| batching | no batching (individual api calls) | efficient batching via gpu |
+| matrix transforms | per-element cpu | gpu-accelerated |
 
-**Key Findings:**
-- WebGL excels at pan/zoom interactions due to GPU matrix transforms
-- Canvas2D limited by CPU — each primitive requires individual API call
-- Performance varies by OS/browser (Mac Chrome sometimes favors Canvas2D)
-- WebGL shader compilation adds startup latency (~3ms each)
+**key findings:**
+- webgl excels at pan/zoom interactions due to gpu matrix transforms
+- canvas2d limited by cpu — each primitive requires individual api call
+- performance varies by os/browser (mac chrome sometimes favors canvas2d)
+- webgl shader compilation adds startup latency (~3ms each)
 
-**Recommendations:**
-1. **For 100+ nodes with pan/zoom:** WebGL recommended
-2. **Hybrid approach:** DOM for focused editing, Canvas for overview
-3. **Cache WebGL programs:** Compile shaders at app start
-4. **Consider libraries:** PixiJS for WebGL abstraction
+**recommendations:**
+1. **for 100+ nodes with pan/zoom:** webgl recommended
+2. **hybrid approach:** dom for focused editing, canvas for overview
+3. **cache webgl programs:** compile shaders at app start
+4. **consider libraries:** pixijs for webgl abstraction
 
-### Performance Benchmarks (from Excalidraw)
+### performance benchmarks (from excalidraw)
 
-| Scale | Performance |
+| scale | performance |
 |-------|-------------|
-| < 4k elements | Smooth |
-| 4k-8k elements | Good |
-| 8k-14k elements | Degraded |
-| 14k+ elements | Unusable |
+| < 4k elements | smooth |
+| 4k-8k elements | good |
+| 8k-14k elements | degraded |
+| 14k+ elements | unusable |
 
-**Optimization Strategies:**
-1. **Culling:** Only render visible elements
-2. **Virtualization:** Hybrid DOM/Canvas approach
-3. **Web Workers:** Offload computation from main thread
-4. **Binary formats:** FlatBuffers instead of JSON for large data
-5. **Dual canvas:** Separate interactive + background layers
+**optimization strategies:**
+1. **culling:** only render visible elements
+2. **virtualization:** hybrid dom/canvas approach
+3. **web workers:** offload computation from main thread
+4. **binary formats:** flatbuffers instead of json for large data
+5. **dual canvas:** separate interactive + background layers
 
 ---
 
-## 4. Feature Matrix Comparison
+## 4. feature matrix comparison
 
-| Feature | Heptabase | tldraw | Obsidian | Kinopio | Miro | AFFiNE | Excalidraw |
+| feature | heptabase | tldraw | obsidian | kinopio | miro | affine | excalidraw |
 |---------|-----------|--------|----------|---------|------|--------|------------|
-| Infinite Canvas | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Node Branching | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
-| LLM Integration | 🔜 | ❌ | Plugin | ❌ | ✅ | 🔜 | ❌ |
-| Local-First | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
-| Open Source | ❌ | ✅ | ❌ | Partial | ❌ | ✅ | ✅ |
-| Collaboration | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ |
-| PDF Annotation | ✅ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
-| Web Embedding | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
-| Custom Shapes | ❌ | ✅ | Plugin | ❌ | ✅ | ✅ | ✅ |
-| Export PDF | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
+| infinite canvas | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| node branching | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ | ❌ |
+| llm integration | 🔜 | ❌ | plugin | ❌ | ✅ | 🔜 | ❌ |
+| local-first | ❌ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ |
+| open source | ❌ | ✅ | ❌ | partial | ❌ | ✅ | ✅ |
+| collaboration | ✅ | ✅ | ❌ | ✅ | ✅ | ✅ | ✅ |
+| pdf annotation | ✅ | ❌ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| web embedding | ❌ | ✅ | ✅ | ✅ | ✅ | ✅ | ❌ |
+| custom shapes | ❌ | ✅ | plugin | ❌ | ✅ | ✅ | ✅ |
+| export pdf | ✅ | ❌ | ❌ | ✅ | ✅ | ✅ | ✅ |
 
-**Gap Analysis:** No existing tool combines:
-- Infinite canvas + Node branching with context inheritance
-- LLM-first architecture + Local-first storage
-- Tree/DAG structure visualization + Export to linear document
+**gap analysis:** no existing tool combines:
+- infinite canvas + node branching with context inheritance
+- llm-first architecture + local-first storage
+- tree/dag structure visualization + export to linear document
 
 ---
 
-## 5. Key Learnings for Our Tool
+## 5. key learnings for our tool
 
-### Architecture Decisions
+### architecture decisions
 
-| Decision | Recommendation | Source |
+| decision | recommendation | source |
 |----------|----------------|--------|
-| Rendering | WebGL (PixiJS) for canvas, DOM for focused node editing | Excalidraw, tldraw |
-| State | In-memory reactive database | tldraw |
-| Storage | Local-first (IndexedDB) + optional cloud sync | AFFiNE |
-| LLM Calls | Static system prompts + prompt caching | Cursor |
-| Streaming | SSE with visual indicators during tool calls | Cursor |
+| rendering | webgl (pixijs) for canvas, dom for focused node editing | excalidraw, tldraw |
+| state | in-memory reactive database | tldraw |
+| storage | local-first (indexeddb) + optional cloud sync | affine |
+| llm calls | static system prompts + prompt caching | cursor |
+| streaming | sse with visual indicators during tool calls | cursor |
 
-### UX Patterns to Adopt
+### ux patterns to adopt
 
-| Pattern | Source | Application |
+| pattern | source | application |
 |---------|--------|-------------|
-| Spark icon for AI invocation | Napkin | Click on node to branch with AI |
-| Inline suggestions with accept/reject | Lex, ChatGPT Canvas | Edit suggestions in nodes |
-| Reading level slider | ChatGPT Canvas | Adjust response complexity |
-| Autonomy slider | Cursor | Control AI independence per node |
-| Highlight for targeted focus | ChatGPT Canvas | Select text to branch |
-| Card repository (reuse without duplication) | Heptabase | Node storage model |
-| Dual mode (document/canvas) | AFFiNE | View node as doc or in canvas |
+| spark icon for ai invocation | napkin | click on node to branch with ai |
+| inline suggestions with accept/reject | lex, chatgpt canvas | edit suggestions in nodes |
+| reading level slider | chatgpt canvas | adjust response complexity |
+| autonomy slider | cursor | control ai independence per node |
+| highlight for targeted focus | chatgpt canvas | select text to branch |
+| card repository (reuse without duplication) | heptabase | node storage model |
+| dual mode (document/canvas) | affine | view node as doc or in canvas |
 
-### Performance Targets
+### performance targets
 
-| Metric | Target | Rationale |
+| metric | target | rationale |
 |--------|--------|-----------|
-| First token latency | < 500ms | Cursor benchmark |
-| Canvas re-render (pan/zoom) | < 16ms (60fps) | Smooth feel |
-| Node creation | < 100ms (optimistic UI) | Instant feedback |
-| Element ceiling | > 10k nodes | Exceed Excalidraw's 8k |
-| Initial load | < 2s | tldraw benchmark |
+| first token latency | < 500ms | cursor benchmark |
+| canvas re-render (pan/zoom) | < 16ms (60fps) | smooth feel |
+| node creation | < 100ms (optimistic ui) | instant feedback |
+| element ceiling | > 10k nodes | exceed excalidraw's 8k |
+| initial load | < 2s | tldraw benchmark |
 
-### Features Our Tool Should Have (That Others Don't)
+### features our tool should have (that others don't)
 
-1. **Context-aware branching:** Select text → branch → new node inherits context chain
-2. **Tree/DAG visualization:** See the shape of your research as it grows
-3. **Multi-node synthesis:** Select multiple nodes → AI summarizes/synthesizes
-4. **Export with lineage:** PDF that preserves the path through the tree
-5. **Model per node:** Different LLMs for different purposes in same canvas
-6. **Collaborative best response:** Multi-model voting (advanced feature)
-
----
-
-## 6. Sources
-
-### Canvas/Spatial Tools
-- [Heptabase](https://heptabase.com/)
-- [Heptabase Review - eryinote](https://eryinote.com/post/1083)
-- [tldraw SDK](https://tldraw.dev/)
-- [tldraw GitHub](https://github.com/tldraw/tldraw)
-- [Obsidian Canvas](https://obsidian.md/canvas)
-- [Obsidian Canvas Help](https://help.obsidian.md/plugins/canvas)
-- [Kinopio](https://kinopio.club)
-- [Kinopio GitHub](https://github.com/kinopio-club/kinopio-client)
-- [Miro Intelligent Canvas](https://miro.com/blog/24-updates-for-2024/)
-- [Scapple](https://www.literatureandlatte.com/scapple/overview)
-- [Scapple Review - TechRadar](https://www.techradar.com/reviews/scapple-mind-mapping-software)
-- [AFFiNE](https://affine.pro/)
-- [AFFiNE GitHub](https://github.com/toeverything/AFFiNE)
-- [Excalidraw GitHub](https://github.com/excalidraw/excalidraw)
-- [Excalidraw Performance Issue #8136](https://github.com/excalidraw/excalidraw/issues/8136)
-
-### AI-Native Tools
-- [Napkin AI](https://www.napkin.ai)
-- [Napkin AI Review - Skywork](https://skywork.ai/skypage/en/Napkin-AI-Review-2025-From-Text-to-Stunning-Visuals-in-Seconds/1973805431510855680)
-- [Perplexity Pages](https://www.perplexity.ai/hub/blog/perplexity-pages)
-- [ChatGPT Canvas - OpenAI](https://openai.com/index/introducing-canvas/)
-- [ChatGPT Canvas Help](https://help.openai.com/en/articles/9930697-what-is-the-canvas-feature-in-chatgpt-and-how-do-i-use-it)
-- [Lex](https://lex.page/)
-- [Cursor](https://cursor.com/)
-- [How Cursor Works - sshh.io](https://blog.sshh.io/p/how-cursor-ai-ide-works)
-
-### Technical References
-- [2D vs WebGL Canvas Performance - semisignal](https://semisignal.com/a-look-at-2d-vs-webgl-canvas-performance/)
-- [WebGL vs Canvas Comparison](https://2dgraphs.netlify.app/)
-- [Canvas2DtoWebGL](https://github.com/jagenjo/Canvas2DtoWebGL)
-- [Past and Future of HTML Canvas](https://demyanov.dev/past-and-future-html-canvas-brief-overview-2d-webgl-and-webgpu)
+1. **context-aware branching:** select text → branch → new node inherits context chain
+2. **tree/dag visualization:** see the shape of your research as it grows
+3. **multi-node synthesis:** select multiple nodes → ai summarizes/synthesizes
+4. **export with lineage:** pdf that preserves the path through the tree
+5. **model per node:** different llms for different purposes in same canvas
+6. **collaborative best response:** multi-model voting (advanced feature)
 
 ---
 
-*Last updated: December 2024*
+## 6. sources
+
+### canvas/spatial tools
+- [heptabase](https://heptabase.com/)
+- [heptabase review - eryinote](https://eryinote.com/post/1083)
+- [tldraw sdk](https://tldraw.dev/)
+- [tldraw github](https://github.com/tldraw/tldraw)
+- [obsidian canvas](https://obsidian.md/canvas)
+- [obsidian canvas help](https://help.obsidian.md/plugins/canvas)
+- [kinopio](https://kinopio.club)
+- [kinopio github](https://github.com/kinopio-club/kinopio-client)
+- [miro intelligent canvas](https://miro.com/blog/24-updates-for-2024/)
+- [scapple](https://www.literatureandlatte.com/scapple/overview)
+- [scapple review - techradar](https://www.techradar.com/reviews/scapple-mind-mapping-software)
+- [affine](https://affine.pro/)
+- [affine github](https://github.com/toeverything/AFFiNE)
+- [excalidraw github](https://github.com/excalidraw/excalidraw)
+- [excalidraw performance issue #8136](https://github.com/excalidraw/excalidraw/issues/8136)
+
+### ai-native tools
+- [napkin ai](https://www.napkin.ai)
+- [napkin ai review - skywork](https://skywork.ai/skypage/en/Napkin-AI-Review-2025-From-Text-to-Stunning-Visuals-in-Seconds/1973805431510855680)
+- [perplexity pages](https://www.perplexity.ai/hub/blog/perplexity-pages)
+- [chatgpt canvas - openai](https://openai.com/index/introducing-canvas/)
+- [chatgpt canvas help](https://help.openai.com/en/articles/9930697-what-is-the-canvas-feature-in-chatgpt-and-how-do-i-use-it)
+- [lex](https://lex.page/)
+- [cursor](https://cursor.com/)
+- [how cursor works - sshh.io](https://blog.sshh.io/p/how-cursor-ai-ide-works)
+
+### technical references
+- [2d vs webgl canvas performance - semisignal](https://semisignal.com/a-look-at-2d-vs-webgl-canvas-performance/)
+- [webgl vs canvas comparison](https://2dgraphs.netlify.app/)
+- [canvas2dtowebgl](https://github.com/jagenjo/Canvas2DtoWebGL)
+- [past and future of html canvas](https://demyanov.dev/past-and-future-html-canvas-brief-overview-2d-webgl-and-webgpu)
+
+---
+
+*last updated: december 2024*
