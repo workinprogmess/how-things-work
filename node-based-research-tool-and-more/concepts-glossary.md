@@ -1099,4 +1099,49 @@ onmessage = (e) => {
 
 ---
 
+---
+
+## 12. additional concepts
+
+### 12.1 dag (directed acyclic graph)
+
+**context:** when discussing whether nodes can have multiple parents
+
+**what it is:**
+- directed: connections have a direction (parent → child)
+- acyclic: no loops (can't follow arrows and end up where you started)
+- graph: nodes connected by edges (more flexible than tree)
+
+**tree vs dag:**
+```
+tree (one parent per node):
+
+     a
+    / \
+   b   c
+  /
+ d
+
+
+dag (multiple parents allowed):
+
+     a
+    / \
+   b   c
+    \ /
+     d      ← d has two parents (b and c)
+```
+
+**real-world example:**
+- git commits form a dag (merge commits have two parents)
+- family trees are dags (you have two parents)
+- categories: "webgl" could belong to both "graphics" and "web tech"
+
+**why it matters for our tool:**
+- strict tree: simpler, cleaner mental model
+- dag: more flexible, avoids duplication
+- v1: start with tree, consider dag later
+
+---
+
 *last updated: december 2024*
