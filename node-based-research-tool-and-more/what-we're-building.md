@@ -196,34 +196,80 @@ when you're "done" exploring a topic:
 
 ---
 
-## open questions
+## decided questions
 
-things we haven't decided:
+### 1. how do you start?
 
-1. **how do you start?**
-   - blank canvas + type a question?
-   - prompt: "what do you want to learn about?"
-   - paste existing content to branch from?
+**v1:** prompt — "what do you want to learn about?"
+- simple text input
+- user types their starting question
+- creates root node
 
-2. **can you edit nodes after creation?**
-   - regenerate response?
-   - manually edit text?
-   - both?
+**later:** paste existing content
+- paste an article, research paper, video link
+- system creates root node from content
+- you branch from there
 
-3. **what does a node look like?**
-   - just text?
-   - collapsible sections?
-   - metadata (timestamp, model used)?
+---
 
-4. **how do you branch?**
-   - highlight text + button?
-   - highlight text + keyboard shortcut?
-   - right-click menu?
+### 2. can you edit nodes?
 
-5. **what happens to orphaned branches?**
-   - you branch from a node, then realize the parent was wrong
-   - delete parent = delete children?
-   - archive vs delete?
+**yes, both:**
+
+| action | when to use |
+|--------|-------------|
+| **regenerate** | llm response wasn't good, try again |
+| **edit text** | fix typos, accidents (pressed enter too early), refine your question |
+
+both are must-haves. accidents happen.
+
+---
+
+### 3. what does a node look like?
+
+**content:**
+- text (your question + llm response)
+- editable
+
+**metadata:**
+- timestamp (when created)
+- model used (for later when multi-model)
+- possibly: token count, regeneration count
+
+---
+
+### 4. how do you branch?
+
+**trigger flow:**
+1. highlight text in a node
+2. add your question/comment (optional — can branch with just highlight)
+3. execute via: enter key, click button, or keyboard shortcut
+
+**example:**
+```
+you're reading: "transformers use attention mechanisms..."
+                      ─────────────────────
+                      [highlight this]
+
+popup appears: "what do you want to explore?"
+you type: "how does attention actually work?"
+press enter → new node branches off
+```
+
+---
+
+### 5. what happens when you delete?
+
+**simple rule:** delete cascades down
+
+| action | result |
+|--------|--------|
+| delete a leaf node | just that node is deleted |
+| delete a parent | parent + all children deleted |
+
+no orphans. tree stays clean.
+
+**future consideration:** archive vs delete (soft delete for recovery)
 
 ---
 
