@@ -21,7 +21,7 @@ function App() {
             y: 100,
             props: {
               w: 400,
-              h: 250,
+              h: 350,
               question: 'how do llms work?',
               response: 'large language models (llms) are neural networks trained on vast amounts of text data. they learn to predict the next token in a sequence, which allows them to generate coherent text.\n\nkey components include:\n• transformer architecture\n• attention mechanisms\n• tokenization\n• training on massive datasets',
               isLoading: false,

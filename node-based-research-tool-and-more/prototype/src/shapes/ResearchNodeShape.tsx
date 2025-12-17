@@ -78,7 +78,7 @@ function ResearchNodeComponent({ shape }: { shape: ResearchNodeShape }) {
       y: newY,
       props: {
         w: 400,
-        h: 250,
+        h: 350,
         question: selectedText,
         response: '',
         isLoading: true,
@@ -159,6 +159,10 @@ function ResearchNodeComponent({ shape }: { shape: ResearchNodeShape }) {
             userSelect: 'text',
             cursor: 'text',
           }}
+          onPointerDown={(e) => e.stopPropagation()}
+          onPointerMove={(e) => e.stopPropagation()}
+          onPointerUp={(e) => e.stopPropagation()}
+          onWheel={(e) => e.stopPropagation()}
         >
           {isLoading ? (
             <div style={{ color: '#888', fontStyle: 'italic' }}>thinking...</div>
@@ -213,7 +217,7 @@ export class ResearchNodeShapeUtil extends ShapeUtil<ResearchNodeShape> {
   getDefaultProps() {
     return {
       w: 400,
-      h: 250,
+      h: 350,
       question: '',
       response: '',
       isLoading: false,
