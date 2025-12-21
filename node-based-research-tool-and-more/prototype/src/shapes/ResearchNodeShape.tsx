@@ -1,10 +1,11 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef, useEffect } from 'react'
 import {
   ShapeUtil,
   HTMLContainer,
   T,
   Rectangle2d,
   useEditor,
+  useIsEditing,
   createShapeId,
 } from 'tldraw'
 
@@ -34,34 +35,76 @@ export interface ResearchNodeShape {
 // separate component to use hooks
 function ResearchNodeComponent({ shape }: { shape: ResearchNodeShape }) {
   const editor = useEditor()
+  const isEditing = useIsEditing(shape.id)
   const [selectedText, setSelectedText] = useState('')
   const [showBranchButton, setShowBranchButton] = useState(false)
   const [buttonPosition, setButtonPosition] = useState({ x: 0, y: 0 })
+  const responseRef = useRef<HTMLDivElement>(null)
 
   const { question, response, isLoading } = shape.props
 
-  const handleMouseUp = useCallback(() => {
-    const selection = window.getSelection()
-    const text = selection?.toString().trim()
-
-    if (text && text.length > 0) {
-      setSelectedText(text)
-      setShowBranchButton(true)
-
-      // position button near selection
-      const range = selection?.getRangeAt(0)
-      if (range) {
-        const rect = range.getBoundingClientRect()
-        setButtonPosition({
-          x: rect.right - rect.left > 200 ? rect.left + 100 : rect.right,
-          y: rect.bottom + 5,
-        })
-      }
-    } else {
+  // clear selection when exiting edit mode
+  useEffect(() => {
+    if (!isEditing) {
       setShowBranchButton(false)
       setSelectedText('')
     }
-  }, [])
+  }, [isEditing])
+
+  // attach native event listeners to capture events before tldraw
+  useEffect(() => {
+    const el = responseRef.current
+    if (!el || !isEditing) return
+
+    const stop = (e: Event) => {
+      e.stopPropagation()
+    }
+
+    // use capture phase to intercept before tldraw
+    el.addEventListener('pointerdown', stop, { capture: true })
+    el.addEventListener('pointermove', stop, { capture: true })
+    el.addEventListener('pointerup', stop, { capture: true })
+    el.addEventListener('mousedown', stop, { capture: true })
+    el.addEventListener('mousemove', stop, { capture: true })
+    el.addEventListener('mouseup', stop, { capture: true })
+
+    return () => {
+      el.removeEventListener('pointerdown', stop, { capture: true })
+      el.removeEventListener('pointermove', stop, { capture: true })
+      el.removeEventListener('pointerup', stop, { capture: true })
+      el.removeEventListener('mousedown', stop, { capture: true })
+      el.removeEventListener('mousemove', stop, { capture: true })
+      el.removeEventListener('mouseup', stop, { capture: true })
+    }
+  }, [isEditing])
+
+  const handleMouseUp = useCallback((e: React.MouseEvent) => {
+    if (!isEditing) return
+
+    // small delay to let selection complete
+    setTimeout(() => {
+      const selection = window.getSelection()
+      const text = selection?.toString().trim()
+
+      if (text && text.length > 0) {
+        setSelectedText(text)
+        setShowBranchButton(true)
+
+        // position button near selection
+        const range = selection?.getRangeAt(0)
+        if (range) {
+          const rect = range.getBoundingClientRect()
+          setButtonPosition({
+            x: rect.right - rect.left > 200 ? rect.left + 100 : rect.right,
+            y: rect.bottom + 5,
+          })
+        }
+      } else {
+        setShowBranchButton(false)
+        setSelectedText('')
+      }
+    }, 10)
+  }, [isEditing])
 
   const handleBranch = useCallback(() => {
     if (!selectedText) return
@@ -130,7 +173,6 @@ function ResearchNodeComponent({ shape }: { shape: ResearchNodeShape }) {
           fontFamily: 'system-ui, -apple-system, sans-serif',
           position: 'relative',
         }}
-        onMouseUp={handleMouseUp}
       >
         <div
           style={{
@@ -149,6 +191,7 @@ function ResearchNodeComponent({ shape }: { shape: ResearchNodeShape }) {
         </div>
 
         <div
+          ref={responseRef}
           style={{
             flex: 1,
             padding: '12px 16px',
@@ -156,18 +199,31 @@ function ResearchNodeComponent({ shape }: { shape: ResearchNodeShape }) {
             fontSize: '14px',
             lineHeight: 1.6,
             color: '#333',
-            userSelect: 'text',
-            cursor: 'text',
+            userSelect: isEditing ? 'text' : 'none',
+            cursor: isEditing ? 'text' : 'default',
+            backgroundColor: isEditing ? '#fffef0' : 'transparent',
           }}
-          onPointerDown={(e) => e.stopPropagation()}
-          onPointerMove={(e) => e.stopPropagation()}
-          onPointerUp={(e) => e.stopPropagation()}
-          onWheel={(e) => e.stopPropagation()}
+          onMouseUp={handleMouseUp}
         >
           {isLoading ? (
             <div style={{ color: '#888', fontStyle: 'italic' }}>thinking...</div>
           ) : response ? (
-            <div style={{ whiteSpace: 'pre-wrap' }}>{response}</div>
+            <>
+              <div style={{ whiteSpace: 'pre-wrap' }}>{response}</div>
+              {!isEditing && (
+                <div style={{
+                  marginTop: '12px',
+                  padding: '8px',
+                  backgroundColor: '#f0f0f0',
+                  borderRadius: '6px',
+                  fontSize: '12px',
+                  color: '#666',
+                  textAlign: 'center'
+                }}>
+                  double-click to select text and branch
+                </div>
+              )}
+            </>
           ) : (
             <div style={{ color: '#aaa', fontStyle: 'italic' }}>
               response will appear here...
@@ -246,5 +302,25 @@ export class ResearchNodeShapeUtil extends ShapeUtil<ResearchNodeShape> {
         ry={12}
       />
     )
+  }
+
+  // enable editing mode (double-click to enter)
+  override canEdit() {
+    return true
+  }
+
+  // enable resize handles
+  override canResize() {
+    return true
+  }
+
+  // handle resize
+  override onResize(shape: ResearchNodeShape, info: { initialShape: ResearchNodeShape; scaleX: number; scaleY: number }) {
+    return {
+      props: {
+        w: Math.max(200, info.initialShape.props.w * info.scaleX),
+        h: Math.max(150, info.initialShape.props.h * info.scaleY),
+      },
+    }
   }
 }

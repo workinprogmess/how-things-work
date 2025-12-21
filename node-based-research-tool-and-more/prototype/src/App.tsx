@@ -9,7 +9,6 @@ function App() {
     <div style={{ position: 'fixed', inset: 0 }}>
       <Tldraw
         shapeUtils={customShapeUtils}
-        hideUi
         onMount={(editor) => {
           // create initial root node
           const rootId = createShapeId('root')
@@ -29,8 +28,8 @@ function App() {
             },
           })
 
-          // center the view
-          editor.zoomToFit()
+          // set reasonable zoom and center on the card
+          editor.setCamera({ x: 0, y: 0, z: 1 })
         }}
       />
     </div>
