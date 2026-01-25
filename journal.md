@@ -1,5 +1,14 @@
 # journal.md
 
+## 2026-01-25 13:59
+
+### branch sync + setup
+
+- renamed branch to `workinprogmess/how-to` per system instruction
+- pulled in latest from `origin/node-ing`
+- confirmed `origin/main` already up to date
+- reviewed `agents.md` + `journal.md` for workflow context
+
 ## 2025-12-05 15:59
 
 ### merged tuning history into node-ing
