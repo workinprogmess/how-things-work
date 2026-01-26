@@ -7,6 +7,13 @@
 - inspected local clawdbot research folder contents
 - preparing simple, parent-focused explanation of architecture notes
 
+## 2026-01-26 16:18
+
+### clawdbot repo setup
+
+- moved clawdbot research notes into clawdbot/research
+- shallow-cloned upstream repo into clawdbot/repo
+
 ## 2026-01-25 13:59
 
 ### branch sync + setup
