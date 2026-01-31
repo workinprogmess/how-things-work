@@ -1,5 +1,16 @@
 # journal.md
 
+## 2026-01-31 18:10
+
+### personalized books research: critique q/a and next steps
+
+created a q/a critique doc with parent + vc angles, clarified gaps, and added a next-steps list.
+
+**document created:**
+- `personalized-books-for-children/personalized-books-research-qa.md`
+
+---
+
 ## 2026-01-31 18:00
 
 ### personalized books for children: research & thesis exploration
