@@ -1,5 +1,16 @@
 # journal.md
 
+## 2026-01-31 18:18
+
+### add gitignore for macos metadata
+
+added a gitignore entry to prevent .ds_store files from showing up as untracked.
+
+**file updated:**
+- `.gitignore`
+
+---
+
 ## 2026-01-31 18:10
 
 ### personalized books research: critique q/a and next steps
