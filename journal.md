@@ -1,5 +1,40 @@
 # journal.md
 
+## 2026-02-16 22:00
+
+### 10k prompts to genius: concept exploration
+
+brainstormed the concept of "10k prompts to genius" — adapting ai agents (claude code, codex, openclaw) for non-power-users to go from first prompt to mastery through doing, not courses.
+
+**document created:**
+- `10k-prompts-to-genius/conversation-001.md` — full discussion covering concept, perspectives (pg, fried, a16z/yc), persona definition, architecture, technical feasibility, and smallest unit design
+
+**key ideas explored:**
+
+1. **the core problem:** agents are powerful but designed for developers. massive gap between casual chatgpt user and someone who can build with agents. too many tools, too much info, leads to inaction.
+
+2. **the core insight:** adapt existing agents for all use-cases — not pre-defined courses but emergent, personalized paths based on what the person actually needs/wants. learning happens through doing, not studying.
+
+3. **persona:** founders / want-to-be founders who are aware but not activated. they know ai can 10x them but haven't rewired their workflows. driven, ready to commit, need an environment that evolves with them.
+
+4. **critical reframe:** there is no onboarding phase. the agent starts doing real work from exchange 1 (clearing emails, building pitch decks, writing linkedin posts) and learns about the person as a byproduct of working together.
+
+5. **the real product is clarity.** externalizing the mental load into a structured, persistent vault. not learning ai — getting a clear head.
+
+6. **architecture:** claude code is already 80% of this. the missing 20% is orientation (person-scoped vs project-scoped), listening (signal extraction from every exchange), and proactivity (heartbeat/cron for ambient awareness).
+
+7. **technical feasibility:** reorientation happens via CLAUDE.md instructions. vault schema in obsidian/markdown. cross-session continuity via tiered memory (hot/warm/cold). agency levels (observe → draft → act → autonomy) settable today.
+
+8. **mobile:** telegram bot reading/writing to the same vault for on-the-go interactions.
+
+9. **progress tracking:** automated weekly reflections measuring prompt quality, independence, builds shipped, confidence trajectory.
+
+**next step:** design and implement the smallest unit — add to existing setup (claude code + obsidian + qmd) and measure impact over 2-4 weeks.
+
+**key insight:** most people are stuck at prompt 1 and have no path to prompt 1000. the gap isn't tools — it's orientation, listening, and proactivity.
+
+---
+
 ## 2026-01-31 18:00
 
 ### personalized books for children: research & thesis exploration
